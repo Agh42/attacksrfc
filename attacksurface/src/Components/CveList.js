@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import CpeClient from '../Scripts/CpeClient';
+
 
 export default class CveList extends Component {
+   
     render () {
+        const cves = this.props.selectedCves;
+        
         return(
+                
                 <div className='ui raised segment'>
                     <div className='ui field'>
                          <div className="ui positive button" data-tooltip="Save this list as an Excel file.">
@@ -23,7 +27,7 @@ export default class CveList extends Component {
                   <th>References</th>
                 </tr></thead>
                 <tbody>
-                  {CpeClient.getCves().map( (cve) => {
+                  {cves.map( (cve) => {
                           return (
                           <tr>
                           <td class="single line">

@@ -14,8 +14,11 @@ export default class RegisterPage extends Component {
                     </div>
                     <div className="column">
                       <h4 className="ui header">Professional</h4>
-                      <p><b>14,-€</b> per month billed yearly</p>
-                      <p>29,-€ billed monthly</p>
+                      <p></p>
+                      <p></p>
+                      <p></p>
+                      <p>59,-€ billed monthly</p>
+                      <p><b>29,-€</b> per month billed yearly</p>
                       <div className="ui positive button">Try 30 days for free</div>
                     </div>
                     <div className="column">

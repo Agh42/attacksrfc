@@ -37,7 +37,7 @@ export default class EditableInventoryList extends Component {
         
         return (
                 <div className="ui raised segment" style={{overflow: 'auto', "height":"30em"}}>
-                <div id="searchInput" class="ui search">
+                <div id="searchInput" className="ui search">
                     <div className="ui fluid icon input ">
                         <input className="prompt" type="text" 
                             placeholder="Enter vendor or software..."/>

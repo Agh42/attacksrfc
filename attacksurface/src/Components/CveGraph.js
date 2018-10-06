@@ -1,46 +1,62 @@
 import React, { Component } from 'react';
 import * as vis from 'vis';
+import CpeClient from "../Scripts/CpeClient";
 
 
-
-//create an array with nodes
-let nodes = new vis.DataSet([
-    {id: 1, label: 'Node 1'},
-    {id: 2, label: 'Node 2'},
-    {id: 3, label: 'Node 3'},
-    {id: 4, label: 'Node 4'},
-    {id: 5, label: 'Node 5'}
-]);
-
-// create an array with edges
-let edges = new vis.DataSet([
-    {from: 1, to: 3},
-    {from: 1, to: 2},
-    {from: 2, to: 4},
-    {from: 2, to: 5}
-]);
-
-//provide the data in the vis format
-var data = {
-    nodes: nodes,
-    edges: edges
-};
-var options = {
-        autoResize: true,
-        height: '100%',
-        width: '100%',
-};
 
 export default class CveGraph extends Component {
+   data;
+   nodes;
+   edges;
     
-    initGraph() {
-        var container = document.getElementById('cvegraph');
-        new vis.Network(container, data, options);
+    convertCves= () => {
+        this.nodes = new vis.DataSet();
+        this.edges = new vis.DataSet();
+        const allCves = CpeClient.getSelectedCves();
+        allCves.forEach( (cve) => {
+            this.nodes.add( {id: cve.id, label: cve.id} );
+            console.log("added cve node: " + cve.id);
+            cve.vulnerable_configuration.forEach( (cpe) => {
+                const vendor = cpe.split(":")[3];
+                const product = cpe.split(":")[4];
+                try {
+                    this.nodes.add( {id: vendor+":"+product, label: vendor+":"+product} );
+                    console.log("added cpe node: " + vendor+":"+product)
+                }
+                catch(err) {
+                    //already present, do nothing
+                }
+                // link cve to cpe:
+                this.edges.add( {from: cve.id, to: vendor+":"+product} );
+                console.log("add edge: " + cve.id +" to "+vendor+":"+product);
+            });
+        });
+        //provide the data in the vis format
+        this.data = {
+            nodes: this.nodes,
+            edges: this.edges
+        };
+        
+    }
+    
+    initGraph= () => {
+        var options = {
+                autoResize: true,
+                height: '100%',
+                width: '100%',
+        };
+        this.convertCves();
+        let container = document.getElementById('cvegraph');
+        console.log(this.data);
+        new vis.Network(container, this.data, options);
     } 
     
     componentDidMount() {
+        //this.forceUpdateInterval = setInterval( () => this.initGraph(), 50 );
         this.initGraph();
     }
+    
+    
             
             
     render() {

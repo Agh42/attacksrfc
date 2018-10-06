@@ -12,10 +12,16 @@ export default class App extends Component {
     
     state = {
             selectedCpes: [],
+            selectedCves: [],
     };
     
     componentDidMount() {
         this.loadSelectedCpes();
+        this.loadSelectedCves();
+    }
+    
+    loadSelectedCves = () => {
+        this.setState({selectedCves: CpeClient.getSelectedCves()});
     }
     
     loadSelectedCpes = () => {
@@ -58,6 +64,7 @@ export default class App extends Component {
                 </div>
                 <div className='eleven wide column'>
                     <CveGraph 
+                        selectedCves={this.state.selectedCves}
                     />
                 </div>
             </div>
@@ -65,6 +72,7 @@ export default class App extends Component {
             <div className='one column row'>
                 <div className='sixteen wide column'>
                     <CveList 
+                        selectedCves={this.state.selectedCves}
                     />
                 </div>
             </div> 
