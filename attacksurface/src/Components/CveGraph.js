@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import * as vis from 'vis';
 
+function colorForScore(score) {
+    if (score < 5.01) return "#11A100";
+    if (score > 8.99) return "#db0000";
+    return "#ffa200";
+}
 
 export default class CveGraph extends Component {
    data;
@@ -13,14 +18,21 @@ export default class CveGraph extends Component {
         const allCves = props.selectedCves;
         console.log("convertcpes");
         console.log(props.selectedCves);
+        let group = -1;
         allCves.forEach( (cve) => {
-            this.nodes.add( {id: cve.id, label: cve.id} );
+            group++;
+            this.nodes.add( {id: cve.id, 
+                label: cve.cvss.toString(), 
+                color: colorForScore(cve.cvss) } );
             console.log("added cve node: " + cve.id);
             let createdEdges = new Set();
             cve.vulnerable_configuration.forEach( (cpe) => {
-                const vendor_product = cpe.split(":")[3] + ":" + cpe.split(":")[4];
+                const vendor_product = cpe.split(":")[3] + " " + cpe.split(":")[4];
                 try {
-                    this.nodes.add( {id: vendor_product, label: vendor_product} );
+                    this.nodes.add( {id: vendor_product, 
+                        shape: 'box',
+                        color: '#00b5ad',
+                        label: vendor_product} );
                     console.log("added cpe node: " + vendor_product)
                 }
                 catch(err) {
@@ -50,6 +62,9 @@ export default class CveGraph extends Component {
                 autoResize: true,
                 height: '100%',
                 width: '100%',
+                nodes: {borderwidth: 2, shadow: true},
+                edges: {width: 2, shadow: true},
+                interaction: {hover: false},
         };
         this.convertCves(props);
         let container = document.getElementById('cvegraph');
