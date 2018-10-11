@@ -63,7 +63,6 @@ export default class App extends Component {
                     />
                 </div>
                 <div className='eleven wide column'>
-                    Your Attack Surface:
                     <CveGraph 
                         selectedCves={this.state.selectedCves}
                     />

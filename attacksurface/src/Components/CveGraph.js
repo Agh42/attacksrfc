@@ -16,34 +16,58 @@ export default class CveGraph extends Component {
         this.nodes = new vis.DataSet();
         this.edges = new vis.DataSet();
         const allCves = props.selectedCves;
-        console.log("convertcpes");
-        console.log(props.selectedCves);
         let group = -1;
+        
+        let createdEdges = new Set();
+        let createdNodes = new Set();
         allCves.forEach( (cve) => {
             group++;
             this.nodes.add( {id: cve.id, 
                 label: cve.cvss.toString(), 
+                title: cve.id,
                 color: colorForScore(cve.cvss) } );
-            console.log("added cve node: " + cve.id);
-            let createdEdges = new Set();
+            
+            let primaryCpeWas = undefined;
             cve.vulnerable_configuration.forEach( (cpe) => {
                 const vendor_product = cpe.split(":")[3] + " " + cpe.split(":")[4];
-                try {
-                    this.nodes.add( {id: vendor_product, 
+                
+                // update with active color if this is a primary cpe 
+                // which already exists as inactive one:
+                if (!primaryCpeWas && createdNodes.has(vendor_product)) {
+                    this.nodes.update( {id: vendor_product, 
                         shape: 'box',
                         color: '#00b5ad',
+                        font: {color: '#ffffff'},
                         label: vendor_product} );
-                    console.log("added cpe node: " + vendor_product)
                 }
-                catch(err) {
-                    //already present, do nothing
+                
+                if (!createdNodes.has(vendor_product)) {
+                    let color;
+                    !primaryCpeWas ?  color = '#00b5ad' :  color = '#c0c0c0';
+                    this.nodes.add( {id: vendor_product, 
+                        shape: 'box',
+                        color: color,
+                        font: {color: '#ffffff'},
+                        label: vendor_product} );
+                    createdNodes.add(vendor_product);
                 }
-                // link cve to cpe:
-                if (!createdEdges.has(cve.id+vendor_product)) {
-                    this.edges.add( {from: cve.id, to: vendor_product} );
-                    createdEdges.add(cve.id + vendor_product);
-                    console.log("add edge: " + cve.id +" to "+vendor_product);
+                
+                // link only primary cpe to cve:
+                if (!primaryCpeWas) {
+                    primaryCpeWas=vendor_product;
+                    if (!createdEdges.has(cve.id+vendor_product)) {
+                        this.edges.add( {from: cve.id, to: vendor_product} );
+                        createdEdges.add(cve.id + vendor_product);
+                    }
+                } else {
+                    // link all other cpes to primary cpe (but not to itself):
+                    if (!createdEdges.has(primaryCpeWas+vendor_product)
+                            && !(primaryCpeWas===vendor_product)) {
+                        this.edges.add( {from: primaryCpeWas, to: vendor_product} );
+                        createdEdges.add(primaryCpeWas + vendor_product);
+                    }
                 }
+                
             });
         });
         //provide the data in the vis format
@@ -55,51 +79,36 @@ export default class CveGraph extends Component {
     }
     
     initGraph= (props) => {
-        console.log("initgraph");
-        console.log(
-                props.selectedCves);
         var options = {
                 autoResize: true,
                 height: '100%',
                 width: '100%',
                 nodes: {borderwidth: 2, shadow: true},
-                edges: {width: 2, shadow: true},
+                edges: {width: 2, 
+                    shadow: true},
                 interaction: {hover: false},
         };
+        
         this.convertCves(props);
         let container = document.getElementById('cvegraph');
-        console.log(this.data);
         new vis.Network(container, this.data, options);
     } 
     
     componentDidMount() {
-        console.log("didmount");
-        console.log(this.props.selectedCves);
-        //this.forceUpdateInterval = setInterval( () => this.initGraph(), 50 );
         this.initGraph(this.props);
     }
     
     componentWillReceiveProps(nextProps) {
-        console.log("willreceiveprops");
-        console.log(nextProps);
         this.initGraph(nextProps);
     }
-    
-//    shouldComponentUpdate(nextProps, nextState) {
-//        console.log("shouldupdate");
-//        console.log(nextProps);
-//        console.log(nextState);
-//        return false;
-//    }
-            
             
     render() {
-        console.log("render");
-        console.log(this.props.selectedCves);
         return (
-            <div className='ui raised segment' style={{"height":"30em"}}>
-                <div id="cvegraph" style={{"height":"100%"}}></div>
-            </div>
+            <React.Fragment>
+                <div className='ui raised segment' style={{"height":"30em"}}>
+                    <div id="cvegraph" style={{"height":"100%"}}></div>
+                </div>
+            </React.Fragment>
         );
     }
 }

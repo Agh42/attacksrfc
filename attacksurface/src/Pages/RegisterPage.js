@@ -8,25 +8,27 @@ export default class RegisterPage extends Component {
                     <div className="column">
                       <h4 className="ui header">Basic</h4>
                       <p>Inventory Search</p>
-                      <p>Limited requests per day</p>
-                      <p>Ads and Captcha</p>
+                      <p>Limited requests (Captcha)</p>
+                      <p>Financed by Ads</p>
                       <div className="ui disabled button">Free</div>
                     </div>
                     <div className="column">
                       <h4 className="ui header">Professional</h4>
-                      <p></p>
-                      <p></p>
-                      <p></p>
-                      <p>59,-€ billed monthly</p>
-                      <p><b>29,-€</b> per month billed yearly</p>
+                      <p>Unlimited usage</p>
+                      <p>Save your inventory of assets</p>
+                      <p>Unlimited email notifications</p>
+                      <p>Alerts when new vulnerabilities for your asset inventory occur</p>
+                      <p>Assign mitigation tasks using email / JIRA / Slack integration</p>
+                      <p><b>29,-€ per month billed yearly</b>
+                      <br/>59,-€ billed monthly</p>
                       <div className="ui positive button">Try 30 days for free</div>
                     </div>
                     <div className="column">
                       <h4 className="ui header">On-Premise / Private Cloud</h4>
-                      <p>You get full access to our up-to-date Docker repository.</p>
-                      <p>You'll have access to the same images we're running publicly, including the newest upstream builds and full history of previous versions.</p>
-                      <p>Pull images to run in your local environment, AWS EC2 or other cloud provider of your choice.</p>
-                      <p>Includes support and professional services to integrate AttackSurfe in your environment.</p>
+                      <p>Run AttackSurface in your local data center</p>
+                      <p>Run AttackSurface in any public or private cloud </p>
+                      <p>Complete access to our Docker images</p>
+                      <p>Support and professional services to integrate AttackSurface in your environment.</p>
                       <div className="ui positive button">Ask for Quote</div>
                     </div>
                   </div>

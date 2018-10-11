@@ -1,5 +1,42 @@
 import React, { Component } from 'react';
 
+/**
+ * getHostname()
+ * by Kory Becker, http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript
+ * @param {any} url
+ */
+function getHostName(url) {
+    var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
+    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
+    return match[2];
+    }
+    else {
+        return null;
+    }
+}
+/**
+ * getDomain()
+ * by Kory Becker, http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript/
+ * @param {any} url
+ */
+function getDomain(url) {
+    var hostName = getHostName(url);
+    var domain = hostName;
+    
+    if (hostName != null) {
+        var parts = hostName.split('.').reverse();
+        
+        if (parts != null && parts.length > 1) {
+            domain = parts[1] + '.' + parts[0];
+                
+            if (hostName.toLowerCase().indexOf('.co.uk') !== -1 && parts.length > 2) {
+              domain = parts[2] + '.' + domain;
+            }
+        }
+    }
+    
+    return domain;
+}
 
 export default class CveList extends Component {
    
@@ -10,12 +47,15 @@ export default class CveList extends Component {
                 
                 <div className='ui raised segment'>
                     <div className='ui field'>
-                         <div className="ui positive button" data-tooltip="Save this list as an Excel file.">
+                         <div className="ui positive button" 
+                              data-tooltip="Save this list as an Excel file.">
                              Export to .xlsx</div>
                          <div className="ui  button" data-tooltip="Coming soon.">
-                             Track with JIRA...</div>
+                             Track mitigation by email...</div>
                          <div className="ui  button" data-tooltip="Coming soon.">
-                             Track with Slack...</div>
+                             Track mitigation with JIRA...</div>
+                         <div className="ui  button" data-tooltip="Coming soon.">
+                             Track mitigation with Slack...</div>
                     </div>
                 <table className="ui celled padded table">
                 <thead>
@@ -31,7 +71,7 @@ export default class CveList extends Component {
                           return (
                           <tr>
                           <td class="single line">
-                            {cve.id}
+                          <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+cve.id} target="_blank">{cve.id}</a> 
                           </td>
                           <td class="single line">
                             {cve.cvss}
@@ -43,10 +83,9 @@ export default class CveList extends Component {
                           <td class="right aligned">
                             {
                                 cve.references.map( (reference, index) => {
-                                    let num=index+1;
                                     return (
                                       <div>
-                                      <a href={reference} target="_blank">{"[Ref-"+num+"]"}</a> 
+                                      <a href={reference} target="_blank">{getDomain(reference)}</a> 
                                       <br/>
                                       </div>
                                       );
