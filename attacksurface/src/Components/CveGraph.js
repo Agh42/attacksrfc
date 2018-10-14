@@ -16,12 +16,12 @@ export default class CveGraph extends Component {
         this.nodes = new vis.DataSet();
         this.edges = new vis.DataSet();
         const allCves = props.selectedCves;
-        let group = -1;
+        //let group = -1;
         
         let createdEdges = new Set();
         let createdNodes = new Set();
         allCves.forEach( (cve) => {
-            group++;
+            //group++;
             this.nodes.add( {id: cve.id, 
                 label: cve.cvss.toString(), 
                 title: cve.id,

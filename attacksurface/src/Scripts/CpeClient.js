@@ -1,5 +1,6 @@
 
-export const CpeClient = {getSelectedCves, getAutoComplete, getSelectedCpes};
+export const CpeClient = {getSelectedCves, getAutoCompleteItems, 
+        getSelectedCpes, getExampleCpes};
  
 export default CpeClient;
     
@@ -234,19 +235,27 @@ export default CpeClient;
         return products;
     }
     
-    export function getAutoComplete(toComplete) {
-        const vendors = getVendors();
-        //const products = getProducts();
-        const result = vendors.forEach((vendor) => {
-            if (vendor.startsWith(toComplete)) {
-                return vendor;
-            }
-        });
+   /**
+    * Searches CPE titles. Returns array of matching CPEs: {id, title}
+    * 
+    * @param {any} toComplete the string to search for
+    */
+    export function getAutoCompleteItems(toComplete) {
+        let result = [];
+        const regex = new RegExp(toComplete, 'i');
+        result = cpes.filter(cpe => regex.test(cpe.title));
         return result;
     }
     
     export function getSelectedCves() {
         return cves;
+    }
+    
+    export function getExampleCpes() {
+        return [ {
+            "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2",
+            "title": "Microsoft Windows XP Service Pack 2"
+        },];
     }
     
     export function getSelectedCpes() {

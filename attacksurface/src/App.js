@@ -16,12 +16,16 @@ export default class App extends Component {
     };
     
     componentDidMount() {
-        this.loadSelectedCpes();
+        this.initSelectedCpes();
         this.loadSelectedCves();
     }
     
     loadSelectedCves = () => {
         this.setState({selectedCves: CpeClient.getSelectedCves()});
+    }
+    
+    initSelectedCpes = () => {
+        this.setState({selectedCpes: CpeClient.getExampleCpes()});
     }
     
     loadSelectedCpes = () => {
@@ -49,8 +53,9 @@ export default class App extends Component {
         <div className='ui stackable padded grid'>
             <div className='one column row'>
                 <div className='sixteen wide column'>
-                    <h1 className="ui left aligned header">Vulnerability Manager</h1>
-                    <h2 className="ui left aligned header">Instant Vulnerability Management.</h2>
+                    <h1 className="ui left aligned header">Attack Surface
+                    <div className="sub header">Vulnerability Management.</div>
+                    </h1>
                 </div>
             </div>
             <div className='two column row'>

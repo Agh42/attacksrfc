@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+
+
 /**
  * getHostname()
  * by Kory Becker, http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript
@@ -38,6 +40,14 @@ function getDomain(url) {
     return domain;
 }
 
+function formatDate(date) {
+    const millis = new Date(date);
+    const day = millis.getDate();
+    const month = millis.getMonth();
+    const year = millis.getFullYear();
+    return `${year}-${month}-${day}`;
+}
+
 export default class CveList extends Component {
    
     render () {
@@ -57,12 +67,13 @@ export default class CveList extends Component {
                          <div className="ui  button" data-tooltip="Coming soon.">
                              Track mitigation with Slack...</div>
                     </div>
-                <table className="ui celled padded table">
+                <table className="ui sortable celled padded table">
                 <thead>
                   <tr>
                   <th>ID</th>
                   <th>Score</th>
-                  <th>Date</th>
+                  <th>Modified</th>
+                  <th>Published</th>
                   <th>Summary</th>
                   <th>References</th>
                 </tr></thead>
@@ -76,8 +87,11 @@ export default class CveList extends Component {
                           <td class="single line">
                             {cve.cvss}
                           </td>
-                          <td>
-                            {cve.Published}
+                          <td class="single line">
+                            {formatDate(cve.Modified)}
+                          </td>
+                          <td class="single line">
+                            {formatDate(cve.Published)}
                           </td>
                           <td>{cve.summary}</td>
                           <td class="right aligned">
