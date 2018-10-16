@@ -83,6 +83,11 @@ export default class EditableInventoryList extends Component {
         this.setState({
           searchValue: newValue
         });
+        if (method === "click") {
+            this.setState({
+              searchValue: this.state.searchValue
+            });
+        }
       };
       
       onSuggestionsFetchRequested = ({ value }) => {
@@ -102,6 +107,11 @@ export default class EditableInventoryList extends Component {
           suggestions: []
         });
       };
+      
+      onSuggestionSelected = (event, selection) => {
+          console.log("selected: " + selection.suggestion.id);
+          this.props.onSelectCpeClick(selection.suggestion);
+      }
     
     render() {
         // stateless component for cpe list:
@@ -130,6 +140,7 @@ export default class EditableInventoryList extends Component {
                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                         getSuggestionValue={getSuggestionValue}
+                        onSuggestionSelected={this.onSuggestionSelected}
                         renderSuggestion={renderSuggestion}
                         inputProps={inputProps} />
                 <br/>

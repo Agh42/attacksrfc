@@ -48,21 +48,52 @@ export default class App extends Component {
         });
     }
     
+    handleAddCpeClick = (newCpe) => {
+        this.setState({
+            selectedCpes: [...this.state.selectedCpes, newCpe]
+        });
+    }
+    
   render() {
     return (
+          <React.Fragment>
+          <div class="ui top fixed inverted teal large screen only icon menu">
+              <a className="item"><i className="home icon" /></a>
+              <a  href="fixed.html#"></a>
+               <div className="ui item"><div className="ui subheader">
+                   Attack Surface. Practicable Vulnerability Management.
+               </div></div>
+               <div class="right menu primary">
+               <a class="item">
+                 Logout
+               </a>
+               <a class="item">
+                 Settings
+               </a>
+               <a class="ui dropdown item">
+                 My Acount
+                 <i class="angle down icon"></i>
+                 <div class="inverted menu">
+                   <div class="item">
+                     <i class="building icon"></i>
+                     Account Settings
+                   </div>
+                   <div class="item">
+                     <i class="building icon"></i>
+                     Security
+                   </div>
+                 </div>
+               </a>
+             </div>
+          </div>
+
         <div className='ui stackable padded grid'>
-            <div className='one column row'>
-                <div className='sixteen wide column'>
-                    <h1 className="ui left aligned header">Attack Surface
-                    <div className="sub header">Vulnerability Management.</div>
-                    </h1>
-                </div>
-            </div>
             <div className='two column row'>
                 <div className='five wide column'>
                 
                     <EditableInventoryList
                         selectedCpes={this.state.selectedCpes}
+                        onSelectCpeClick={this.handleAddCpeClick}
                         onSaveClick={this.handleSaveClick}
                         onDeleteClick={this.handleDeleteClick}
                     />
@@ -91,6 +122,50 @@ export default class App extends Component {
             </div> 
             
         </div> 
+                    <div class="ui  vertical footer segment">
+                    <div class="ui center aligned container">
+                      <div class="ui stackable  divided grid">
+                        <div class="three wide column">
+                          <h4 class="ui  header">
+                            Group 1
+                          </h4>
+                          <div class="ui  link list">
+                            <a class="item" href="fixed.html#">Link One</a><a class="item" href="fixed.html#">Link Two</a><a class="item" href="fixed.html#">Link Three</a><a class="item" href="fixed.html#">Link Four</a>
+                          </div>
+                        </div>
+                        <div class="three wide column">
+                          <h4 class="ui  header">
+                            Group 2
+                          </h4>
+                          <div class="ui  link list">
+                            <a class="item" href="fixed.html#">Link One</a><a class="item" href="fixed.html#">Link Two</a><a class="item" href="fixed.html#">Link Three</a><a class="item" href="fixed.html#">Link Four</a>
+                          </div>
+                        </div>
+                        <div class="three wide column">
+                          <h4 class="ui  header">
+                            Group 3
+                          </h4>
+                          <div class="ui  link list">
+                            <a class="item" href="fixed.html#">Link One</a><a class="item" href="fixed.html#">Link Two</a><a class="item" href="fixed.html#">Link Three</a><a class="item" href="fixed.html#">Link Four</a>
+                          </div>
+                        </div>
+                        <div class="seven wide column">
+                          <h4 class="ui  header">
+                            Footer Header
+                          </h4>
+                          <p>
+                            Extra space for a call to action inside the footer that could help re-engage users.
+                          </p>
+                        </div>
+                      </div>
+                      <div class="ui  section divider"></div>
+                      <img class="ui centered mini image" src="images/logos/cstoolio_60.png" />
+                      <div class="ui horizontal  small divided link list">
+                        <a class="item" href="fixed.html#">Site Map</a><a class="item" href="fixed.html#">Contact Us</a><a class="item" href="fixed.html#">Terms and Conditions</a><a class="item" href="fixed.html#">Privacy Policy</a>
+                      </div>
+                    </div>
+                  </div>
+        </React.Fragment>
     );
   }
 }

@@ -23,10 +23,10 @@ react-autosuggest__container {
 
 .react-autosuggest__input {
   width: 100%;
-  height: 1em;
-  padding: 10px 20px;
-  font-family: Helvetica, sans-serif;
-  font-weight: 300;
+  height: 2em;
+  padding: 10px 10px;
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-weight: bold;
   font-size: 16px;
   border: 1px solid #aaa;
   border-radius: 4px;
