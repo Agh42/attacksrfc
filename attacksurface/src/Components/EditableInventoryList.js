@@ -10,6 +10,7 @@ function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+
 function getSuggestions(value) {
     const escapedValue = escapeRegexCharacters(value.trim());
     
@@ -25,7 +26,7 @@ function getSuggestionValue(suggestion) {
 }
 
 function renderSuggestion(suggestion) {
-    return (
+    return ( 
         <div className="item">
             <div class="ui teal label">
                     {suggestion.title}
@@ -44,24 +45,31 @@ function renderSuggestion(suggestion) {
  */
 class CpeItem extends React.Component {
     
+    
     handleDeleteClick = () => {
         this.props.onDeleteClick(this.props.cpe.id);
     }
     
+    handleCpeClick = () => {
+        this.props.onCpeClick(this.props.cpe.id);
+    }
+    
     render() {
-        let  c,cpeversion,type, vendor, product, version, rest;
-        [c,cpeversion,type, vendor, product, version, ...rest] 
+        let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
+        [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
             = this.props.cpe.id.split(":");
         
             return (
-                <div className="item">
-                    <div class="ui image teal label">
-                            {vendor+":"+product+":"+version}
-                        <i className="delete icon"
-                            onClick={this.handleDeleteClick} 
-                        />
+                    <div className="item">
+                        <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
+                            <i className="delete icon"
+                                onClick={this.handleDeleteClick}></i>
+                            <a className="detail"
+                                onClick={this.handleCpeClick}>
+                                {vendor+":"+product+":"+version+":"+update+":"+edition}
+                            </a>
+                        </div>
                     </div>
-                </div>
             )};
 }
 
@@ -118,9 +126,11 @@ export default class EditableInventoryList extends Component {
         const cpeItems = this.props.selectedCpes.map((cpe) => (
             <CpeItem 
                 onDeleteClick={this.props.onDeleteClick}
+                onCpeClick={this.props.onCpeToggleClick}
                 cpe={cpe}
                 id={cpe.id}
                 key={cpe.id}
+                isActive={cpe.isActive}
             />
         ));
         
@@ -142,6 +152,7 @@ export default class EditableInventoryList extends Component {
                         getSuggestionValue={getSuggestionValue}
                         onSuggestionSelected={this.onSuggestionSelected}
                         renderSuggestion={renderSuggestion}
+                        focusInputOnSuggestionClick={false}
                         inputProps={inputProps} />
                 <br/>
                 <div className="field">
@@ -150,7 +161,8 @@ export default class EditableInventoryList extends Component {
                          onClick={this.props.onSaveClick} >
                           Save collection... 
                     </button>
-                     <button className="ui negative toggle button" data-tooltip="Get emails on new critical vulnerabilities!" >
+                     <button className="ui negative toggle button" 
+                          data-tooltip="Get emails on new critical vulnerabilities!" >
                           Notifcations are off
                     </button>
                 </div>

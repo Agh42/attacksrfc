@@ -59,7 +59,7 @@ export default class CveList extends Component {
                     <div className='ui field'>
                          <div className="ui positive button" 
                               data-tooltip="Save this list as an Excel file.">
-                             Export to .xlsx</div>
+                             Save as .xlsx</div>
                          <div className="ui  button" data-tooltip="Coming soon.">
                              Track mitigation by email...</div>
                          <div className="ui  button" data-tooltip="Coming soon.">
@@ -80,7 +80,7 @@ export default class CveList extends Component {
                 <tbody>
                   {cves.map( (cve) => {
                           return (
-                          <tr>
+                          <tr key={cve.id}>
                           <td class="single line">
                           <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+cve.id} target="_blank">{cve.id}</a> 
                           </td>
@@ -111,7 +111,7 @@ export default class CveList extends Component {
                   })}
                 </tbody>
                 <tfoot>
-                  <tr><th colspan="5">
+                  <tr><th colSpan="5">
                     <div className="ui right floated pagination menu">
                       <a className="icon item">
                         <i className="left chevron icon"></i>

@@ -6,7 +6,7 @@ import EditableInventoryList from './Components/EditableInventoryList';
 import CveList from './Components/CveList';
 import CpeClient from './Scripts/CpeClient';
 
-import RegisterPage from './Pages/RegisterPage';
+import PricingPage from './Pages/PricingPage';
 
 export default class App extends Component {
     
@@ -49,44 +49,66 @@ export default class App extends Component {
     }
     
     handleAddCpeClick = (newCpe) => {
+        if (!this.state.selectedCpes.includes(newCpe)) {
+            this.setState({
+                selectedCpes: [...this.state.selectedCpes, newCpe]
+            });
+        }
+    }
+    
+    handleCpeToggleClick = (toggleCpeId) => {
         this.setState({
-            selectedCpes: [...this.state.selectedCpes, newCpe]
+            selectedCpes: this.state.selectedCpes.map((cpe) => {
+               if (cpe.id === toggleCpeId) {
+                   return Object.assign({}, cpe, {
+                       isActive: !cpe.isActive,
+                   });
+               } else {
+                   return cpe;
+               }
+            }),
         });
     }
     
   render() {
     return (
           <React.Fragment>
-          <div class="ui top fixed inverted teal large screen only icon menu">
-              <a className="item"><i className="home icon" /></a>
-              <a  href="fixed.html#"></a>
-               <div className="ui item"><div className="ui subheader">
-                   Attack Surface. Practicable Vulnerability Management.
-               </div></div>
-               <div class="right menu primary">
-               <a class="item">
-                 Logout
-               </a>
-               <a class="item">
-                 Settings
-               </a>
-               <a class="ui dropdown item">
-                 My Acount
-                 <i class="angle down icon"></i>
-                 <div class="inverted menu">
-                   <div class="item">
-                     <i class="building icon"></i>
-                     Account Settings
-                   </div>
-                   <div class="item">
-                     <i class="building icon"></i>
-                     Security
-                   </div>
-                 </div>
-               </a>
-             </div>
+          <div class="ui grid">
+              <div class="computer only row">
+                  <div class="column">
+                      <div class="ui top fixed inverted teal icon menu">
+                          <a className="item"href="/homepage.html"><i className="home icon" /></a>
+                           <div className="ui item"><div className="ui inverted header">
+                               Attack Surface - Vulnerability Management Now.
+                           </div></div>
+                           <div class="right menu primary">
+                           <a class="item">
+                             <i className="sign in icon" />
+                             &nbsp;&nbsp;Login
+                           </a>
+                           <a class="item">
+                             <i className="cog icon" />
+                           </a>
+                           <a class="ui dropdown item">
+                             <i className="user circle icon" />
+                             <i class="angle down icon"></i>
+                             <div class="inverted menu">
+                               <div class="item">
+                                 <i class="building icon"></i>
+                                 Account Settings
+                               </div>
+                               <div class="item">
+                                 <i class="building icon"></i>
+                                 Security
+                               </div>
+                             </div>
+                           </a>
+                         </div>
+                      </div>
+                  </div>
+              </div>
           </div>
-
+          
         <div className='ui stackable padded grid'>
             <div className='two column row'>
                 <div className='five wide column'>
@@ -96,6 +118,7 @@ export default class App extends Component {
                         onSelectCpeClick={this.handleAddCpeClick}
                         onSaveClick={this.handleSaveClick}
                         onDeleteClick={this.handleDeleteClick}
+                        onCpeToggleClick={this.handleCpeToggleClick}
                     />
                 </div>
                 <div className='eleven wide column'>
@@ -116,7 +139,7 @@ export default class App extends Component {
             <div className='one column row'>
                 <div className='sixteen wide column'>
                 <div ref={this.registerRef} ></div>
-                    <RegisterPage 
+                    <PricingPage 
                     />
                 </div>
             </div> 
@@ -159,7 +182,7 @@ export default class App extends Component {
                         </div>
                       </div>
                       <div class="ui  section divider"></div>
-                      <img class="ui centered mini image" src="images/logos/cstoolio_60.png" />
+                      <img class="ui centered image" src="images/logos/cstoolio_60.png" />
                       <div class="ui horizontal  small divided link list">
                         <a class="item" href="fixed.html#">Site Map</a><a class="item" href="fixed.html#">Contact Us</a><a class="item" href="fixed.html#">Terms and Conditions</a><a class="item" href="fixed.html#">Privacy Policy</a>
                       </div>

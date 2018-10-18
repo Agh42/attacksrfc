@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class RegisterPage extends Component {
+export default class PricingPage extends Component {
     render() {
         return (
                 <div className='ui raised segment'>
