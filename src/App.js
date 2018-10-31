@@ -13,6 +13,8 @@ import PricingPage from './Pages/PricingPage';
 
 export default class App extends Component {
     
+    loggedIn = false;
+    
     _setPage = (page, route) => {
         this.setState({ page, route, currentMenu: null, modal: null, error: null });
     }
@@ -21,10 +23,11 @@ export default class App extends Component {
     return (
             <Router>
                 <Switch>
-                    <Route path='/app/attacksrfc' component={AttackSrfcPage} />
+                    <Route path='/attacksrfc' component={AttackSrfcPage} />
                     <Route path='/pricing' component={PricingPage} />
                     <Route exact path='/' component={AttackSrfcPage} />
                     <Route exact path='/index.html' component={AttackSrfcPage} />
+                    		      		
                     <Route render={({ location }) => (
                           <div className='ui inverted red segment'>
                             <h3>

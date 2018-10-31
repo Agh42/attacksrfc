@@ -6,8 +6,9 @@ export default class PricingPage extends Component {
                 <div className='ui raised segment'>
                   <div className="ui stackable three column divided center aligned grid">
                     <div className="column">
-                      <h4 className="ui header">Basic</h4>
+                      <h4 className="ui header">Free</h4>
                       <p>Inventory Search</p>
+                      <p>Vulnerability Landscape</p>
                       <p>Limited requests (Captcha)</p>
                       <p>Financed by Ads</p>
                       <div className="ui disabled button">Free</div>

@@ -5,6 +5,8 @@ import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
 import CpeClient from '../Scripts/CpeClient';
 
+import {Redirect} from 'react-router-dom';
+
 export default class AttackSrfcPage extends Component {
     
     state = {
@@ -31,7 +33,7 @@ export default class AttackSrfcPage extends Component {
     }
     
     handleSaveClick = () => {
-          // save
+          this.setState({redirect: true});
     }
     
     handleDeleteClick = (cpeId) => {
@@ -63,6 +65,9 @@ export default class AttackSrfcPage extends Component {
     }
     
     render() {
+        if (this.state.redirect) {
+            return (<Redirect push to="/pricing" />);
+        }
         return (
          <React.Fragment>
           <div class="ui grid">
