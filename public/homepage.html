@@ -2,52 +2,111 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible" />
-    <meta content="width=device-width, initial-scale=1, maximum-scale=2, user-scalable=no" name="viewport" />
-    <meta content="Semantic-UI-Forest, collection of design, themes and templates for Semantic-UI." name="description" />
-    <meta content="Semantic-UI, Theme, Design, Template" name="keywords" />
-    <meta content="PPType" name="author" />
-    <meta content="#ffffff" name="theme-color" />
     <title>CSTOOL.io - Your cybersecurity toolbox</title>
-   <link rel="stylesheet" href="./semantic-dist/semantic.css" />
-    <link href="./homepage.css" rel="stylesheet" type="text/css" />
+    
+    <!-- 
+    <link rel="stylesheet" href="./semantic-dist/semantic.css" />
     <script src="../../static/dist/jquery/jquery.min.js"></script>
+    <script src="./semantic-dist/semantic.min.js"></script>
+     -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+
+    
+    
+     <style type="text/css">
+    
+      
+      .masthead.segment {
+        min-height: 600px;
+        padding: 1em 0em;
+      }
+      .masthead .logo.item img {
+        margin-right: 1em;
+      }
+      .masthead .ui.menu .ui.button {
+        margin-left: 0.5em;
+      }
+      .masthead h1.ui.header {
+        margin-top: 2em;
+        margin-bottom: 0em;
+        font-size: 4em;
+        font-weight: normal;
+      }
+      .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+      }
+      
+      .ui.vertical.stripe {
+        padding: 8em 0em;
+      }
+      .ui.vertical.stripe h3 {
+        font-size: 2em;
+      }
+      .ui.vertical.stripe .button + h3,
+      .ui.vertical.stripe p + h3 {
+        margin-top: 3em;
+      }
+      .ui.vertical.stripe .floated.image {
+        clear: both;
+      }
+      .ui.vertical.stripe p {
+        font-size: 1.33em;
+      }
+      .ui.vertical.stripe .horizontal.divider {
+        margin: 3em 0em;
+      }
+      
+      .quote.stripe.segment {
+        padding: 0em;
+      }
+      .quote.stripe.segment .grid .column {
+        padding-top: 5em;
+        padding-bottom: 5em;
+      }
+      
+      .footer.segment {
+        padding: 5em 0em;
+      }
+      
+      .secondary.pointing.menu .toc.item {
+        display: none;
+      }
+      
+      @media only screen and (max-width: 700px) {
+        .ui.fixed.menu {
+          display: none !important;
+        }
+        .secondary.pointing.menu .item,
+        .secondary.pointing.menu .menu {
+          display: none;
+        }
+        .secondary.pointing.menu .toc.item {
+          display: block;
+        }
+        .masthead.segment {
+          min-height: 350px;
+        }
+        .masthead h1.ui.header {
+          font-size: 2em;
+          margin-top: 1.5em;
+        }
+        .masthead h2 {
+          margin-top: 0.5em;
+          font-size: 1.5em;
+        }
+      }
+    </style>
+     
   </head>
   <body>
-  <!-- 
-    <div class="ui large top fixed hidden menu">
-      <div class="ui container">
-        <a class="active item">Home</a><a class="item">Work</a><a class="item">Company</a><a class="item">Careers</a>
-        <div class="right menu">
-          <div class="item">
-            <a class="ui button">Log in</a>
-          </div>
-          <div class="item">
-            <a class="ui primary button">Sign Up</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
-    <!--Sidebar Menu-->
-    <!-- 
-    <div class="ui vertical inverted sidebar menu">
-      <a class="active item">Home</a><a class="item">Work</a><a class="item">Company</a><a class="item">Careers</a><a class="item">Login</a><a class="item">Signup</a>
-    </div>
-     -->
+  
     <!--Page Contents-->
     <div class="pusher">
       <div class="ui teal inverted vertical masthead center aligned segment">
-    <!-- 
-        <div class="ui container">
-          <div class="ui large secondary inverted pointing menu">
-            <a class="toc item"><i class="sidebar icon"></i></a><a class="active item">Home</a><a class="item">Work</a><a class="item">Company</a><a class="item">Careers</a>
-            <div class="right item">
-              <a class="ui inverted button">Log in</a><a class="ui inverted button">Sign Up</a>
-            </div>
-          </div>
-        </div>
-     -->
+ 
         <div class="ui text container">
         <br/>
         <br/>
@@ -57,7 +116,7 @@
           Welcome to CSTOOL.io
           </h1>
           <h2>
-            Your Cybersecurity Toolbox. 
+            The Cybersecurity Toolbox. 
           </h2>
           <a href="index.html" class="ui huge primary button">
             Start now<i class="right arrow icon"></i>
@@ -77,15 +136,55 @@
                 Discover -> Prioritize -> Assess -> Report -> Remediate -> Verify.
               </p>
               <h3 class="ui header">
-                Your vulnerability management process is just the start.
+                Running a CERT / CSIRT? SOC-Team? ISMS? First or second line information security?
               </h3>
               <p>
-                The compliance manager will allow you to map your controls implementation against auditable best practices and standards.
-                Use the risk manager to identify and evaluate information security risks. Show your risk register and dashboard to auditors and management.
-              </p>
+              You will find the right tools to improve your daily work right here.
+                </p>
             </div>
+            
             <div class="six wide right floated column">
-                <img class="ui image" src="./images/examplecvegraph.png" alt="CVE Graph"/><br/>
+                <div class="ui shape">
+                  <div class="sides">
+                   
+                    <div class="side active">
+                      <div class="content">
+                        <div class="center">
+                        <img class="ui medium centered image" src="/images/shape/27001.png" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="side">
+                      <div class="content">
+                        <div class="center">
+                        <img class="ui medium centered image" src="/images/shape/cobit5.png" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="side">
+                      <div class="content">
+                        <div class="center">
+                        <img class="ui medium centered image" src="/images/shape/nist-csf-373.png" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="side">
+                      <div class="content">
+                        <div class="center">
+                        <img class="ui medium centered image" src="/images/shape/iso27032.png" />
+                        </div>
+                      </div>
+                    </div>
+                     <div class="side">
+                      <div class="content">
+                        <div class="center">
+                            <img class="ui medium centered image" src="./images/shape/examplecvegraph-sm2.png" />
+                        </div>
+                      </div>
+                    </div>
+                    
+                  </div>
+                </div>   
             </div>
           </div>
           <div class="row">
@@ -177,7 +276,7 @@
               <span class="ui orange ribbon label">Disclosure Monitoring</span>
               <div class="description">Domain discovery is being used against you by attackers right now. Start using it to protect your public web pages. Even the ones that you may not know about... </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -189,9 +288,9 @@
               <div class="centered header">
               ControlMgr</div>
               <span class="ui yellow ribbon label">Compliance Management</span>
-              <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
+              <div class="description">The compliance manager will allow you to map your controls implementation against auditable best practices and standards.</div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -202,9 +301,11 @@
               <div class="centered header">
               RiskMgr</div>
               <span class="ui olive ribbon label">Risk Management</span>
-              <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
+              <div class="description">
+                  Use the risk manager to identify and evaluate information security risks. Show your risk register and dashboard to auditors and management.
+         </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -217,7 +318,7 @@
               <span class="ui green ribbon label">Audit Tracking</span>
               <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -230,7 +331,7 @@
               <span class="ui blue ribbon label">Information Gathering</span>
               <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -243,7 +344,7 @@
               <span class="ui violet ribbon label">Asset Management</span>
               <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -256,7 +357,7 @@
               <span class="ui purple ribbon label">Documentation</span>
               <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -269,7 +370,7 @@
               <span class="ui pink ribbon label">Anomalies and Events</span>
               <div class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </div>
             </div>
-            <a href="/attacksrfc" class="ui bottom attached primary button">
+            <a href="/attacksrfc" class="ui bottom attached disabled button">
               <i class="play icon"></i>
               Launch now
             </a>
@@ -297,6 +398,8 @@
           <a href="index.html" class="ui primary large button">Let me see how that works</a>
          </div>
          </div>
+         
+        
       
       <div class="ui inverted vertical footer segment">
         <div class="ui container">
@@ -328,128 +431,35 @@
                 Tutorials
               </h4>
               <p>
-                Still interested? View our <a href="homepage.html#"></a>screenshots and videos</a> to see what we can do.
+                Still interested? View our <a href="homepage.html#"></a>screenshots and videos to see what we can do.
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+      
+    </div> <!-- close pusher -->
     
+
     
-    <script src="../../static/dist/semantic-ui/semantic.min.js"></script>
-    
-    <style type="text/css">
-      .hidden.menu {
-        display: none;
-      }
-      
-      .masthead.segment {
-        min-height: 600px;
-        padding: 1em 0em;
-      }
-      .masthead .logo.item img {
-        margin-right: 1em;
-      }
-      .masthead .ui.menu .ui.button {
-        margin-left: 0.5em;
-      }
-      .masthead h1.ui.header {
-        margin-top: 2em;
-        margin-bottom: 0em;
-        font-size: 4em;
-        font-weight: normal;
-      }
-      .masthead h2 {
-        font-size: 1.7em;
-        font-weight: normal;
-      }
-      
-      .ui.vertical.stripe {
-        padding: 8em 0em;
-      }
-      .ui.vertical.stripe h3 {
-        font-size: 2em;
-      }
-      .ui.vertical.stripe .button + h3,
-      .ui.vertical.stripe p + h3 {
-        margin-top: 3em;
-      }
-      .ui.vertical.stripe .floated.image {
-        clear: both;
-      }
-      .ui.vertical.stripe p {
-        font-size: 1.33em;
-      }
-      .ui.vertical.stripe .horizontal.divider {
-        margin: 3em 0em;
-      }
-      
-      .quote.stripe.segment {
-        padding: 0em;
-      }
-      .quote.stripe.segment .grid .column {
-        padding-top: 5em;
-        padding-bottom: 5em;
-      }
-      
-      .footer.segment {
-        padding: 5em 0em;
-      }
-      
-      .secondary.pointing.menu .toc.item {
-        display: none;
-      }
-      
-      @media only screen and (max-width: 700px) {
-        .ui.fixed.menu {
-          display: none !important;
-        }
-        .secondary.pointing.menu .item,
-        .secondary.pointing.menu .menu {
-          display: none;
-        }
-        .secondary.pointing.menu .toc.item {
-          display: block;
-        }
-        .masthead.segment {
-          min-height: 350px;
-        }
-        .masthead h1.ui.header {
-          font-size: 2em;
-          margin-top: 1.5em;
-        }
-        .masthead h2 {
-          margin-top: 0.5em;
-          font-size: 1.5em;
-        }
-      }
-    </style>
+   
     
     <script>
+  
+    
       $(document)
         .ready(function() {
-          // fix menu when passed
-          $('.masthead')
-            .visibility({
-              once: false,
-              onBottomPassed: function() {
-                $('.fixed.menu').transition('fade in');
-              },
-              onBottomPassedReverse: function() {
-                $('.fixed.menu').transition('fade out');
-              }
-            })
-          ;
-      
-          // create sidebar and attach to menu open
-          $('.ui.sidebar')
-            .sidebar('attach events', '.toc.item')
-          ;
-          
-          $('.special.cards .image').dimmer({
-              on: 'hover'
-            });
+            
+            $('.ui.shape')
+            .shape();
+            
+            setInterval(function() {
+                if (document.hasFocus()) { 
+                    $('.shape')
+                    .shape('flip right');
+                }
+            }, 2000);
+         
         })
       ;
     </script>

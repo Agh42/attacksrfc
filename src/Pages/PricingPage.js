@@ -3,37 +3,224 @@ import React, { Component } from 'react';
 export default class PricingPage extends Component {
     render() {
         return (
-                <div className='ui raised segment'>
-                  <div className="ui stackable three column divided center aligned grid">
-                    <div className="column">
-                      <h4 className="ui header">Free</h4>
-                      <p>Inventory Search</p>
-                      <p>Vulnerability Landscape</p>
-                      <p>Limited requests (Captcha)</p>
-                      <p>Financed by Ads</p>
-                      <div className="ui disabled button">Free</div>
-                    </div>
-                    <div className="column">
-                      <h4 className="ui header">Professional</h4>
-                      <p>Unlimited usage</p>
-                      <p>Save your inventory of assets</p>
-                      <p>Unlimited email notifications</p>
-                      <p>Alerts when new vulnerabilities for your asset inventory occur</p>
-                      <p>Assign mitigation tasks using email / JIRA / Slack integration</p>
-                      <p><b>29,-€ per month billed yearly</b>
-                      <br/>59,-€ billed monthly</p>
-                      <div className="ui positive button">Try 30 days for free</div>
-                    </div>
-                    <div className="column">
-                      <h4 className="ui header">On-Premise / Private Cloud</h4>
-                      <p>Run AttackSurface in your local data center</p>
-                      <p>Run AttackSurface in any public or private cloud </p>
-                      <p>Complete access to our Docker images</p>
-                      <p>Support and professional services to integrate AttackSurface in your environment.</p>
-                      <div className="ui positive button">Ask for Quote</div>
-                    </div>
+                <React.Fragment>
+            <div class="ui middle aligned stackable grid container">
+                <div class="row">
+                  <div class="sixteen wide column">
+                      <div class="ui four centered cards">
+                      
+                         <div class="raised card">
+                         
+                            <div class="content">
+                              <div class="centered header">Free</div>
+                              <div class="description">
+                                  <div class="ui list">
+                                      <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">Inventory and Vulnerability Search</div>
+                                      </div>
+                                      <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">Vulnerability Landscape Display</div>
+                                      </div>
+                                      <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">Limited requests (Captcha)</div>
+                                      </div>
+                                  </div>
+                              </div>
+                            </div>
+                            <a href="/attacksrfc" class="ui disabled button">
+                              Free
+                            </a>
+                          </div>
+                          
+                           <div class="raised card">
+                            <div class="content">
+                              <div class="centered header">Professional</div>
+                              <div class="description">
+                                   <div class="ui list">
+                                            <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Access to over 99.900 products and more than 196.000 vulnerabilities.
+                                              </div>
+                                          </div>
+                                   
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Unlimited product and vulnerability searches
+                                              </div>
+                                          </div>
+                                         
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                                Save your inventory of assets
+                                              </div>
+                                          </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Assign mitigation tasks using email / JIRA / Slack integration
+                                              </div>
+                                          </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                               Unlimited email notifications
+                                              </div>
+                                          </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                               Alerts when new vulnerabilities for your asset inventory occur
+                                              </div>
+                                          </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                               <b>98,-€ per month</b>
+                                              </div>
+                                          </div>
+                                   </div>
+                              </div>
+                            </div>
+                            <a href="/attacksrfc" class="ui positive button">
+                              <i class="shopping cart icon"></i>
+                              Try 30 days for free
+                            </a>
+                          </div>
+                          
+                           <div class="raised card">
+                            <div class="content">
+                              <div class="centered header">Professional</div>
+                              <span class="ui orange right corner label"><i className="star icon" /></span>
+                              <span class="ui yellow ribbon label">2 for 1 Special</span>
+                              <div class="description"> 
+                                  <div class="ui list">
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                             Unlimited usage
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                            Save your inventory of assets
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                             Assign mitigation tasks using email / JIRA / Slack integration
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                            Unlimited email notifications
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                          Alerts when new vulnerabilities for your asset inventory occur
+                                          </div>
+                                        </div>
+                                         <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                          Runs on continuosly audited and highly secure cloud infrastructure. Our software is developed under secure coding guidelines and fully disclosed as open source.
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                           <b>Save 20%</b> 
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                           <b>Exclusive offer: Pick a second CSTOOL.io tool for free!</b>
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                            <b>79,-€ per month</b><br/>(billed yearly)
+                                          </div>
+                                        </div>
+                                  </div>
+                              </div>
+                            </div>
+                            <a href="/order" class="ui bottom attached positive button">
+                              <i class="percent icon"></i>
+                              Try 30 days for free
+                            </a>
+                          </div>
+                          
+                           <div class="raised card">
+                            <div class="content">
+                              <div class="centered header">On-Premise / Private Cloud</div>
+                              <div class="description">
+                               <div class="ui list">
+                                    <div class="item">
+                                      <i class="check circle icon"></i>
+                                      <div class="content">
+                                       Run AttackSurface in your local data center or any public or private cloud.
+                                      </div>
+                                    </div>
+                                    <div class="item">
+                                      <i class="check circle icon"></i>
+                                      <div class="content">
+                                      Our offer for highly regulated and highly sensitive companies.
+                                      </div>
+                                    </div>
+                                    <div class="item">
+                                      <i class="check circle icon"></i>
+                                      <div class="content">
+                                        Complete access to our docker repository - run the same up-to-date versions of alls CSTOOL.io tools in your private environment.
+                                      </div>
+                                    </div>
+                                    <div class="item">
+                                      <i class="check circle icon"></i>
+                                      <div class="content">
+                                        Support and professional services to integrate AttackSurface in your environment.
+                                      </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                              
+                              
+                     
+                    
+                    
+                              </div>
+                            </div>
+                            <a href="/askquote" class="ui bottom attached positive button">
+                              <i class="phone icon"></i>
+                              Ask for Quote
+                            </a>
+                          </div>
+                          
+                      </div>
                   </div>
+                </div>
               </div>
+              
+                       <div class="ui center aligned grid">
+                           <div class="column">
+                           <a href="/login">Login</a> with existing account or <a href="/">go back</a>.
+                           </div>
+                       </div>
+                
+              
+                      </React.Fragment>
         );
     }
 }

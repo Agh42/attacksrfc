@@ -33,7 +33,7 @@ export default class AttackSrfcPage extends Component {
     }
     
     handleSaveClick = () => {
-          this.setState({redirect: true});
+          this.setState({_redirect: "PRICING"});
     }
     
     handleDeleteClick = (cpeId) => {
@@ -65,8 +65,10 @@ export default class AttackSrfcPage extends Component {
     }
     
     render() {
-        if (this.state.redirect) {
-            return (<Redirect push to="/pricing" />);
+        if (this.state._redirect) {
+            return {
+                PRICING: <Redirect push to="/pricing" />, 
+            }[this.state._redirect];
         }
         return (
          <React.Fragment>

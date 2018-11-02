@@ -31,7 +31,7 @@ export default class App extends Component {
                     <Route render={({ location }) => (
                           <div className='ui inverted red segment'>
                             <h3>
-                              Error! No matches for <code>{location.pathname}</code>
+                              Error! No routes for <code>{location.pathname}</code>
                             </h3>
                           </div>
                         )} />
