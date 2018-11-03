@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 export default class PricingPage extends Component {
     render() {
@@ -81,16 +82,16 @@ export default class PricingPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                               <b>98,-€ per month</b>
+                                               <b>49,-€ per month</b>
                                               </div>
                                           </div>
                                    </div>
                               </div>
                             </div>
-                            <a href="/attacksrfc" class="ui positive button">
+                            <Link to="/register" class="ui positive button">
                               <i class="shopping cart icon"></i>
                               Try 30 days for free
-                            </a>
+                            </Link>
                           </div>
                           
                            <div class="raised card">
@@ -133,7 +134,7 @@ export default class PricingPage extends Component {
                                          <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
-                                          Runs on continuosly audited and highly secure cloud infrastructure. Our software is developed under secure coding guidelines and fully disclosed as open source.
+                                          Your data is stored on continuosly audited and highly secure cloud infrastructure. Our software is developed under secure coding guidelines and fully disclosed as open source.
                                           </div>
                                         </div>
                                         <div class="item">
@@ -145,22 +146,22 @@ export default class PricingPage extends Component {
                                         <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
-                                           <b>Exclusive offer: Pick a second CSTOOL.io tool for free!</b>
+                                           <b>Exclusive offer: Activate a second CSTOOL.io tool for free!</b>
                                           </div>
                                         </div>
                                         <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
-                                            <b>79,-€ per month</b><br/>(billed yearly)
+                                            <b>39,-€ per month</b><br/>(billed yearly)
                                           </div>
                                         </div>
                                   </div>
                               </div>
                             </div>
-                            <a href="/order" class="ui bottom attached positive button">
+                            <Link to="/register" class="ui bottom attached positive button">
                               <i class="percent icon"></i>
                               Try 30 days for free
-                            </a>
+                            </Link>
                           </div>
                           
                            <div class="raised card">
@@ -192,14 +193,7 @@ export default class PricingPage extends Component {
                                         Support and professional services to integrate AttackSurface in your environment.
                                       </div>
                                     </div>
-                                    
-                                    
                                 </div>
-                              
-                              
-                     
-                    
-                    
                               </div>
                             </div>
                             <a href="/askquote" class="ui bottom attached positive button">
@@ -215,7 +209,7 @@ export default class PricingPage extends Component {
               
                        <div class="ui center aligned grid">
                            <div class="column">
-                           <a href="/login">Login</a> with existing account or <a href="/">go back</a>.
+                           <Link to="/login">Login</Link> with existing account or <Link to="/">go back</Link>.
                            </div>
                        </div>
                 

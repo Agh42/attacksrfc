@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-export default class PricingPage extends Component {
+// Welcome page is separate static content, not part of any app.
+
+export default class WelcomePage extends Component {
     render() {
         return (
                 <p/>

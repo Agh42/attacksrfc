@@ -5,13 +5,14 @@ import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
 import CpeClient from '../Scripts/CpeClient';
 
-import {Redirect} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 
 export default class AttackSrfcPage extends Component {
     
     state = {
             selectedCpes: [],
             selectedCves: [],
+            _redirect: "",
     };
     
     componentDidMount() {
@@ -81,27 +82,17 @@ export default class AttackSrfcPage extends Component {
                                AttackSrfc Vulnerability Management
                            </div></div>
                            <div class="right menu primary">
-                           <a class="item">
+                           <Link to="/login" class="item">
                              <i className="sign in icon" />
                              &nbsp;&nbsp;Login
-                           </a>
-                           <a class="item">
+                           </Link>
+                           <Link to="/settings" class="item">
                              <i className="cog icon" />
-                           </a>
-                           <a class="ui dropdown item">
-                             <i className="user circle icon" />
+                           </Link>
+                           <Link to="/toolbox" class="item">
+                             <i className="th icon" />
                              <i class="angle down icon"></i>
-                             <div class="inverted menu">
-                               <div class="item">
-                                 <i class="building icon"></i>
-                                 Account Settings
-                               </div>
-                               <div class="item">
-                                 <i class="building icon"></i>
-                                 Security
-                               </div>
-                             </div>
-                           </a>
+                           </Link>
                          </div>
                       </div>
                   </div>
