@@ -12,9 +12,8 @@ pipelines:
         caches:
           - node
         script: # Modify the commands below to build your repository.
-          #- npm install
+          - npm install
 #          - npm test
-           - npm run build
     - step:
         # set HEROKU_API_KEY and HEROKU_APP_NAME environment variables
         # set clone `depth: full' as described here: https://confluence.atlassian.com/x/Y9-5Mw
@@ -27,6 +26,7 @@ pipelines:
     deploy-to-s3:
       - step:
          script:
+                    - npm run build
                     # - apt-get update # required to install zip
                     # - apt-get install -y zip # required if you want to zip repository objects
                     - pip install boto3==1.3.0 # required for s3_upload.py
