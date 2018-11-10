@@ -4,6 +4,8 @@ export const CpeClient = {getSelectedCves, getAutoCompleteItems,
  
 export default CpeClient;
     
+ const CVESERVICE_URL = __CVESREVICE_URL__;
+
  const   cpes = [
             {
                 "id": "cpe:2.3:a:actividentity:corestreet_server_validation_extension_for_microsoft_domain_controller:3.1.4.1:-:-:-:-:-:x64",
@@ -241,12 +243,39 @@ export default CpeClient;
     * 
     * @param {any} toComplete the string to search for
     */
-    export function getAutoCompleteItems(toComplete) {
-        let result = [];
-        const regex = new RegExp(toComplete, 'i');
-        result = cpes.filter(cpe => regex.test(cpe.title));
-        return result;
-    }
+//    export function getAutoCompleteItems(toComplete) {
+//        let result = [];
+//        const regex = new RegExp(toComplete, 'i');
+//        result = cpes.filter(cpe => regex.test(cpe.title));
+//        return result;
+//    }
+    
+    function getAutoCompleteItems(success) {
+        return fetch('/api/timers', {
+          headers: {
+            Accept: 'application/json',
+          },
+        }).then(checkStatus)
+          .then(parseJSON)
+          .then(success);
+      }
+    
+    function checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+          return response;
+        } else {
+          const error = new Error(`HTTP Error ${response.statusText}`);
+          error.status = response.statusText;
+          error.response = response;
+          console.log(error);
+          throw error;
+        }
+      }
+
+      function parseJSON(response) {
+        return response.json();
+      }
+    
     
     export function getSelectedCves() {
         return cves;

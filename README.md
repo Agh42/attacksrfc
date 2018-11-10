@@ -2,7 +2,8 @@
 
 ## Instant vulnerability management.
 
-
+Create ".env" in the top-level directory to set the following environment variables in development:
+- CVESERVICE_URL: "http://cveserver:8080" (the URL of the cverver REST api)
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 

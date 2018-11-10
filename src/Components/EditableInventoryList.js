@@ -163,7 +163,8 @@ export default class EditableInventoryList extends Component {
                           Save collection... 
                     </button>
                      <button className="ui negative toggle button" 
-                          data-tooltip="Get emails on new critical vulnerabilities!" >
+                          data-tooltip="Get emails on new critical vulnerabilities!" 
+                          onClick={this.props.onSaveClick}>
                           Notifcations are off
                     </button>
                 </div>

@@ -58,7 +58,8 @@ export default class CveList extends Component {
                 <div className='ui raised segment'>
                     <div className='ui field'>
                          <div className="ui positive button" 
-                              data-tooltip="Save this list as an Excel file.">
+                              data-tooltip="Save this list as an Excel file."
+                              onClick={this.props.onSaveClick} >
                              Save as .xlsx</div>
                          <div className="ui  button" data-tooltip="Coming soon.">
                              Track mitigation by email...</div>
