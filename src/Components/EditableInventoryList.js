@@ -11,26 +11,20 @@ function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-
-function getSuggestions(value) {
-    const escapedValue = escapeRegexCharacters(value.trim());
-    
-    if (escapedValue === '') {
-      return [];
-    }
-    
-    return CpeClient.getAutoCompleteItems(escapedValue);
-}
-
 function getSuggestionValue(suggestion) {
-    return suggestion.title;
+    //return suggestion.title;
+    let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
+    [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
+        = suggestion.id.split(":");
+    return vendor+":"+product+":"+version+":"+update+":"+edition;
 }
 
 function renderSuggestion(suggestion) {
+    const suggestionLabel = getSuggestionValue(suggestion);
     return ( 
         <div className="item">
             <div class="ui teal label">
-                    {suggestion.title}
+                    {suggestionLabel}
             </div>
         </div>
     );
@@ -45,7 +39,6 @@ function renderSuggestion(suggestion) {
  * 
  */
 class CpeItem extends React.Component {
-    
     
     handleDeleteClick = () => {
         this.props.onDeleteClick(this.props.cpe.id);
@@ -85,7 +78,9 @@ export default class EditableInventoryList extends Component {
         this.state = {
                 searchValue: '',
                 suggestions: [],
+                _isLoading: false,
         }
+        this.lastRequestId = null;
     }
     
     onChange = (event, { newValue, method }) => {
@@ -105,9 +100,7 @@ export default class EditableInventoryList extends Component {
               suggestions: []
             });
         } else {
-            this.setState({
-              suggestions: getSuggestions(value)
-            });
+            this.loadSuggestions(value)
         }
       };
 
@@ -120,6 +113,29 @@ export default class EditableInventoryList extends Component {
       onSuggestionSelected = (event, selection) => {
           console.log("selected: " + selection.suggestion.id);
           this.props.onSelectCpeClick(selection.suggestion);
+      }
+      
+      loadSuggestions = (value) => {
+          // Cancel the previous request
+          if (this.lastRequestId !== null) {
+              // TODO cancel request
+          }
+          
+          this.setState({
+            _isLoading: true
+          });
+          
+          const escapedValue = escapeRegexCharacters(value.trim());
+          if (escapedValue === '') {
+            return [];
+          }
+          
+          CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => (
+                  this.setState({
+                      _isLoading: false,
+                      suggestions: suggestions
+                  }))
+          );
       }
     
     render() {
@@ -142,10 +158,14 @@ export default class EditableInventoryList extends Component {
                 value: searchValue,
                 onChange: this.onChange
         };
+        const status = (this.state._isLoading ? 'Loading...' : '-');
         
         return (
                 <div className="ui raised segment" 
                      style={{overflow: 'auto', "height":"30em"}}>
+                <div className="status">
+                    <strong>Status:</strong> {status}
+                </div>
                     <Autosuggest 
                         suggestions={suggestions}
                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -154,7 +174,8 @@ export default class EditableInventoryList extends Component {
                         onSuggestionSelected={this.onSuggestionSelected}
                         renderSuggestion={renderSuggestion}
                         focusInputOnSuggestionClick={false}
-                        inputProps={inputProps} />
+                        inputProps={inputProps} 
+                    />
                 <br/>
                 <div className="field">
                      <button className="positive ui button" 
