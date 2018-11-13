@@ -158,14 +158,11 @@ export default class EditableInventoryList extends Component {
                 value: searchValue,
                 onChange: this.onChange
         };
-        const status = (this.state._isLoading ? 'Loading...' : '-');
+        //const status = (this.state._isLoading ? 'Loading...' : '-');
         
         return (
                 <div className="ui raised segment" 
                      style={{overflow: 'auto', "height":"30em"}}>
-                <div className="status">
-                    <strong>Status:</strong> {status}
-                </div>
                     <Autosuggest 
                         suggestions={suggestions}
                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -176,6 +173,7 @@ export default class EditableInventoryList extends Component {
                         focusInputOnSuggestionClick={false}
                         inputProps={inputProps} 
                     />
+                {this.state._isLoading ? (<i className="sync icon" />) : ''}   
                 <br/>
                 <div className="field">
                      <button className="positive ui button" 
