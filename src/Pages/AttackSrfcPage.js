@@ -79,7 +79,7 @@ export default class AttackSrfcPage extends Component {
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><div className="ui inverted header">
-                               AttackSrfc Vulnerability Management - 150.000 Vulnerabilities - 90.000 Products
+                               AttackSrfc Vulnerability Management -  196.224 Vulnerabilities - 100.261 Products
                            </div></div>
                            <div class="right menu primary">
                            <Link to="/login" class="item">
