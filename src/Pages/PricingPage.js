@@ -82,7 +82,7 @@ export default class PricingPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                               <b>49,-€ per month</b>
+                                               <b>98,-€ per month</b>
                                               </div>
                                           </div>
                                    </div>
@@ -140,6 +140,12 @@ export default class PricingPage extends Component {
                                         <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
+                                            <b>78,-€ per month</b><br/>(billed yearly)
+                                          </div>
+                                        </div>
+                                        <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
                                            <b>Save 20%</b> 
                                           </div>
                                         </div>
@@ -147,12 +153,6 @@ export default class PricingPage extends Component {
                                           <i class="check circle icon"></i>
                                           <div class="content">
                                            <b>Exclusive offer: Activate a second CSTOOL.io tool for free!</b>
-                                          </div>
-                                        </div>
-                                        <div class="item">
-                                          <i class="check circle icon"></i>
-                                          <div class="content">
-                                            <b>39,-€ per month</b><br/>(billed yearly)
                                           </div>
                                         </div>
                                   </div>
