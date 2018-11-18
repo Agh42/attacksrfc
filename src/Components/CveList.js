@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-
+import moment from 'moment';
 
 
 /**
  * getHostname()
- * by Kory Becker, http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript
+ * @author Kory Becker
+ * {@link http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript}
  * @param {any} url
  */
 function getHostName(url) {
@@ -16,9 +17,11 @@ function getHostName(url) {
         return null;
     }
 }
+
 /**
  * getDomain()
- * by Kory Becker, http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript/
+ * @author Kory Becker
+ * {@link http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript/}
  * @param {any} url
  */
 function getDomain(url) {
@@ -41,11 +44,8 @@ function getDomain(url) {
 }
 
 function formatDate(date) {
-    const millis = new Date(date);
-    const day = millis.getDate();
-    const month = millis.getMonth();
-    const year = millis.getFullYear();
-    return `${year}-${month}-${day}`;
+    let mom = moment(date);
+    return mom.format('YYYY-MM-DD');
 }
 
 export default class CveList extends Component {
@@ -99,7 +99,7 @@ export default class CveList extends Component {
                             {
                                 cve.references.map( (reference, index) => {
                                     return (
-                                      <div>
+                                      <div key={index} >
                                       <a href={reference} target="_blank">{getDomain(reference)}</a> 
                                       <br/>
                                       </div>

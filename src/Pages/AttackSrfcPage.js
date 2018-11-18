@@ -17,17 +17,17 @@ export default class AttackSrfcPage extends Component {
     
     componentDidMount() {
         this.initSelectedCpes();
-        this.loadSelectedCves();
-    }
-    
-    loadSelectedCves = () => {
-        this.setState({selectedCves: CpeClient.getSelectedCves()});
+        this.initSelectedCves();
     }
     
     initSelectedCpes = () => {
         this.setState({selectedCpes: CpeClient.getExampleCpes()});
     }
     
+    initSelectedCves = () => {
+        this.setState({selectedCves: CpeClient.getExampleCves()});
+    }
+
     loadSelectedCpes = () => {
         let cpes = CpeClient.getSelectedCpes();
         this.setState({ selectedCpes: cpes });
@@ -44,11 +44,25 @@ export default class AttackSrfcPage extends Component {
     }
     
     handleAddCpeClick = (newCpe) => {
-        if (!this.state.selectedCpes.includes(newCpe)) {
+        let cpePresent= this.state.selectedCpes.filter(c => c.id === newCpe.id);
+        console.log(cpePresent);
+        if ( !cpePresent.length ) {
+            let activeCpe = {...newCpe, isActive: true};
             this.setState({
-                selectedCpes: [...this.state.selectedCpes, newCpe]
+                selectedCpes: [...this.state.selectedCpes, activeCpe]
             });
+            this.loadCves(newCpe);
         }
+    }
+    
+    // FIXME replace state completely 
+    loadCves = (newCpe) => {
+        let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
+        CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
+            this.setState({ 
+                selectedCves: [ this.state.selectedCves.concat(newCves) ] 
+            }))
+        );
     }
     
     handleCpeToggleClick = (toggleCpeId) => {
@@ -65,6 +79,10 @@ export default class AttackSrfcPage extends Component {
         });
     }
     
+    handleEditCpeClick = (editCpeId) => {
+        console.log("Edit " + editCpeId);
+    }
+    
     render() {
         if (this.state._redirect) {
             return {
@@ -79,7 +97,7 @@ export default class AttackSrfcPage extends Component {
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><div className="ui inverted header">
-                               AttackSrfc Vulnerability Management -  196.224 Vulnerabilities - 100.261 Products
+                               AttackSrfc Vulnerability Management -  100.261 Products - 196.224 Vulnerabilities 
                            </div></div>
                            <div class="right menu primary">
                            <Link to="/login" class="item">
@@ -109,6 +127,7 @@ export default class AttackSrfcPage extends Component {
                         onSaveClick={this.handleSaveClick}
                         onDeleteClick={this.handleDeleteClick}
                         onCpeToggleClick={this.handleCpeToggleClick}
+                        onEditCpeClick={this.handleEditCpeClick}
                     />
                 </div>
                 <div className='eleven wide column'>

@@ -99,6 +99,8 @@ export default class CveGraph extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
+        console.log("will receive props: ");
+        console.log(nextProps);
         this.initGraph(nextProps);
     }
             

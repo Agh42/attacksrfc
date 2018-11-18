@@ -44,6 +44,10 @@ class CpeItem extends React.Component {
         this.props.onDeleteClick(this.props.cpe.id);
     }
     
+    handleEditCpeClick = () => {
+        this.props.onEditCpeClick(this.props.cpe.id);
+    }
+    
     handleCpeClick = () => {
         this.props.onCpeClick(this.props.cpe.id);
     }
@@ -57,7 +61,9 @@ class CpeItem extends React.Component {
                     <div className="item">
                         <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
                             <i className="delete icon"
-                                onClick={this.handleDeleteClick}></i>
+                                onClick={this.handleDeleteClick}></i>&nbsp;
+                            <i className="tags icon"
+                                onClick={this.handleEditCpeClick}></i>
                             <a className="detail"
                                 onClick={this.handleCpeClick}>
                                 {vendor+":"+product+":"+version+":"+update+":"+edition}
@@ -118,7 +124,7 @@ export default class EditableInventoryList extends Component {
       loadSuggestions = (value) => {
           // Cancel the previous request
           if (this.lastRequestId !== null) {
-              // TODO cancel request
+              // TODO instead of canceling, wait on change and only load when more than x ms pass between key presses
           }
           
           this.setState({
@@ -143,6 +149,7 @@ export default class EditableInventoryList extends Component {
         const cpeItems = this.props.selectedCpes.map((cpe) => (
             <CpeItem 
                 onDeleteClick={this.props.onDeleteClick}
+                onEditCpeClick={this.props.onEditCpeClick}
                 onCpeClick={this.props.onCpeToggleClick}
                 cpe={cpe}
                 id={cpe.id}
@@ -158,7 +165,6 @@ export default class EditableInventoryList extends Component {
                 value: searchValue,
                 onChange: this.onChange
         };
-        //const status = (this.state._isLoading ? 'Loading...' : '-');
         
         return (
                 <div className="ui raised segment" 
