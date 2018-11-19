@@ -60,7 +60,8 @@ export default class AttackSrfcPage extends Component {
         let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
         CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
             this.setState({ 
-                selectedCves: [ this.state.selectedCves.concat(newCves) ] 
+                selectedCves: newCves, 
+//                selectedCves: this.state.selectedCves.concat(newCves), 
             }))
         );
     }

@@ -83,7 +83,7 @@ export default class CveGraph extends Component {
                 autoResize: true,
                 height: '100%',
                 width: '100%',
-                nodes: {borderwidth: 2, shadow: true},
+                nodes: {borderWidth: 2, shadow: true},
                 edges: {width: 2, 
                     shadow: true},
                 interaction: {hover: false},
