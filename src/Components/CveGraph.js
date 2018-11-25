@@ -87,6 +87,7 @@ export default class CveGraph extends Component {
                 edges: {width: 2, 
                     shadow: true},
                 interaction: {hover: false},
+                layout: {randomSeed:44},
         };
         
         this.convertCves(props);

@@ -22,7 +22,7 @@ export default class PricingPage extends Component {
                                       </div>
                                       <div class="item">
                                           <i class="check circle icon"></i>
-                                          <div class="content">Vulnerability Landscape Display</div>
+                                          <div class="content">Vulnerability Landscape View</div>
                                       </div>
                                       <div class="item">
                                           <i class="check circle icon"></i>
@@ -51,7 +51,7 @@ export default class PricingPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                              Unlimited product and vulnerability searches
+                                              Unlimited requests
                                               </div>
                                           </div>
                                          
@@ -70,7 +70,7 @@ export default class PricingPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                               Unlimited email notifications
+                                               Full mitigation roundtrip workflow
                                               </div>
                                           </div>
                                           <div class="item">
@@ -79,6 +79,12 @@ export default class PricingPage extends Component {
                                                Alerts when new vulnerabilities for your asset inventory occur
                                               </div>
                                           </div>
+                                          <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">
+                                          Your data is stored on continuosly audited and highly secure cloud infrastructure. Our software is developed under secure coding guidelines and fully disclosed as open source.
+                                          </div>
+                                        </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
@@ -101,36 +107,44 @@ export default class PricingPage extends Component {
                               <span class="ui yellow ribbon label">2 for 1 Special</span>
                               <div class="description"> 
                                   <div class="ui list">
-                                        <div class="item">
-                                          <i class="check circle icon"></i>
-                                          <div class="content">
-                                             Unlimited usage
+                                   <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Access to over 99.900 products and more than 196.000 vulnerabilities.
+                                              </div>
                                           </div>
-                                        </div>
-                                        <div class="item">
-                                          <i class="check circle icon"></i>
-                                          <div class="content">
-                                            Save your inventory of assets
+                                   
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Unlimited requests
+                                              </div>
                                           </div>
-                                        </div>
-                                        <div class="item">
-                                          <i class="check circle icon"></i>
-                                          <div class="content">
-                                             Assign mitigation tasks using email / JIRA / Slack integration
+                                         
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                                Save your inventory of assets
+                                              </div>
                                           </div>
-                                        </div>
-                                        <div class="item">
-                                          <i class="check circle icon"></i>
-                                          <div class="content">
-                                            Unlimited email notifications
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Assign mitigation tasks using email / JIRA / Slack integration
+                                              </div>
                                           </div>
-                                        </div>
-                                        <div class="item">
-                                          <i class="check circle icon"></i>
-                                          <div class="content">
-                                          Alerts when new vulnerabilities for your asset inventory occur
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                               Full mitigation roundtrip workflow
+                                              </div>
                                           </div>
-                                        </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                               Alerts when new vulnerabilities for your asset inventory occur
+                                              </div>
+                                          </div>
                                          <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
@@ -184,7 +198,7 @@ export default class PricingPage extends Component {
                                     <div class="item">
                                       <i class="check circle icon"></i>
                                       <div class="content">
-                                        Complete access to our docker repository - run the same up-to-date versions of alls CSTOOL.io tools in your private environment.
+                                        Complete access to our docker repository - run the same up-to-date versions of alls CSTOOL.io tools in your own environment.
                                       </div>
                                     </div>
                                     <div class="item">

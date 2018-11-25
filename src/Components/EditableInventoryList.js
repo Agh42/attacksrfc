@@ -86,7 +86,7 @@ export default class EditableInventoryList extends Component {
                 suggestions: [],
                 _isLoading: false,
         }
-        this.lastRequestId = null;
+        this.latestRequest = null;
     }
     
     onChange = (event, { newValue, method }) => {
@@ -122,26 +122,29 @@ export default class EditableInventoryList extends Component {
       }
       
       loadSuggestions = (value) => {
-          // Cancel the previous request
-          if (this.lastRequestId !== null) {
-              // TODO instead of canceling, wait on change and only load when more than x ms pass between key presses
-          }
-          
-          this.setState({
-            _isLoading: true
-          });
-          
-          const escapedValue = escapeRegexCharacters(value.trim());
-          if (escapedValue === '') {
-            return [];
-          }
-          
-          CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => (
-                  this.setState({
-                      _isLoading: false,
-                      suggestions: suggestions
-                  }))
-          );
+              this.setState({
+                  _isLoading: true
+              });
+              const escapedValue = escapeRegexCharacters(value.trim());
+              if (escapedValue === '') {
+                  return [];
+              }
+
+              // Make request
+              const thisRequest = this.latestRequest =
+                  CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => {
+
+                      // If this is true there's a newer request happening, just return
+                      if (thisRequest !== this.latestRequest) {
+                          return;
+                      }
+
+                      // else set state:
+                      this.setState({
+                          suggestions: suggestions,
+                          _isLoading: false
+                      });
+                  })
       }
     
     render() {
