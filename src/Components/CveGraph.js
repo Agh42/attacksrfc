@@ -75,7 +75,6 @@ export default class CveGraph extends Component {
             nodes: this.nodes,
             edges: this.edges
         };
-        
     }
     
     initGraph= (props) => {
@@ -87,7 +86,7 @@ export default class CveGraph extends Component {
                 edges: {width: 2, 
                     shadow: true},
                 interaction: {hover: false},
-                layout: {randomSeed:44},
+                //layout: {randomSeed:44},
         };
         
         this.convertCves(props);
@@ -100,7 +99,7 @@ export default class CveGraph extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        console.log("will receive props: ");
+        console.log("graph will receive props: ");
         console.log(nextProps);
         this.initGraph(nextProps);
     }

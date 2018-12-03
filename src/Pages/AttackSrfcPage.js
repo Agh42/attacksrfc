@@ -12,16 +12,29 @@ export default class AttackSrfcPage extends Component {
     state = {
             selectedCpes: [],
             selectedCves: [],
+            stats: [],
             _redirect: "",
     };
     
     componentDidMount() {
         this.initSelectedCpes();
         this.initSelectedCves();
+        this.initStats();
     }
     
     initSelectedCpes = () => {
         this.setState({selectedCpes: CpeClient.getExampleCpes()});
+    }
+
+    initStats = () => {
+        this.setState({stats: {
+            cpeCount: "...",
+            cveCount: "...",
+            lastModified: "...",
+        }});
+        CpeClient.getStats( (dbStats) => {
+            this.setState({stats: dbStats});
+        });
     }
     
     initSelectedCves = () => {
@@ -79,6 +92,14 @@ export default class AttackSrfcPage extends Component {
             }),
         });
     }
+
+    formatNumber(number) {
+        return number ? number.toLocaleString() : number;
+    }
+
+    formatDate(date) {
+        return date ? new Date(date).toLocaleString() : date;
+    }
     
     handleEditCpeClick = (editCpeId) => {
         console.log("Edit " + editCpeId);
@@ -97,9 +118,12 @@ export default class AttackSrfcPage extends Component {
                   <div class="column">
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
-                           <div className="ui item"><div className="ui inverted header">
-                               AttackSrfc Vulnerability Management -  100.261 Products - 196.224 Vulnerabilities 
-                           </div></div>
+                           <div className="ui item"><h4 className="ui inverted header">
+                               AttackSrfc Vulnerability Management 
+                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Products - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
+                               - Most recent entry {this.formatDate(this.state.stats.lastModified)} 
+                               </h4>
+                           </div>
                            <div class="right menu primary">
                            <Link to="/login" class="item">
                              <i className="sign in icon" />

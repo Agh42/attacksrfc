@@ -1,6 +1,6 @@
 import React from 'react';
 export const CpeClient = {getCvesForCpe, getAutoCompleteItems, 
-        getExampleCpes, getExampleCves}; 
+        getExampleCpes, getExampleCves, getStats}; 
 export default CpeClient;
 
 const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
@@ -105,6 +105,16 @@ const  exampleCves = [
           }).then(checkStatus)
             .then(parseJSON)
             .then(success);
+    }
+
+    export function getStats(success) {
+      return fetch(CVESERVICE_URL+'/stats', {
+            headers: {
+              Accept: 'application/json',
+            },
+        }).then(checkStatus)
+          .then(parseJSON)
+          .then(success);
     }
     
     export function getExampleCpes() {
