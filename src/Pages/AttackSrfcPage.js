@@ -50,6 +50,7 @@ export default class AttackSrfcPage extends Component {
           this.setState({_redirect: "PRICING"});
     }
     
+    // FIXME replace state completely 
     handleDeleteClick = (cpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
@@ -121,7 +122,7 @@ export default class AttackSrfcPage extends Component {
                            <div className="ui item"><h4 className="ui inverted header">
                                AttackSrfc Vulnerability Management 
                                - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Products - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
-                               - Most recent entry {this.formatDate(this.state.stats.lastModified)} 
+                               - Last updated: {this.formatDate(this.state.stats.lastModified)} 
                                </h4>
                            </div>
                            <div class="right menu primary">
@@ -141,7 +142,8 @@ export default class AttackSrfcPage extends Component {
                   </div>
               </div>
           </div>
-          
+          &nbsp;
+          &nbsp;
         <div className='ui stackable padded grid'>
             <div className='two column row'>
                 <div className='five wide column'>
@@ -158,6 +160,7 @@ export default class AttackSrfcPage extends Component {
                 <div className='eleven wide column'>
                     <CveGraph 
                         selectedCves={this.state.selectedCves}
+                        activeCpes={this.state.selectedCpes}
                     />
                 </div>
             </div>

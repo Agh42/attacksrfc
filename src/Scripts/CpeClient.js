@@ -98,7 +98,7 @@ const  exampleCves = [
 
     export function getCvesForCpe(cpe, success) {
         let encodedCpe = encodeURIComponent(cpe);
-        return fetch(CVESERVICE_URL+'/cve?vulnerable_cpe='+encodedCpe+'&fields=id,cvss,references,vulnerable_configuration', {
+        return fetch(CVESERVICE_URL+'/cve?vulnerable_cpe='+encodedCpe+'&fields=id,cvss,references,vulnerable_configuration,vulnerable_product,summary', {
             headers: {
               Accept: 'application/json',
             },

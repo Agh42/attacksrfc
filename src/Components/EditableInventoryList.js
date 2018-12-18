@@ -130,7 +130,7 @@ export default class EditableInventoryList extends Component {
                   return [];
               }
 
-              // Make request
+              // Make request (async)
               const thisRequest = this.latestRequest =
                   CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => {
 
