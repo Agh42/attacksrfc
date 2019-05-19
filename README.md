@@ -8,8 +8,9 @@ The database is kept by [cve-search](https://github.com/cve-search/cve-search).
 ## Configuration
 
 Edit ".env" in the top-level directory to set the following environment variables in development:
-- CVESERVICE_URL: "http://cveserver:8080" (the URL of the cverver REST api)
-
+```
+- CVESERVICE_URL: "http://cveserver:8080" (the URL of the cveserver REST api)
+```
 Set environment variables in production to the correct values.
 
 
@@ -147,6 +148,7 @@ We are always open to [your feedback](https://github.com/facebookincubator/creat
 ## Folder Structure
 
 After creation, your project should look like this:
+
 
 ```
 my-app/
