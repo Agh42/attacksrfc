@@ -2,8 +2,22 @@
 
 ## Instant vulnerability management.
 
-Create ".env" in the top-level directory to set the following environment variables in development:
-- CVESERVICE_URL: "http://cveserver:8080" (the URL of the cverver REST api)
+Uses [cveservice](https://bitbucket.org/Agh42/cveservice) to query a database of CVE entries. 
+The database is kept by [cve-search](https://github.com/cve-search/cve-search).
+
+## Configuration
+
+Edit ".env" in the top-level directory to set the following environment variables in development:
+```
+- CVESERVICE_URL: "http://cveserver:8080" (the URL of the cveserver REST api)
+```
+Set environment variables in production to the correct values.
+
+
+
+
+
+# Create-React-App Primer:
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -134,6 +148,7 @@ We are always open to [your feedback](https://github.com/facebookincubator/creat
 ## Folder Structure
 
 After creation, your project should look like this:
+
 
 ```
 my-app/
