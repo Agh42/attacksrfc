@@ -11,26 +11,20 @@ function escapeRegexCharacters(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-
-function getSuggestions(value) {
-    const escapedValue = escapeRegexCharacters(value.trim());
-    
-    if (escapedValue === '') {
-      return [];
-    }
-    
-    return CpeClient.getAutoCompleteItems(escapedValue);
-}
-
 function getSuggestionValue(suggestion) {
-    return suggestion.title;
+    //return suggestion.title;
+    let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
+    [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
+        = suggestion.id.split(":");
+    return vendor+":"+product+":"+version+":"+update+":"+edition;
 }
 
 function renderSuggestion(suggestion) {
+    const suggestionLabel = getSuggestionValue(suggestion);
     return ( 
         <div className="item">
             <div class="ui teal label">
-                    {suggestion.title}
+                    {suggestionLabel}
             </div>
         </div>
     );
@@ -46,9 +40,12 @@ function renderSuggestion(suggestion) {
  */
 class CpeItem extends React.Component {
     
-    
     handleDeleteClick = () => {
         this.props.onDeleteClick(this.props.cpe.id);
+    }
+    
+    handleEditCpeClick = () => {
+        this.props.onEditCpeClick(this.props.cpe.id);
     }
     
     handleCpeClick = () => {
@@ -64,7 +61,9 @@ class CpeItem extends React.Component {
                     <div className="item">
                         <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
                             <i className="delete icon"
-                                onClick={this.handleDeleteClick}></i>
+                                onClick={this.handleDeleteClick}></i>&nbsp;
+                            <i className="tags icon"
+                                onClick={this.handleEditCpeClick}></i>
                             <a className="detail"
                                 onClick={this.handleCpeClick}>
                                 {vendor+":"+product+":"+version+":"+update+":"+edition}
@@ -85,7 +84,9 @@ export default class EditableInventoryList extends Component {
         this.state = {
                 searchValue: '',
                 suggestions: [],
+                _isLoading: false,
         }
+        this.latestRequest = null;
     }
     
     onChange = (event, { newValue, method }) => {
@@ -105,9 +106,7 @@ export default class EditableInventoryList extends Component {
               suggestions: []
             });
         } else {
-            this.setState({
-              suggestions: getSuggestions(value)
-            });
+            this.loadSuggestions(value)
         }
       };
 
@@ -121,12 +120,39 @@ export default class EditableInventoryList extends Component {
           console.log("selected: " + selection.suggestion.id);
           this.props.onSelectCpeClick(selection.suggestion);
       }
+      
+      loadSuggestions = (value) => {
+              this.setState({
+                  _isLoading: true
+              });
+              const escapedValue = escapeRegexCharacters(value.trim());
+              if (escapedValue === '') {
+                  return [];
+              }
+
+              // Make request (async)
+              const thisRequest = this.latestRequest =
+                  CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => {
+
+                      // If this is true there's a newer request happening, just return
+                      if (thisRequest !== this.latestRequest) {
+                          return;
+                      }
+
+                      // else set state:
+                      this.setState({
+                          suggestions: suggestions,
+                          _isLoading: false
+                      });
+                  })
+      }
     
     render() {
         // stateless component for cpe list:
         const cpeItems = this.props.selectedCpes.map((cpe) => (
             <CpeItem 
                 onDeleteClick={this.props.onDeleteClick}
+                onEditCpeClick={this.props.onEditCpeClick}
                 onCpeClick={this.props.onCpeToggleClick}
                 cpe={cpe}
                 id={cpe.id}
@@ -154,7 +180,9 @@ export default class EditableInventoryList extends Component {
                         onSuggestionSelected={this.onSuggestionSelected}
                         renderSuggestion={renderSuggestion}
                         focusInputOnSuggestionClick={false}
-                        inputProps={inputProps} />
+                        inputProps={inputProps} 
+                    />
+                {this.state._isLoading ? (<i className="sync icon" />) : ''}   
                 <br/>
                 <div className="field">
                      <button className="positive ui button" 
@@ -163,7 +191,8 @@ export default class EditableInventoryList extends Component {
                           Save collection... 
                     </button>
                      <button className="ui negative toggle button" 
-                          data-tooltip="Get emails on new critical vulnerabilities!" >
+                          data-tooltip="Get emails on new critical vulnerabilities!" 
+                          onClick={this.props.onSaveClick}>
                           Notifcations are off
                     </button>
                 </div>

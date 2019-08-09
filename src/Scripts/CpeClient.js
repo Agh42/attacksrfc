@@ -1,185 +1,13 @@
-
-export const CpeClient = {getSelectedCves, getAutoCompleteItems, 
-        getSelectedCpes, getExampleCpes};
- 
+import React from 'react';
+export const CpeClient = {getCvesForCpe, getAutoCompleteItems, 
+        getExampleCpes, getExampleCves, getStats}; 
 export default CpeClient;
-    
- const   cpes = [
-            {
-                "id": "cpe:2.3:a:actividentity:corestreet_server_validation_extension_for_microsoft_domain_controller:3.1.4.1:-:-:-:-:-:x64",
-                "title": "ActivIdentity Corestreet Server Validation Extension For Microsoft Domain Controller 3.1.4.1 (x64) 64-bit"
-            },
-            {
-                "id": "cpe:2.3:a:actividentity:corestreet_server_validation_extension_for_microsoft_internet_information_server:3.1.4.1",
-                "title": "ActivIdentity Corestreet Server Validation Extension For Microsoft Internet Information Server 3.1.4.1"
-            },
-            {
-                "id": "cpe:2.3:a:add-in-express:duplicate_remover_for_microsoft_excel:2.5.0",
-                "title": "Add-in-express Duplicate Remover For Microsoft Excel 2.5.0"
-            },
-            {
-                "id": "cpe:2.3:a:adobe:connect_pro_add-in_for_microsoft_outlook:1.0.0",
-                "title": "Adobe Connect Pro Add-in For Microsoft Outlook 1.0.0"
-            },
-            {
-                "id": "cpe:2.3:a:altiris:integrated_component_for_microsoft_active_directory:6.1.842.0",
-                "title": "Altiris Integrated Component For Microsoft Active Directory 6.1.842.0"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:-:x64",
-                "title": "Microsoft Windows XP 64-bit"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:-:x86",
-                "title": "Microsoft Windows XP x86 (32-bit)"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold",
-                "title": "Microsoft windows xp_gold"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:64-bit-2002",
-                "title": "Microsoft Windows XP (gold) 64-Bit Edition for Itanium systems, Version 2002"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:64-bit-2003",
-                "title": "Microsoft Windows XP (gold) 64-Bit Edition, Version 2003"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:embedded",
-                "title": "Microsoft windows xp_gold embedded"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:home",
-                "title": "Microsoft Windows XP (gold) Home Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:media_center",
-                "title": "Microsoft windows xp_gold media_center"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:professional",
-                "title": "Microsoft Windows XP Professional Gold"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:tablet_pc",
-                "title": "Microsoft windows xp_gold tablet_pc"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:gold:x64",
-                "title": "Microsoft Windows XP (gold) x64 (64-bit)"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1",
-                "title": "Microsoft Windows XP Service Pack 1"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1:embedded",
-                "title": "Microsoft windows xp_sp1 embedded"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1:home",
-                "title": "Microsoft Windows XP Service Pack 1 Home Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1:media_center",
-                "title": "Microsoft windows xp_sp1 media_center"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1:professional",
-                "title": "Microsoft Windows XP Professional SP1"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1:tablet_pc",
-                "title": "Microsoft windows xp_sp1 tablet_pc"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp1:x64",
-                "title": "Microsoft Windows XP Service Pack 1 x64 (64-bit)"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2",
-                "title": "Microsoft Windows XP Service Pack 2"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:embedded",
-                "title": "Microsoft windows xp_sp2 embedded"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:home",
-                "title": "Microsoft Windows XP Service Pack 2 Home Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:media_center",
-                "title": "Microsoft windows xp_sp2 media_center"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:professional",
-                "title": "Microsoft Windows XP Professional SP2"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:tablet_pc",
-                "title": "Microsoft windows xp_sp2 tablet_pc"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:x64",
-                "title": "Microsoft Windows XP Service Pack 2 x64 (64-bit)"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2:x86",
-                "title": "Microsoft Windows XP x86 (32-bit) Service Pack 2"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3",
-                "title": "Microsoft Windows XP Service Pack 3"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3:embedded",
-                "title": "Microsoft Windows XP Service Pack 3 Embedded Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3:home",
-                "title": "Microsoft Windows XP Service Pack 3 Home Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3:media_center",
-                "title": "Microsoft Windows XP Service Pack 3 Media Center Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3:professional",
-                "title": "Microsoft Windows XP Service Pack 3 Professional Edition"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3:tablet_pc",
-                "title": "Microsoft Windows XP Service Pack 3 Tablet PC"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:-:sp3:x86",
-                "title": "Microsoft Windows XP (x86) Service Pack 3"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:sp2",
-                "title": "Windows XP Service Pack 2"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:sp3",
-                "title": "Microsoft Windows XP SP3"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:sp3:unknown:english",
-                "title": "Microsoft Windows XP SP3 English"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windows_xp:unknown:sp3",
-                "title": "Microsoft Windows XP SP3"
-            },
-            {
-                "id": "cpe:2.3:o:microsoft:windowst:vista:sp1:x64-ultimate",
-                "title": "Microsoft Windows Vista x64 Ultimate Edition"
-            }
-  ]
 
- const  cves = [ 
+const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
+
+const cves = [];
+
+const  exampleCves = [ 
     {"Modified": "2018-09-17 14:26:59.460000", "Published": "2018-07-20 15:29:00.273000", "access": {"authentication": "NONE", "complexity": "LOW", "vector": "NETWORK"}, "cvss": 10.0, "cvss-time": "2018-09-17 13:59:58.737000", "cwe": "CWE-787", "id": "CVE-2018-12755", "impact": {"availability": "COMPLETE", "confidentiality": "COMPLETE", "integrity": "COMPLETE"}, "last-modified": {"$date": 1537194419460}, "references": ["http://www.securityfocus.com/bid/104701", "http://www.securitytracker.com/id/1041250", "https://helpx.adobe.com/security/products/acrobat/apsb18-21.html"], "summary": "Adobe Acrobat and Reader 2018.011.20040 and earlier, 2017.011.30080 and earlier, and 2015.006.30418 and earlier versions have an Out-of-bounds write vulnerability. Successful exploitation could lead to arbitrary code execution in the context of the current user.", "vulnerable_configuration": ["cpe:2.3:a:adobe:acrobat_dc:15.006.30060:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30094:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30096:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30097:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30119:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30121:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30172:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30173:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30174:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30198:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30201:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30243:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30244:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30279:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30280:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30306:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30352:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30354:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30355:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30392:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30394:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.008.20082:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20069:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20071:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20077:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20079:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20059:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20060:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20041:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20045:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.017.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.017.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.020.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.020.20042:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20070:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.009.20058:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20093:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20095:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20098:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:18.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:18.009.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30060:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30094:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30096:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30097:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30119:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30121:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30172:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30173:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30174:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30198:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30201:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30243:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30244:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30279:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30280:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30306:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30352:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30354:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30355:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30392:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30394:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.008.20082:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20069:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20071:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20077:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20079:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20059:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20060:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20041:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20045:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.017.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.017.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.020.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.020.20042:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20070:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.009.20058:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20093:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20095:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20098:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:18.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:18.009.20050:-:-:-:continuous", "cpe:2.3:o:apple:mac_os_x", "cpe:2.3:o:microsoft:windows"], "vulnerable_configuration_cpe_2_2": ["cpe:/a:adobe:acrobat_dc:15.006.30060::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30094::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30096::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30097::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30119::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30121::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30172::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30173::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30174::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30198::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30201::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30243::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30244::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30279::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30280::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30306::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30352::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30354::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30355::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30392::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30394::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.008.20082::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20069::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20071::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20077::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20079::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20059::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20060::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20041::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20045::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.017.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.017.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.020.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.020.20042::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20070::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.009.20058::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20093::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20095::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20098::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:18.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:18.009.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30060::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30094::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30096::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30097::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30119::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30121::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30172::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30173::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30174::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30198::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30201::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30243::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30244::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30279::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30280::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30306::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30352::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30354::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30355::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30392::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30394::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.008.20082::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20069::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20071::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20077::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20079::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20059::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20060::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20041::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20045::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.017.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.017.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.020.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.020.20042::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20070::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.009.20058::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20093::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20095::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20098::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:18.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:18.009.20050::~~continuous~~~", "cpe:/o:apple:mac_os_x:-", "cpe:/o:microsoft:windows:-"]},
     {"Modified": "2018-09-17 14:16:15.147000", "Published": "2018-07-20 15:29:00.227000", "access": {"authentication": "NONE", "complexity": "LOW", "vector": "NETWORK"}, "cvss": 10.0, "cvss-time": "2018-09-17 14:01:04.100000", "cwe": "CWE-787", "id": "CVE-2018-12754", "impact": {"availability": "COMPLETE", "confidentiality": "COMPLETE", "integrity": "COMPLETE"}, "last-modified": {"$date": 1537193775147}, "references": ["http://www.securityfocus.com/bid/104701", "http://www.securitytracker.com/id/1041250", "https://helpx.adobe.com/security/products/acrobat/apsb18-21.html"], "summary": "Adobe Acrobat and Reader 2018.011.20040 and earlier, 2017.011.30080 and earlier, and 2015.006.30418 and earlier versions have an Out-of-bounds write vulnerability. Successful exploitation could lead to arbitrary code execution in the context of the current user.", "vulnerable_configuration": ["cpe:2.3:a:adobe:acrobat_dc:15.006.30060:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30094:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30096:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30097:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30119:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30121:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30172:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30173:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30174:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30198:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30201:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30243:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30244:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30279:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30280:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30306:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30352:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30354:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30355:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30392:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30394:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.008.20082:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20069:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20071:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20077:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20079:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20059:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20060:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20041:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20045:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.017.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.017.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.020.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.020.20042:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20070:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.009.20058:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20093:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20095:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20098:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:18.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:18.009.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30060:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30094:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30096:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30097:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30119:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30121:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30172:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30173:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30174:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30198:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30201:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30243:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30244:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30279:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30280:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30306:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30352:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30354:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30355:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30392:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30394:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.008.20082:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20069:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20071:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20077:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20079:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20059:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20060:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20041:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20045:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.017.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.017.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.020.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.020.20042:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20070:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.009.20058:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20093:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20095:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20098:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:18.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:18.009.20050:-:-:-:continuous", "cpe:2.3:o:apple:mac_os_x", "cpe:2.3:o:microsoft:windows"], "vulnerable_configuration_cpe_2_2": ["cpe:/a:adobe:acrobat_dc:15.006.30060::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30094::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30096::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30097::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30119::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30121::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30172::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30173::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30174::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30198::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30201::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30243::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30244::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30279::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30280::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30306::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30352::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30354::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30355::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30392::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30394::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.008.20082::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20069::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20071::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20077::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20079::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20059::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20060::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20041::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20045::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.017.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.017.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.020.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.020.20042::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20070::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.009.20058::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20093::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20095::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20098::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:18.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:18.009.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30060::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30094::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30096::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30097::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30119::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30121::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30172::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30173::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30174::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30198::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30201::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30243::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30244::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30279::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30280::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30306::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30352::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30354::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30355::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30392::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30394::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.008.20082::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20069::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20071::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20077::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20079::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20059::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20060::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20041::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20045::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.017.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.017.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.020.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.020.20042::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20070::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.009.20058::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20093::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20095::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20098::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:18.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:18.009.20050::~~continuous~~~", "cpe:/o:apple:mac_os_x:-", "cpe:/o:microsoft:windows:-"]},
     {"Modified": "2018-09-17 13:52:36.050000", "Published": "2018-07-20 15:29:02.523000", "access": {"authentication": "NONE", "complexity": "MEDIUM", "vector": "NETWORK"}, "cvss": 6.8, "cvss-time": "2018-09-17 13:01:57.823000", "cwe": "CWE-704", "id": "CVE-2018-5007", "impact": {"availability": "PARTIAL", "confidentiality": "PARTIAL", "integrity": "PARTIAL"}, "last-modified": {"$date": 1537192356050}, "references": ["http://www.securityfocus.com/bid/104698", "http://www.securitytracker.com/id/1041248", "https://access.redhat.com/errata/RHSA-2018:2175", "https://helpx.adobe.com/security/products/flash-player/apsb18-24.html"], "summary": "Adobe Flash Player 30.0.0.113 and earlier versions have a Type Confusion vulnerability. Successful exploitation could lead to arbitrary code execution in the context of the current user.", "vulnerable_configuration": ["cpe:2.3:a:adobe:flash_player_desktop_runtime:30.0.0.113", "cpe:2.3:o:apple:mac_os_x", "cpe:2.3:o:linux:linux_kernel", "cpe:2.3:o:microsoft:windows", "cpe:2.3:a:adobe:flash_player:30.0.0.113:-:-:-:-:chrome", "cpe:2.3:o:apple:mac_os_x", "cpe:2.3:o:google:chrome_os", "cpe:2.3:o:linux:linux_kernel", "cpe:2.3:o:microsoft:windows", "cpe:2.3:a:adobe:flash_player:30.0.0.113:-:-:-:-:edge", "cpe:2.3:a:adobe:flash_player:30.0.0.113:-:-:-:-:internet_explorer_11", "cpe:2.3:o:microsoft:windows_10", "cpe:2.3:o:microsoft:windows_8.1", "cpe:2.3:o:redhat:enterprise_linux_desktop:6.0", "cpe:2.3:o:redhat:enterprise_linux_server:6.0", "cpe:2.3:o:redhat:enterprise_linux_workstation:6.0"], "vulnerable_configuration_cpe_2_2": ["cpe:/a:adobe:flash_player_desktop_runtime:30.0.0.113", "cpe:/o:apple:mac_os_x:-", "cpe:/o:linux:linux_kernel:-", "cpe:/o:microsoft:windows:-", "cpe:/a:adobe:flash_player:30.0.0.113::~~~chrome~~", "cpe:/o:apple:mac_os_x:-", "cpe:/o:google:chrome_os:-", "cpe:/o:linux:linux_kernel:-", "cpe:/o:microsoft:windows:-", "cpe:/a:adobe:flash_player:30.0.0.113::~~~edge~~", "cpe:/a:adobe:flash_player:30.0.0.113::~~~internet_explorer_11~~", "cpe:/o:microsoft:windows_10:-", "cpe:/o:microsoft:windows_8.1:-", "cpe:/o:redhat:enterprise_linux_desktop:6.0", "cpe:/o:redhat:enterprise_linux_server:6.0", "cpe:/o:redhat:enterprise_linux_workstation:6.0"]},
@@ -221,34 +49,72 @@ export default CpeClient;
      "vulnerable_configuration": ["cpe:2.3:a:adobe:acrobat_dc:15.006.30060:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30094:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30096:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30097:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30119:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30121:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30172:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30173:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30174:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30198:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30201:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30243:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30244:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30279:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30280:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30306:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30352:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30354:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30355:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30392:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.006.30394:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_dc:15.008.20082:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20069:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20071:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20077:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.009.20079:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20059:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.010.20060:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20041:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.016.20045:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.017.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.017.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.020.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.020.20042:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:15.023.20070:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.009.20058:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20093:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20095:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:17.012.20098:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:18.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_dc:18.009.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30060:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30094:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30096:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30097:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30119:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30121:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30172:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30173:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30174:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30198:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30201:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30243:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30244:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30279:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30280:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30306:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30352:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30354:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30355:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30392:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.006.30394:-:-:-:classic", "cpe:2.3:a:adobe:acrobat_reader_dc:15.008.20082:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20069:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20071:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20077:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.009.20079:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20059:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.010.20060:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20041:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.016.20045:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.017.20050:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.017.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.020.20039:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.020.20042:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20053:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20056:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:15.023.20070:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.009.20058:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20093:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20095:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:17.012.20098:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:18.009.20044:-:-:-:continuous", "cpe:2.3:a:adobe:acrobat_reader_dc:18.009.20050:-:-:-:continuous", "cpe:2.3:o:apple:mac_os_x", "cpe:2.3:o:microsoft:windows"], "vulnerable_configuration_cpe_2_2": ["cpe:/a:adobe:acrobat_dc:15.006.30060::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30094::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30096::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30097::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30119::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30121::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30172::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30173::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30174::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30198::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30201::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30243::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30244::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30279::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30280::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30306::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30352::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30354::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30355::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30392::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.006.30394::~~classic~~~", "cpe:/a:adobe:acrobat_dc:15.008.20082::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20069::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20071::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20077::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.009.20079::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20059::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.010.20060::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20041::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.016.20045::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.017.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.017.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.020.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.020.20042::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:15.023.20070::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.009.20058::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20093::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20095::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:17.012.20098::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:18.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_dc:18.009.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30060::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30094::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30096::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30097::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30119::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30121::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30172::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30173::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30174::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30198::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30201::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30243::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30244::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30279::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30280::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30306::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30352::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30354::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30355::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30392::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.006.30394::~~classic~~~", "cpe:/a:adobe:acrobat_reader_dc:15.008.20082::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20069::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20071::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20077::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.009.20079::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20059::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.010.20060::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20041::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.016.20045::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.017.20050::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.017.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.020.20039::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.020.20042::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20053::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20056::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:15.023.20070::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.009.20058::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20093::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20095::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:17.012.20098::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:18.009.20044::~~continuous~~~", "cpe:/a:adobe:acrobat_reader_dc:18.009.20050::~~continuous~~~", "cpe:/o:apple:mac_os_x:-", "cpe:/o:microsoft:windows:-"]},
 ] 
      
-    export function getVendors() {
-        const vendors = cpes.map( (cpe) => {
-            return cpe.id.split(':')[3];
-        })
-        return vendors;
+    function getVendor(cpe) {
+       return cpe.id.split(':')[3];
     }
     
-    export function getProducts() {
-        const products = cpes.map( (cpe) => {
-            return cpe.id.split(':')[4];
-        })
-        return products;
+    function getProduct(cpe) {
+       return cpe.id.split(':')[4];
     }
+
+
     
    /**
     * Searches CPE titles. Returns array of matching CPEs: {id, title}
     * 
     * @param {any} toComplete the string to search for
-    */
-    export function getAutoCompleteItems(toComplete) {
-        let result = [];
-        const regex = new RegExp(toComplete, 'i');
-        result = cpes.filter(cpe => regex.test(cpe.title));
-        return result;
-    }
+    * @param {any} success function to call with sucessfull result
+    */    
+    function getAutoCompleteItems(toComplete, success) {
+        return fetch(CVESERVICE_URL+'/cpe?startsWith='+toComplete, {
+          headers: {
+            Accept: 'application/json',
+          },
+        }).then(checkStatus)
+          .then(parseJSON)
+          .then(success);
+      }
     
-    export function getSelectedCves() {
-        return cves;
+    function checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+          return response;
+        } else {
+          const error = new Error(`HTTP Error ${response.statusText}`);
+          error.status = response.statusText;
+          error.response = response;
+          console.log(error);
+          throw error;
+        }
+      }
+
+      function parseJSON(response) {
+        return response.json();
+      }
+    
+    
+    export function getExampleCves() {
+        return exampleCves;
+    }
+
+    export function getCvesForCpe(cpe, success) {
+        let encodedCpe = encodeURIComponent(cpe);
+        return fetch(CVESERVICE_URL+'/cve?vulnerable_cpe='+encodedCpe+'&fields=id,cvss,references,vulnerable_configuration,vulnerable_product,summary', {
+            headers: {
+              Accept: 'application/json',
+            },
+          }).then(checkStatus)
+            .then(parseJSON)
+            .then(success);
+    }
+
+    export function getStats(success) {
+      return fetch(CVESERVICE_URL+'/stats', {
+            headers: {
+              Accept: 'application/json',
+            },
+        }).then(checkStatus)
+          .then(parseJSON)
+          .then(success);
     }
     
     export function getExampleCpes() {
@@ -258,6 +124,6 @@ export default CpeClient;
         },];
     }
     
-    export function getSelectedCpes() {
-        return cpes;
-    }
+//    export function getSelectedCpes() {
+//        return cpes;
+//    }

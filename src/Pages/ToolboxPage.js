@@ -58,10 +58,10 @@ export default class ToolboxPage extends Component {
             <div class="content">
               <img class="ui image" src="/images/logos/no_logo.png" />
               <div class="centered header">
-              RiskMgr</div>
+              RiskCkpit</div>
               <span class="ui olive ribbon label">Risk Management</span>
               <div class="description">
-                  Use the risk manager to identify and evaluate information security risks. Show your risk register and dashboard to auditors and management.
+                  Use the risk cockpit to identify and evaluate information security risks. Show your risk register and dashboard to auditors and management.
          </div>
             </div>
             <a href="/attacksrfc" class="ui bottom attached disabled button">

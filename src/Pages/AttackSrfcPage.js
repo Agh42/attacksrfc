@@ -12,22 +12,35 @@ export default class AttackSrfcPage extends Component {
     state = {
             selectedCpes: [],
             selectedCves: [],
+            stats: [],
             _redirect: "",
     };
     
     componentDidMount() {
         this.initSelectedCpes();
-        this.loadSelectedCves();
-    }
-    
-    loadSelectedCves = () => {
-        this.setState({selectedCves: CpeClient.getSelectedCves()});
+        this.initSelectedCves();
+        this.initStats();
     }
     
     initSelectedCpes = () => {
         this.setState({selectedCpes: CpeClient.getExampleCpes()});
     }
+
+    initStats = () => {
+        this.setState({stats: {
+            cpeCount: "...",
+            cveCount: "...",
+            lastModified: "...",
+        }});
+        CpeClient.getStats( (dbStats) => {
+            this.setState({stats: dbStats});
+        });
+    }
     
+    initSelectedCves = () => {
+        this.setState({selectedCves: CpeClient.getExampleCves()});
+    }
+
     loadSelectedCpes = () => {
         let cpes = CpeClient.getSelectedCpes();
         this.setState({ selectedCpes: cpes });
@@ -37,6 +50,7 @@ export default class AttackSrfcPage extends Component {
           this.setState({_redirect: "PRICING"});
     }
     
+    // FIXME replace state completely 
     handleDeleteClick = (cpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
@@ -44,11 +58,26 @@ export default class AttackSrfcPage extends Component {
     }
     
     handleAddCpeClick = (newCpe) => {
-        if (!this.state.selectedCpes.includes(newCpe)) {
+        let cpePresent= this.state.selectedCpes.filter(c => c.id === newCpe.id);
+        console.log(cpePresent);
+        if ( !cpePresent.length ) {
+            let activeCpe = {...newCpe, isActive: true};
             this.setState({
-                selectedCpes: [...this.state.selectedCpes, newCpe]
+                selectedCpes: [...this.state.selectedCpes, activeCpe]
             });
+            this.loadCves(newCpe);
         }
+    }
+    
+    // FIXME replace state completely 
+    loadCves = (newCpe) => {
+        let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
+        CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
+            this.setState({ 
+                selectedCves: newCves, 
+//                selectedCves: this.state.selectedCves.concat(newCves), 
+            }))
+        );
     }
     
     handleCpeToggleClick = (toggleCpeId) => {
@@ -64,6 +93,18 @@ export default class AttackSrfcPage extends Component {
             }),
         });
     }
+
+    formatNumber(number) {
+        return number ? number.toLocaleString() : number;
+    }
+
+    formatDate(date) {
+        return date ? new Date(date).toLocaleString() : date;
+    }
+    
+    handleEditCpeClick = (editCpeId) => {
+        console.log("Edit " + editCpeId);
+    }
     
     render() {
         if (this.state._redirect) {
@@ -78,9 +119,12 @@ export default class AttackSrfcPage extends Component {
                   <div class="column">
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
-                           <div className="ui item"><div className="ui inverted header">
-                               AttackSrfc Vulnerability Management
-                           </div></div>
+                           <div className="ui item"><h4 className="ui inverted header">
+                               AttackSrfc Vulnerability Management 
+                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Products - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
+                               - Last updated: {this.formatDate(this.state.stats.lastModified)} 
+                               </h4>
+                           </div>
                            <div class="right menu primary">
                            <Link to="/login" class="item">
                              <i className="sign in icon" />
@@ -98,7 +142,8 @@ export default class AttackSrfcPage extends Component {
                   </div>
               </div>
           </div>
-          
+          &nbsp;
+          &nbsp;
         <div className='ui stackable padded grid'>
             <div className='two column row'>
                 <div className='five wide column'>
@@ -109,11 +154,13 @@ export default class AttackSrfcPage extends Component {
                         onSaveClick={this.handleSaveClick}
                         onDeleteClick={this.handleDeleteClick}
                         onCpeToggleClick={this.handleCpeToggleClick}
+                        onEditCpeClick={this.handleEditCpeClick}
                     />
                 </div>
                 <div className='eleven wide column'>
                     <CveGraph 
                         selectedCves={this.state.selectedCves}
+                        activeCpes={this.state.selectedCpes}
                     />
                 </div>
             </div>
