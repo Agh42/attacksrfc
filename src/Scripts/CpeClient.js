@@ -3,6 +3,7 @@ export const CpeClient = {getCvesForCpe, getAutoCompleteItems,
         getExampleCpes, getExampleCves, getStats}; 
 export default CpeClient;
 
+// edit .env to change this value:
 const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
 
 const cves = [];
