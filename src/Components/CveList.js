@@ -4,43 +4,14 @@ import moment from 'moment';
 
 /**
  * getHostname()
- * @author Kory Becker
- * {@link http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript}
+ * Thanks for this function to:
+ * @author Finn Westendorf
  * @param {any} url
  */
 function getHostName(url) {
-    var match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
-    if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
-    return match[2];
-    }
-    else {
-        return null;
-    }
-}
-
-/**
- * getDomain()
- * @author Kory Becker
- * {@link http://www.primaryobjects.com/2012/11/19/parsing-hostname-and-domain-from-a-url-with-javascript/}
- * @param {any} url
- */
-function getDomain(url) {
-    var hostName = getHostName(url);
-    var domain = hostName;
-    
-    if (hostName != null) {
-        var parts = hostName.split('.').reverse();
-        
-        if (parts != null && parts.length > 1) {
-            domain = parts[1] + '.' + parts[0];
-                
-            if (hostName.toLowerCase().indexOf('.co.uk') !== -1 && parts.length > 2) {
-              domain = parts[2] + '.' + domain;
-            }
-        }
-    }
-    
-    return domain;
+    var a = document.createElement("a");
+    a.href = url;
+    return a.hostname;
 }
 
 function formatDate(date) {
