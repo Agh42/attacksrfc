@@ -8,7 +8,7 @@ import moment from 'moment';
  * @author Finn Westendorf
  * @param {any} url
  */
-function getHostName(url) {
+function getHostname(url) {
     var a = document.createElement("a");
     a.href = url;
     return a.hostname;
@@ -71,7 +71,7 @@ export default class CveList extends Component {
                                 cve.references.map( (reference, index) => {
                                     return (
                                       <div key={index} >
-                                      <a href={reference} target="_blank">{getDomain(reference)}</a> 
+                                      <a href={reference} target="_blank">{getHostname(reference)}</a> 
                                       <br/>
                                       </div>
                                       );
