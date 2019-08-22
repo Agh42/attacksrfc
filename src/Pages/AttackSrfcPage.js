@@ -168,7 +168,7 @@ export default class AttackSrfcPage extends Component {
             <div className='one column row'>
                 <div className='sixteen wide column'>
                     <CveList 
-                        selectedCves={this.state.selectedCves}
+                        selectedCpes={this.state.selectedCpes}
                     />
                 </div>
             </div> 

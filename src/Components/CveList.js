@@ -19,7 +19,45 @@ function formatDate(aDate) {
     return mom.format('YYYY-MM-DD');
 }
 
+//props: selectedCpes: array of cpe strings
+
+/*
+ * Receives list of CPEs as props.
+ * Loads corresponding CVEs and keeps it in state.
+ * Pagination only loads a limited amount of CVEs at a time.
+*/
 export default class CveList extends Component {
+
+    state={
+        cveList = [],  
+    };
+    
+    initCveList = () => {
+        this.setState({cveList: CpeClient.getExampleCves()});
+    }
+
+    componentDidMount() {
+        this.initCveList();
+    }
+    
+    loadCveList = (props) => {
+        // TODO call cveservice with whole list of cpes
+        
+        if (props.cveList.length() < 1) {return ;}
+        const newCpe = props.cveList[0];
+        let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
+        CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
+            this.setState({ 
+                selectedCves: newCves,
+            }))
+        );
+    }
+    
+    componentWillReceiveProps(nextProps) {
+        console.log("cvelist will receive props: ");
+        console.log(nextProps);
+        this.loadCveList(nextProps);
+    }
    
     render () {
         const cves = this.props.selectedCves;
@@ -32,12 +70,6 @@ export default class CveList extends Component {
                               data-tooltip="Save this list as an Excel file."
                               onClick={this.props.onSaveClick} >
                              Save as .xlsx</div>
-                         <div className="ui  button" data-tooltip="Coming soon.">
-                             Track mitigation by email...</div>
-                         <div className="ui  button" data-tooltip="Coming soon.">
-                             Track mitigation with JIRA...</div>
-                         <div className="ui  button" data-tooltip="Coming soon.">
-                             Track mitigation with Slack...</div>
                     </div>
                 <table className="ui sortable celled padded table">
                 <thead>
