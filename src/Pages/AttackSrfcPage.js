@@ -30,7 +30,7 @@ export default class AttackSrfcPage extends Component {
         this.setState({stats: {
             cpeCount: "...",
             cveCount: "...",
-            lastModified: "...",
+            lastModified: "1977-10-20",
         }});
         CpeClient.getStats( (dbStats) => {
             this.setState({stats: dbStats});

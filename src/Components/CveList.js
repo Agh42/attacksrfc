@@ -14,8 +14,8 @@ function getHostname(url) {
     return a.hostname;
 }
 
-function formatDate(date) {
-    let mom = moment(date);
+function formatDate(aDate) {
+    let mom = moment(aDate);
     return mom.format('YYYY-MM-DD');
 }
 
