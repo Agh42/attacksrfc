@@ -29,7 +29,16 @@ export default class CveList extends Component {
         selectedCvesPage: PropTypes.array.isRequired,
         numTotalPages: PropTypes.number.isRequired,
         numCurrentPage: PropTypes.number.isRequired,
-  };
+    };
+
+    createPaginationItems= () => {
+        let items = [];
+        for (let i=1; i<this.props.numTotalPages+1; i++) {
+            items.push(<a className="item">{i}</a>);
+        }
+        return items;
+
+    }
 
     render () {
         return(
@@ -90,11 +99,7 @@ export default class CveList extends Component {
                       <a className="icon item">
                         <i className="left chevron icon"></i>
                       </a>
-                      { [Array(this.props.numTotalPages).keys()].map( (num) => {
-                          return (<a classNam="item">{num}</a>);
-                      }
-                      )
-                      }
+                      {this.createPaginationItems()}
                       <a className="icon item">
                         <i className="right chevron icon"></i>
                       </a>
