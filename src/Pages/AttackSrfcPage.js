@@ -12,7 +12,10 @@ export default class AttackSrfcPage extends Component {
     state = {
             selectedCpes: [],
             selectedCves: [],
+            selectedCvesPage: [],
             stats: [],
+            numTotalPages: 10,
+            numCurrentPage: 1,
             _redirect: "",
     };
     
@@ -168,7 +171,9 @@ export default class AttackSrfcPage extends Component {
             <div className='one column row'>
                 <div className='sixteen wide column'>
                     <CveList 
-                        selectedCpes={this.state.selectedCpes}
+                        selectedCvesPage={this.state.selectedCvesPage}
+                        numTotalPages={this.state.numTotalPages}
+                        numCurrentPage={this.state.numCurrentPage}
                     />
                 </div>
             </div> 

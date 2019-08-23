@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-
+import PropTypes from 'prop-types';
 
 /**
  * getHostname()
@@ -19,49 +19,18 @@ function formatDate(aDate) {
     return mom.format('YYYY-MM-DD');
 }
 
-//props: selectedCpes: array of cpe strings
-
 /*
- * Receives list of CPEs as props.
- * Loads corresponding CVEs and keeps it in state.
- * Pagination only loads a limited amount of CVEs at a time.
- *
+ * Receives list of CVEs to display on one page.
  * @author Alexander Koderman <attacksurface@koderman.de>
 */
 export default class CveList extends Component {
 
-    state={
-        cveList = [],  
-    };
-    
-    initCveList = () => {
-        this.setState({cveList: CpeClient.getExampleCves()});
-    }
+    static PropTypes = {
+        selectedCvesPage: PropTypes.array.isRequired,
+        numTotalPages: PropTypes.number.isRequired,
+        numCurrentPage: PropTypes.number.isRequired,
+  };
 
-    componentDidMount() {
-        this.initCveList();
-    }
-    
-    loadCveList = (props) => {
-        // TODO call cveservice with whole list of cpes
-        
-        if (props.cveList.length() < 1) {return ;}
-        const newCpe = props.cveList[0];
-        let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
-        CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
-            this.setState({ 
-                selectedCves: newCves,
-            }))
-        );
-    }
-    
-    componentWillReceiveProps(nextProps) {
-        console.log("cvelist will receive props: ");
-        console.log(nextProps);
-        this.loadCveList(nextProps);
-        //forceUpdate(); ?
-    }
-   
     render () {
         return(
                 
@@ -83,7 +52,7 @@ export default class CveList extends Component {
                   <th>References</th>
                 </tr></thead>
                 <tbody>
-                  {this.state.cveList.map( (cve) => {
+                  {this.props.selectedCvesPage.map( (cve) => {
                           return (
                           <tr key={cve.id}>
                           <td class="single line">
@@ -121,10 +90,11 @@ export default class CveList extends Component {
                       <a className="icon item">
                         <i className="left chevron icon"></i>
                       </a>
-                      <a className="item">1</a>
-                      <a className="item">2</a>
-                      <a className="item">3</a>
-                      <a className="item">4</a>
+                      { [Array(this.props.numTotalPages).keys()].map( (num) => {
+                          return (<a classNam="item">{num}</a>);
+                      }
+                      )
+                      }
                       <a className="icon item">
                         <i className="right chevron icon"></i>
                       </a>
