@@ -25,6 +25,8 @@ function formatDate(aDate) {
  * Receives list of CPEs as props.
  * Loads corresponding CVEs and keeps it in state.
  * Pagination only loads a limited amount of CVEs at a time.
+ *
+ * @author Alexander Koderman <attacksurface@koderman.de>
 */
 export default class CveList extends Component {
 
@@ -57,11 +59,10 @@ export default class CveList extends Component {
         console.log("cvelist will receive props: ");
         console.log(nextProps);
         this.loadCveList(nextProps);
+        //forceUpdate(); ?
     }
    
     render () {
-        const cves = this.props.selectedCves;
-        
         return(
                 
                 <div className='ui raised segment'>
@@ -82,7 +83,7 @@ export default class CveList extends Component {
                   <th>References</th>
                 </tr></thead>
                 <tbody>
-                  {cves.map( (cve) => {
+                  {this.state.cveList.map( (cve) => {
                           return (
                           <tr key={cve.id}>
                           <td class="single line">
