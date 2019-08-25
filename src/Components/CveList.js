@@ -19,10 +19,16 @@ function formatDate(aDate) {
     return mom.format('YYYY-MM-DD');
 }
 
-/*
+/**
+ *
+ *
  * Receives list of CVEs to display on one page.
+ * 
  * @author Alexander Koderman <attacksurface@koderman.de>
-*/
+ * @export
+ * @class CveList
+ * @extends {Component}
+ */
 export default class CveList extends Component {
 
     static PropTypes = {
@@ -34,7 +40,7 @@ export default class CveList extends Component {
     createPaginationItems= () => {
         let items = [];
         for (let i=1; i<this.props.numTotalPages+1; i++) {
-            items.push(<a className="item">{i}</a>);
+            items.push(<a className="item" onClick="this.props.onPageClick" >{i}</a>);
         }
         return items;
 
@@ -97,11 +103,11 @@ export default class CveList extends Component {
                   <tr><th colSpan="5">
                     <div className="ui right floated pagination menu">
                       <a className="icon item">
-                        <i className="left chevron icon"></i>
+                        <i className="left chevron icon" onClick="{this.props.onPrevPageClick}" ></i>
                       </a>
                       {this.createPaginationItems()}
                       <a className="icon item">
-                        <i className="right chevron icon"></i>
+                        <i className="right chevron icon" onClick="{this.props.onNextPageClick}" ></i>
                       </a>
                     </div>
                   </th>
