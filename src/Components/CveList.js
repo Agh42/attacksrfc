@@ -34,7 +34,11 @@ export default class CveList extends Component {
     createPaginationItems= () => {
         let items = [];
         for (let i=1; i<this.props.numTotalPages+1; i++) {
-            items.push(<a className="item">{i}</a>);
+            if (this.props.numCurrentPage===i) {
+                items.push(<a className="active item">{i}</a>);
+            } else {
+                items.push(<a className="item">{i}</a>);
+            }
         }
         return items;
 

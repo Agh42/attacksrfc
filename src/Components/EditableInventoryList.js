@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
-import CpeClient from '../Scripts/CpeClient';
+import CpeClient from '../Gateways/CpeClient';
 
 //###############################################################
 //### AutoSuggest functions:

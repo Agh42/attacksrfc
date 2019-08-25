@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
-import CpeClient from '../Scripts/CpeClient';
+import CpeClient from '../Gateways/CpeClient';
+//import CpeClient from '../Gateways/CpeClientStub';
 
 import {Link, Redirect} from 'react-router-dom';
 
 export default class AttackSrfcPage extends Component {
+    
     
     state = {
             selectedCpes: [],
@@ -41,7 +43,10 @@ export default class AttackSrfcPage extends Component {
     }
     
     initSelectedCves = () => {
-        this.setState({selectedCves: CpeClient.getExampleCves()});
+        this.setState({
+            selectedCves: CpeClient.getExampleCves(),
+            selectedCvesPage: CpeClient.getExampleCves().slice(0,9),
+        });
     }
 
     loadSelectedCpes = () => {
@@ -51,6 +56,11 @@ export default class AttackSrfcPage extends Component {
     
     handleSaveClick = () => {
           this.setState({_redirect: "PRICING"});
+    }
+
+    handlePaginationChange = (newPage) => {
+        this.setState({numCurrentPage: newPage,});
+        // handle new page
     }
     
     // FIXME replace state completely 
@@ -68,12 +78,13 @@ export default class AttackSrfcPage extends Component {
             this.setState({
                 selectedCpes: [...this.state.selectedCpes, activeCpe]
             });
-            this.loadCves(newCpe);
+            this.loadCves();
         }
     }
     
     // FIXME replace state completely 
-    loadCves = (newCpe) => {
+    loadCves = (n) => {
+        let newCpe = this.state.selectedCpes[0];
         let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
         CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
             this.setState({ 
@@ -174,6 +185,7 @@ export default class AttackSrfcPage extends Component {
                         selectedCvesPage={this.state.selectedCvesPage}
                         numTotalPages={this.state.numTotalPages}
                         numCurrentPage={this.state.numCurrentPage}
+                        handlePaginationChange={this.handlePaginationChange}
                     />
                 </div>
             </div> 
