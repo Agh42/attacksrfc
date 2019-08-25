@@ -3,18 +3,23 @@ import React, { Component } from 'react';
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
-import CpeClient from '../Scripts/CpeClient';
+import CpeClient from '../Gateways/CpeClient';
+//import CpeClient from '../Gateways/CpeClientStub';
 
 import {Link, Redirect} from 'react-router-dom';
 
+const itemsPerPage = 100;
+
+
 export default class AttackSrfcPage extends Component {
     
+
     state = {
             selectedCpes: [],
             selectedCves: [],
             selectedCvesPage: [],
             stats: [],
-            numTotalPages: 10,
+            numTotalPages: 1,
             numCurrentPage: 1,
             _redirect: "",
     };
@@ -41,7 +46,10 @@ export default class AttackSrfcPage extends Component {
     }
     
     initSelectedCves = () => {
-        this.setState({selectedCves: CpeClient.getExampleCves()});
+        this.setState({
+            selectedCves: CpeClient.getExampleCves(),
+            selectedCvesPage: CpeClient.getExampleCves().slice(0,9),
+        });
     }
 
     loadSelectedCpes = () => {
@@ -51,6 +59,12 @@ export default class AttackSrfcPage extends Component {
     
     handleSaveClick = () => {
           this.setState({_redirect: "PRICING"});
+    }
+
+    handlePaginationChange = (newPage) => {
+
+        this.setState({numCurrentPage: newPage,});
+        
     }
     
     // FIXME replace state completely 
@@ -68,17 +82,19 @@ export default class AttackSrfcPage extends Component {
             this.setState({
                 selectedCpes: [...this.state.selectedCpes, activeCpe]
             });
-            this.loadCves(newCpe);
+            this.loadCves();
         }
     }
     
     // FIXME replace state completely 
-    loadCves = (newCpe) => {
-        let vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
-        CpeClient.getCvesForCpe(vendorProductOnly, (newCves) => (
+    loadCves = () => {
+        let pageToGet = this.state.numCurrentPage;
+        let vendorsProductsOnly = this.state.selectedCpes.map ( (cpe) => {
+            return vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
+        });
+        CpeClient.getCvesForCpes(vendorsProductsOnly, itemsPerPage, pageToGet, (newCves) => (
             this.setState({ 
                 selectedCves: newCves, 
-//                selectedCves: this.state.selectedCves.concat(newCves), 
             }))
         );
     }
@@ -174,6 +190,7 @@ export default class AttackSrfcPage extends Component {
                         selectedCvesPage={this.state.selectedCvesPage}
                         numTotalPages={this.state.numTotalPages}
                         numCurrentPage={this.state.numCurrentPage}
+                        onPaginationChange={this.handlePaginationChange}
                     />
                 </div>
             </div> 

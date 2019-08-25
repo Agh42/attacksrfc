@@ -31,20 +31,26 @@ function formatDate(aDate) {
  */
 export default class CveList extends Component {
 
+
+
     static PropTypes = {
         selectedCvesPage: PropTypes.array.isRequired,
         numTotalPages: PropTypes.number.isRequired,
         numCurrentPage: PropTypes.number.isRequired,
+        onPaginationChange: PropTypes.func.isRequired,
     };
 
-    createPaginationItems= () => {
-        let items = [];
-        for (let i=1; i<this.props.numTotalPages+1; i++) {
-            items.push(<a className="item" onClick="this.props.onPageClick" >{i}</a>);
-        }
-        return items;
+   
 
+     handlePrevPageClick = () => {
+      this.props.onPaginationChange(this.props.numCurrentPage-1);
     }
+    
+    handleNextPageClick = () => {
+      this.props.onPaginationChange(this.props.numCurrentPage+1);
+    }
+
+
 
     render () {
         return(
@@ -103,11 +109,10 @@ export default class CveList extends Component {
                   <tr><th colSpan="5">
                     <div className="ui right floated pagination menu">
                       <a className="icon item">
-                        <i className="left chevron icon" onClick="{this.props.onPrevPageClick}" ></i>
+                        <i className="left chevron icon" onClick="{this.handlePrevPageClick}" ></i>
                       </a>
-                      {this.createPaginationItems()}
                       <a className="icon item">
-                        <i className="right chevron icon" onClick="{this.props.onNextPageClick}" ></i>
+                        <i className="right chevron icon" onClick="{this.handleNextPageClick}" ></i>
                       </a>
                     </div>
                   </th>
