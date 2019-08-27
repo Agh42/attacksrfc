@@ -1,0 +1,24 @@
+GET http://localhost:8080/stats HTTP/1.1
+
+###
+
+GET http://localhost:8080/cve?vulnerable_cpe=avm:fritz&fields=id,cvss,summary HTTP/1.1
+
+###
+
+POST http://localhost:8080/cvesearch HTTP/1.1
+content-type: application/json
+
+{
+    "vulnerableCpes": ["avm:fritz", "redhat:linux"],
+    "fields": ["id", "vulnerable_product", "summary"],
+    "itemsPerPage": 10,
+    "requestedPage": 1
+}
+
+###
+
+List<Cpe> vulnerableCpes;
+		List<String> fields;
+		Integer itemsPerPage;
+		Integer requestedPage;
