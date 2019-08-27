@@ -8,7 +8,7 @@ import CpeClient from '../Gateways/CpeClient';
 
 import {Link, Redirect} from 'react-router-dom';
 
-const itemsPerPage = 100;
+const itemsPerPage = 20;
 
 
 export default class AttackSrfcPage extends Component {
@@ -36,8 +36,8 @@ export default class AttackSrfcPage extends Component {
 
     initStats = () => {
         this.setState({stats: {
-            cpeCount: "...",
-            cveCount: "...",
+            cpeCount: "<no data>",
+            cveCount: "<no data>",
             lastModified: "1977-10-20",
         }});
         CpeClient.getStats( (dbStats) => {
@@ -48,7 +48,7 @@ export default class AttackSrfcPage extends Component {
     initSelectedCves = () => {
         this.setState({
             selectedCves: CpeClient.getExampleCves(),
-            selectedCvesPage: CpeClient.getExampleCves().slice(0,9),
+            selectedCvesPage: CpeClient.getExampleCves().slice(0,20),
         });
     }
 
@@ -62,7 +62,6 @@ export default class AttackSrfcPage extends Component {
     }
 
     handlePaginationChange = (newPage) => {
-
         this.setState({numCurrentPage: newPage,});
         
     }

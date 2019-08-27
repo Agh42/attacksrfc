@@ -42,12 +42,16 @@ export default class CveList extends Component {
 
    
 
-     handlePrevPageClick = () => {
-      this.props.onPaginationChange(this.props.numCurrentPage-1);
+    handlePrevPageClick = () => {
+        if (this.props.numCurrentPage > 1) { 
+            this.props.onPaginationChange(this.props.numCurrentPage-1);
+        }
     }
     
     handleNextPageClick = () => {
-      this.props.onPaginationChange(this.props.numCurrentPage+1);
+        if (this.props.numCurrentPage < this.props.numTotalPages) {
+            this.props.onPaginationChange(this.props.numCurrentPage+1);
+        }
     }
 
 
@@ -108,6 +112,9 @@ export default class CveList extends Component {
                 <tfoot>
                   <tr><th colSpan="5">
                     <div className="ui right floated pagination menu">
+                      <a className="disabled icon item">
+                        {"Page " + this.props.numCurrentPage + "/" + this.props.numTotalPages}
+                      </a>
                       <a className="icon item">
                         <i className="left chevron icon" onClick="{this.handlePrevPageClick}" ></i>
                       </a>
