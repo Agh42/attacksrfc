@@ -4,7 +4,6 @@ import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
 import CpeClient from '../Gateways/CpeClient';
-//import CpeClient from '../Gateways/CpeClientStub';
 
 import {Link, Redirect} from 'react-router-dom';
 
@@ -88,8 +87,8 @@ export default class AttackSrfcPage extends Component {
     // FIXME replace state completely 
     loadCves = () => {
         let pageToGet = this.state.numCurrentPage;
-        let vendorsProductsOnly = this.state.selectedCpes.map ( (cpe) => {
-            return vendorProductOnly = newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
+        let vendorsProductsOnly = this.state.selectedCpes.map ( (newCpe) => {
+            return newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
         });
         CpeClient.getCvesForCpes(vendorsProductsOnly, itemsPerPage, pageToGet, (newCves) => (
             this.setState({ 

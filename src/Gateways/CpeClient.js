@@ -1,5 +1,5 @@
 import React from 'react';
-export const CpeClient = {getCvesForCpe, getAutoCompleteItems, 
+export const CpeClient = {getCvesForCpe, getCvesForCpes,getAutoCompleteItems, 
         getExampleCpes, getExampleCves, getStats}; 
 export default CpeClient;
 
