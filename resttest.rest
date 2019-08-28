@@ -18,7 +18,16 @@ content-type: application/json
 
 ###
 
-List<Cpe> vulnerableCpes;
-		List<String> fields;
-		Integer itemsPerPage;
-		Integer requestedPage;
+GET http://34.77.225.216:8080/stats HTTP/1.1
+
+###
+
+POST http://34.77.225.216:8080/cvesearch HTTP/1.1
+content-type: application/json
+
+{
+    "vulnerableCpes": ["avm:fritz", "redhat:linux"],
+    "fields": ["id", "vulnerable_product", "summary"],
+    "itemsPerPage": 10,
+    "requestedPage": 1
+}
