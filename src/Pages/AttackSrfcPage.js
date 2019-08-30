@@ -50,11 +50,6 @@ export default class AttackSrfcPage extends Component {
             selectedCvesPage: CpeClient.getExampleCves().slice(0,20),
         });
     }
-
-    loadSelectedCpes = () => {
-        let cpes = CpeClient.getSelectedCpes();
-        this.setState({ selectedCpes: cpes });
-    }
     
     handleSaveClick = () => {
           this.setState({_redirect: "PRICING"});
@@ -84,13 +79,20 @@ export default class AttackSrfcPage extends Component {
         }
     }
     
-    // FIXME replace state completely 
+    /*
+     * For the query the URI format of the CPE is used (see NISTIR 7695) because this is how CVEs 
+     * store references to CPEs in the database. This also allows left aligned regex matching to use the database index
+     * which speeds up the search significantly.
+     */ 
     loadCves = () => {
+        let reCutOff = /(cpe:\/.*?):-/;
         let pageToGet = this.state.numCurrentPage;
-        let vendorsProductsOnly = this.state.selectedCpes.map ( (newCpe) => {
-            return newCpe.id.split(":")[3] + ":" + newCpe.id.split(":")[4];
+        let cpeLeftAlignedURIBinding = this.state.selectedCpes.map ( (newCpe) => {
+            //get cpe2_2, if not there try to create it ourselves by replacing version number:
+            let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.3/, "/");  
+            return reCutOff.exec(cpe22)[1];
         });
-        CpeClient.getCvesForCpes(vendorsProductsOnly, itemsPerPage, pageToGet, (newCves) => (
+        CpeClient.getCvesForCpes(cpeLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
             this.setState({ 
                 selectedCves: newCves, 
             }))
@@ -138,7 +140,7 @@ export default class AttackSrfcPage extends Component {
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><h4 className="ui inverted header">
                                AttackSrfc Vulnerability Management 
-                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Products - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
+                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
                                - Last updated: {this.formatDate(this.state.stats.lastModified)} 
                                </h4>
                            </div>

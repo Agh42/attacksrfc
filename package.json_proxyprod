@@ -6,7 +6,7 @@
     "proxies all API calls to cveservice (running on port 8080)",
     " in dev environemnt, to prevent CORS violations:"
   ],
-  "proxy": "http://localhost:8080",
+  "proxy": "http://34.77.225.216:8080",
   "dependencies": {
     "moment": "^2.22.2",
     "react": "^16.5.2",

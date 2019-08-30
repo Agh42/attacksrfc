@@ -10,9 +10,9 @@ POST http://localhost:8080/cvesearch HTTP/1.1
 content-type: application/json
 
 {
-    "vulnerableCpes": ["avm:fritz", "redhat:linux"],
+    "vulnerableCpes": ["cpe:/o:avm:fritz", "cpe:/a:avm:fritz","cpe:/h:avm:fritz", "redhat:linux"],
     "fields": ["id", "vulnerable_product", "summary"],
-    "itemsPerPage": 10,
+    "itemsPerPage": 25,
     "requestedPage": 1
 }
 
@@ -31,3 +31,19 @@ content-type: application/json
     "itemsPerPage": 10,
     "requestedPage": 1
 }
+
+###
+
+###
+
+POST http://localhost:8080/cvesearch HTTP/1.1
+content-type: application/json
+
+{
+    "vulnerableCpes": ["cpe:/o:redhat:linux"],
+    "fields": ["id", "vulnerable_product", "summary"],
+    "itemsPerPage": 25,
+    "requestedPage": 1
+}
+
+###

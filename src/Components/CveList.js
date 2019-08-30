@@ -116,10 +116,10 @@ export default class CveList extends Component {
                         {"Page " + this.props.numCurrentPage + "/" + this.props.numTotalPages}
                       </a>
                       <a className="icon item">
-                        <i className="left chevron icon" onClick="{this.handlePrevPageClick}" ></i>
+                        <i className="left chevron icon" onClick={this.handlePrevPageClick} ></i>
                       </a>
                       <a className="icon item">
-                        <i className="right chevron icon" onClick="{this.handleNextPageClick}" ></i>
+                        <i className="right chevron icon" onClick={this.handleNextPageClick} ></i>
                       </a>
                     </div>
                   </th>
