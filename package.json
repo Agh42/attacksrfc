@@ -2,13 +2,9 @@
   "name": "attacksurface",
   "version": "0.1.0",
   "private": true,
-  "_comment_": [
-    "proxies all API calls to cveservice (running on port 8080)",
-    " in dev environemnt, to prevent CORS violations:"
-  ],
-  "proxy": "http://localhost:8080",
   "dependencies": {
     "moment": "^2.22.2",
+    "proptypes": "^1.1.0",
     "react": "^16.5.2",
     "react-autosuggest": "^9.4.2",
     "react-dom": "^16.5.2",

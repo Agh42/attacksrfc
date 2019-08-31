@@ -60,22 +60,25 @@ export default class AttackSrfcPage extends Component {
         
     }
     
-    // FIXME replace state completely 
     handleDeleteClick = (cpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
         });
+        this.loadCvesPage();
     }
     
+    /**
+     * Check if selected CPE is already present. If not, add it and set its 
+     * status to active.
+     */
     handleAddCpeClick = (newCpe) => {
         let cpePresent= this.state.selectedCpes.filter(c => c.id === newCpe.id);
-        console.log(cpePresent);
         if ( !cpePresent.length ) {
             let activeCpe = {...newCpe, isActive: true};
             this.setState({
                 selectedCpes: [...this.state.selectedCpes, activeCpe]
             });
-            this.loadCves();
+            this.loadCvesPage();
         }
     }
     
@@ -83,18 +86,22 @@ export default class AttackSrfcPage extends Component {
      * For the query the URI format of the CPE is used (see NISTIR 7695) because this is how CVEs 
      * store references to CPEs in the database. This also allows left aligned regex matching to use the database index
      * which speeds up the search significantly.
+     * 
      */ 
-    loadCves = () => {
+    loadCvesPage = () => {
         let reCutOff = /(cpe:\/.*?):-/;
         let pageToGet = this.state.numCurrentPage;
         let cpeLeftAlignedURIBinding = this.state.selectedCpes.map ( (newCpe) => {
             //get cpe2_2, if not there try to create it ourselves by replacing version number:
             let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.3/, "/");  
-            return reCutOff.exec(cpe22)[1];
+            let match = reCutOff.exec(cpe22);
+            let cutOffCpe = match ? match[1] : cpe22;
+            console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
+            return cutOffCpe;
         });
         CpeClient.getCvesForCpes(cpeLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
             this.setState({ 
-                selectedCves: newCves, 
+                selectedCvesPage: newCves, 
             }))
         );
     }

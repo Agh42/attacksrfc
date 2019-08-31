@@ -68,6 +68,22 @@ export default class CveList extends Component {
                     </div>
                 <table className="ui sortable celled padded table">
                 <thead>
+                <tr><th colSpan="6">
+                     <div className="ui right floated pagination menu">
+                         <a className={this.props.numCurrentPage>1 ? "icon item" : "disabled icon item"}>
+                           <i className="left chevron icon" onClick={this.handlePrevPageClick} ></i>
+                         </a>
+                         <a className="disabled icon item">
+                           {"Page " + this.props.numCurrentPage + "/" + this.props.numTotalPages}
+                         </a>
+                         <a className={this.props.numCurrentPage < this.props.numTotalPages
+                                 ? "icon item" : "disabled icon item"}>
+                           <i className="right chevron icon" onClick={this.handleNextPageClick} ></i>
+                         </a>
+                     </div>
+                </th></tr>
+                </thead>
+                <thead>
                   <tr>
                   <th>ID</th>
                   <th>Score</th>
@@ -109,22 +125,6 @@ export default class CveList extends Component {
                         );
                   })}
                 </tbody>
-                <tfoot>
-                  <tr><th colSpan="5">
-                    <div className="ui right floated pagination menu">
-                      <a className="disabled icon item">
-                        {"Page " + this.props.numCurrentPage + "/" + this.props.numTotalPages}
-                      </a>
-                      <a className="icon item">
-                        <i className="left chevron icon" onClick={this.handlePrevPageClick} ></i>
-                      </a>
-                      <a className="icon item">
-                        <i className="right chevron icon" onClick={this.handleNextPageClick} ></i>
-                      </a>
-                    </div>
-                  </th>
-                </tr>
-                </tfoot>
               </table>
             </div>
         );

@@ -86,18 +86,18 @@ export function getCvesForCpe(cpe, success) {
  * @returns
  */
 export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
-    let fields = "id,cvss,vulnerable_product,summary,references";
-  fetch(CVESERVICE_URL+'/cvesearch', {
+  let fields = ["id", "cvss", "references", "Modified", "Published", "summary"];
+  fetch(CVESERVICE_URL + '/cvesearch', {
     method: 'post',
     headers: {
-      'Accept': 'application/json, text/plain, */*',
+      'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      "vulnerableCpes": cpes, 
-      "itemsPerPage": itemsPerPage, 
+      "vulnerableCpes": cpes,
+      "itemsPerPage": itemsPerPage,
       "requestedPage": numPage,
-      "fields": fields,
+      "fields": fields
     })
   }).then(checkStatus)
     .then(parseJSON)
