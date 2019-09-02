@@ -2,6 +2,40 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
+class CveItem extends React.Component {
+    render() {
+        return (
+                <tr>
+                <td class="single line">
+                <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} target="_blank">{this.props.cve.id}</a> 
+                </td>
+                <td class="single line">
+                  {this.props.cve.cvss}
+                </td>
+                <td class="single line">
+                  {formatDate(this.props.cve.Modified)}
+                </td>
+                <td class="single line">
+                  {formatDate(this.props.cve.Published)}
+                </td>
+                <td>{this.props.cve.summary}</td>
+                <td class="right aligned">
+                  {
+                      this.props.cve.references.map( (reference, index) => {
+                          return (
+                            <div key={index} >
+                            <a href={reference} target="_blank">{getHostname(reference)}</a> 
+                            <br/>
+                            </div>
+                            );
+                      })
+                  }
+                </td>
+              </tr>  
+              );
+    }
+}
+
 /**
  * getHostname()
  * Thanks for this function to:
@@ -31,16 +65,12 @@ function formatDate(aDate) {
  */
 export default class CveList extends Component {
 
-
-
-    static PropTypes = {
+    static propTypes = {
         selectedCvesPage: PropTypes.array.isRequired,
         numTotalPages: PropTypes.number.isRequired,
         numCurrentPage: PropTypes.number.isRequired,
         onPaginationChange: PropTypes.func.isRequired,
     };
-
-   
 
     handlePrevPageClick = () => {
         if (this.props.numCurrentPage > 1) { 
@@ -54,11 +84,17 @@ export default class CveList extends Component {
         }
     }
 
-
-
     render () {
+        
+        //stateless component for cve list:
+        const cveItems = this.props.selectedCvesPage.map( (cve) => (
+                <CveItem 
+                    key={cve.id}
+                    cve={cve}
+                />
+        ));
+        
         return(
-                
                 <div className='ui raised segment'>
                     <div className='ui field'>
                          <div className="ui positive button" 
@@ -93,37 +129,7 @@ export default class CveList extends Component {
                   <th>References</th>
                 </tr></thead>
                 <tbody>
-                  {this.props.selectedCvesPage.map( (cve) => {
-                          return (
-                          <tr key={cve.id}>
-                          <td class="single line">
-                          <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+cve.id} target="_blank">{cve.id}</a> 
-                          </td>
-                          <td class="single line">
-                            {cve.cvss}
-                          </td>
-                          <td class="single line">
-                            {formatDate(cve.Modified)}
-                          </td>
-                          <td class="single line">
-                            {formatDate(cve.Published)}
-                          </td>
-                          <td>{cve.summary}</td>
-                          <td class="right aligned">
-                            {
-                                cve.references.map( (reference, index) => {
-                                    return (
-                                      <div key={index} >
-                                      <a href={reference} target="_blank">{getHostname(reference)}</a> 
-                                      <br/>
-                                      </div>
-                                      );
-                                })
-                            }
-                          </td>
-                        </tr>  
-                        );
-                  })}
+                  {cveItems}
                 </tbody>
               </table>
             </div>

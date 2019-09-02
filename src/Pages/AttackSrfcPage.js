@@ -6,9 +6,12 @@ import CveList from '../Components/CveList';
 import CpeClient from '../Gateways/CpeClient';
 
 import {Link, Redirect} from 'react-router-dom';
+import { ENGINE_METHOD_NONE } from 'constants';
 
-const itemsPerPage = 20;
+const itemsPerPage = 10;
 
+const CVE_ACTION_NONE = '_NONE';
+const CVE_ACTION_RELOAD = '_RELOAD';
 
 export default class AttackSrfcPage extends Component {
     
@@ -21,14 +24,27 @@ export default class AttackSrfcPage extends Component {
             numTotalPages: 1,
             numCurrentPage: 1,
             _redirect: "",
+            _cveAction: CVE_ACTION_NONE,
     };
-    
+
     componentDidMount() {
         this.initSelectedCpes();
         this.initSelectedCves();
         this.initStats();
     }
-    
+
+    componentDidUpdate() {
+        switch (this.state._cveAction) {
+            case CVE_ACTION_RELOAD:
+                this.setState({_cveAction: CVE_ACTION_NONE});
+                this.loadCvesPage();
+                break;
+        
+            default:
+                break;
+        }
+    }
+
     initSelectedCpes = () => {
         this.setState({selectedCpes: CpeClient.getExampleCpes()});
     }
@@ -60,11 +76,11 @@ export default class AttackSrfcPage extends Component {
         
     }
     
-    handleDeleteClick = (cpeId) => {
+    handleDeleteCpeClick = (cpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
+            _cveAction: CVE_ACTION_RELOAD,
         });
-        this.loadCvesPage();
     }
     
     /**
@@ -75,10 +91,10 @@ export default class AttackSrfcPage extends Component {
         let cpePresent= this.state.selectedCpes.filter(c => c.id === newCpe.id);
         if ( !cpePresent.length ) {
             let activeCpe = {...newCpe, isActive: true};
-            this.setState({
-                selectedCpes: [...this.state.selectedCpes, activeCpe]
+            this.setState( {
+                selectedCpes: [...this.state.selectedCpes, activeCpe],
+                _cveAction: CVE_ACTION_RELOAD,
             });
-            this.loadCvesPage();
         }
     }
     
@@ -91,7 +107,7 @@ export default class AttackSrfcPage extends Component {
     loadCvesPage = () => {
         let reCutOff = /(cpe:\/.*?):-/;
         let pageToGet = this.state.numCurrentPage;
-        let cpeLeftAlignedURIBinding = this.state.selectedCpes.map ( (newCpe) => {
+        let cpesLeftAlignedURIBinding = this.state.selectedCpes.map ( (newCpe) => {
             //get cpe2_2, if not there try to create it ourselves by replacing version number:
             let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.3/, "/");  
             let match = reCutOff.exec(cpe22);
@@ -99,11 +115,15 @@ export default class AttackSrfcPage extends Component {
             console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
             return cutOffCpe;
         });
-        CpeClient.getCvesForCpes(cpeLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
-            this.setState({ 
-                selectedCvesPage: newCves, 
-            }))
-        );
+        if (cpesLeftAlignedURIBinding.length > 0) {
+            CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
+                this.setState({ 
+                    selectedCvesPage: newCves, 
+                }))
+            );
+        } else {
+            this.setState( {selectedCvesPage: []});
+        }
     }
     
     handleCpeToggleClick = (toggleCpeId) => {
@@ -146,7 +166,7 @@ export default class AttackSrfcPage extends Component {
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><h4 className="ui inverted header">
-                               AttackSrfc Vulnerability Management 
+                               AttackSrfc - CVE Search and Vulnerability Management 
                                - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
                                - Last updated: {this.formatDate(this.state.stats.lastModified)} 
                                </h4>
@@ -178,7 +198,7 @@ export default class AttackSrfcPage extends Component {
                         selectedCpes={this.state.selectedCpes}
                         onSelectCpeClick={this.handleAddCpeClick}
                         onSaveClick={this.handleSaveClick}
-                        onDeleteClick={this.handleDeleteClick}
+                        onDeleteClick={this.handleDeleteCpeClick}
                         onCpeToggleClick={this.handleCpeToggleClick}
                         onEditCpeClick={this.handleEditCpeClick}
                     />

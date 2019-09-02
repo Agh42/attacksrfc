@@ -87,6 +87,7 @@ export function getCvesForCpe(cpe, success) {
  */
 export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
   let fields = ["id", "cvss", "references", "Modified", "Published", "summary"];
+  
   fetch(CVESERVICE_URL + '/cvesearch', {
     method: 'post',
     headers: {
