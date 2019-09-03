@@ -21,7 +21,7 @@ class CveItem extends React.Component {
                 <td>{this.props.cve.summary}</td>
                 <td class="right aligned">
                   {
-                      this.props.cve.references.map( (reference, index) => {
+                      this.props.cve.references.slice(0,3).map( (reference, index) => {
                           return (
                             <div key={index} >
                             <a href={reference} target="_blank">{getHostname(reference)}</a> 
@@ -30,6 +30,7 @@ class CveItem extends React.Component {
                             );
                       })
                   }
+                  <div>{this.props.cve.references.length > 3 ? "[...]": ""}</div>
                 </td>
               </tr>  
               );
@@ -49,7 +50,8 @@ function getHostname(url) {
 }
 
 function formatDate(aDate) {
-    let mom = moment(aDate);
+    let isoDate = aDate['$date'];
+    let mom = moment(isoDate, moment.ISO_8601, true);
     return mom.format('YYYY-MM-DD');
 }
 

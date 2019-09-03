@@ -29,7 +29,6 @@ export default class AttackSrfcPage extends Component {
 
     componentDidMount() {
         this.initSelectedCpes();
-        this.initSelectedCves();
         this.initStats();
     }
 
@@ -46,7 +45,9 @@ export default class AttackSrfcPage extends Component {
     }
 
     initSelectedCpes = () => {
-        this.setState({selectedCpes: CpeClient.getExampleCpes()});
+        this.setState( {selectedCpes: CpeClient.getExampleCpes(),
+                        _cveAction: CVE_ACTION_RELOAD, 
+                    });
     }
 
     initStats = () => {
@@ -57,13 +58,6 @@ export default class AttackSrfcPage extends Component {
         }});
         CpeClient.getStats( (dbStats) => {
             this.setState({stats: dbStats});
-        });
-    }
-    
-    initSelectedCves = () => {
-        this.setState({
-            selectedCves: CpeClient.getExampleCves(),
-            selectedCvesPage: CpeClient.getExampleCves().slice(0,20),
         });
     }
     
@@ -105,16 +99,18 @@ export default class AttackSrfcPage extends Component {
      * 
      */ 
     loadCvesPage = () => {
-        let reCutOff = /(cpe:\/.*?):-/;
+        let reCutOff = /(cpe:\/.*?)[:-]*$/; //remove all trailing ":-"
         let pageToGet = this.state.numCurrentPage;
+
         let cpesLeftAlignedURIBinding = this.state.selectedCpes.map ( (newCpe) => {
             //get cpe2_2, if not there try to create it ourselves by replacing version number:
-            let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.3/, "/");  
+            let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.[23]/, "/");  
             let match = reCutOff.exec(cpe22);
             let cutOffCpe = match ? match[1] : cpe22;
             console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
             return cutOffCpe;
         });
+
         if (cpesLeftAlignedURIBinding.length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
                 this.setState({ 
@@ -125,6 +121,8 @@ export default class AttackSrfcPage extends Component {
             this.setState( {selectedCvesPage: []});
         }
     }
+    // TODO only load active (green) CPEs. reload CVEs on active state cange as well
+    // FIXME: show total page number and activate paging
     
     handleCpeToggleClick = (toggleCpeId) => {
         this.setState({
