@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import moment from 'moment';
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
@@ -43,6 +44,9 @@ export default class AttackSrfcPage extends Component {
                 break;
         }
     }
+
+    // FIXME make initial cve exaple load work again (from server based on example CPEs)
+    // FIXME make pagination work
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
@@ -102,7 +106,8 @@ export default class AttackSrfcPage extends Component {
         let reCutOff = /(cpe:\/.*?)[:-]*$/; //remove all trailing ":-"
         let pageToGet = this.state.numCurrentPage;
 
-        let cpesLeftAlignedURIBinding = this.state.selectedCpes.map ( (newCpe) => {
+        let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
+            .map ( (newCpe) => {
             //get cpe2_2, if not there try to create it ourselves by replacing version number:
             let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.[23]/, "/");  
             let match = reCutOff.exec(cpe22);
@@ -135,6 +140,7 @@ export default class AttackSrfcPage extends Component {
                    return cpe;
                }
             }),
+            _cveAction: CVE_ACTION_RELOAD,
         });
     }
 
@@ -142,10 +148,11 @@ export default class AttackSrfcPage extends Component {
         return number ? number.toLocaleString() : number;
     }
 
-    formatDate(date) {
-        return date ? new Date(date).toLocaleString() : date;
+    formatDate(isoDate) {
+        let mom = moment(isoDate, moment.ISO_8601, true);
+        return mom.format('YYYY-MM-DDTHH:mm:ssZ');
     }
-    
+
     handleEditCpeClick = (editCpeId) => {
         console.log("Edit " + editCpeId);
     }

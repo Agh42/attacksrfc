@@ -113,10 +113,16 @@ export function getStats(success) {
 }
 
 export function getExampleCpes() {
-   return [ {
-       "id": "cpe:2.3:o:microsoft:windows_xp:-:sp2",
-       "title": "Microsoft Windows XP Service Pack 2"
-   },];
+  return [{
+    "id": "cpe:2.3:o:microsoft:windows_xp:-:-:-",
+    cpe_2_2: "cpe:/o:microsoft:windows_xp:-:-:-",
+    "title": "Microsoft Windows XP Service Pack 2",
+    isActive: true,
+  },
+  {
+    id: "cpe:2.3:o:avm:fritz:-:-:-",
+    cpe_2_2: "cpe:/o:avm:fritz:-:-:-",
+  },];
 }
 
 
