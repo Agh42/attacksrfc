@@ -9,18 +9,19 @@ import CpeClient from '../Gateways/CpeClient';
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
 
-const itemsPerPage = 10;
+const itemsPerPage = 20;
 
 const CVE_ACTION_NONE = '_NONE';
 const CVE_ACTION_RELOAD = '_RELOAD';
 
 export default class AttackSrfcPage extends Component {
-    
+
 
     state = {
             selectedCpes: [],
             selectedCves: [],
             selectedCvesPage: [],
+            selectedCvesTotalCount: 0,
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
@@ -39,7 +40,7 @@ export default class AttackSrfcPage extends Component {
                 this.setState({_cveAction: CVE_ACTION_NONE});
                 this.loadCvesPage();
                 break;
-        
+
             default:
                 break;
         }
@@ -50,7 +51,7 @@ export default class AttackSrfcPage extends Component {
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
-                        _cveAction: CVE_ACTION_RELOAD, 
+                        _cveAction: CVE_ACTION_RELOAD,
                     });
     }
 
@@ -64,25 +65,25 @@ export default class AttackSrfcPage extends Component {
             this.setState({stats: dbStats});
         });
     }
-    
+
     handleSaveClick = () => {
           this.setState({_redirect: "PRICING"});
     }
 
     handlePaginationChange = (newPage) => {
         this.setState({numCurrentPage: newPage,});
-        
+
     }
-    
+
     handleDeleteCpeClick = (cpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
             _cveAction: CVE_ACTION_RELOAD,
         });
     }
-    
+
     /**
-     * Check if selected CPE is already present. If not, add it and set its 
+     * Check if selected CPE is already present. If not, add it and set its
      * status to active.
      */
     handleAddCpeClick = (newCpe) => {
@@ -95,13 +96,13 @@ export default class AttackSrfcPage extends Component {
             });
         }
     }
-    
+
     /*
-     * For the query the URI format of the CPE is used (see NISTIR 7695) because this is how CVEs 
+     * For the query the URI format of the CPE is used (see NISTIR 7695) because this is how CVEs
      * store references to CPEs in the database. This also allows left aligned regex matching to use the database index
      * which speeds up the search significantly.
-     * 
-     */ 
+     *
+     */
     loadCvesPage = () => {
         let reCutOff = /(cpe:\/.*?)[:-]*$/; //remove all trailing ":-"
         let pageToGet = this.state.numCurrentPage;
@@ -109,7 +110,7 @@ export default class AttackSrfcPage extends Component {
         let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
             .map ( (newCpe) => {
             //get cpe2_2, if not there try to create it ourselves by replacing version number:
-            let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.[23]/, "/");  
+            let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.[23]/, "/");
             let match = reCutOff.exec(cpe22);
             let cutOffCpe = match ? match[1] : cpe22;
             console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
@@ -118,8 +119,10 @@ export default class AttackSrfcPage extends Component {
 
         if (cpesLeftAlignedURIBinding.length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
-                this.setState({ 
-                    selectedCvesPage: newCves, 
+                this.setState({
+                    selectedCvesPage: newCves.result,
+                    selectedCvesTotalCount: newCves.resultCount,
+                    numTotalPages : Math.ceil(newCves.resultCount / itemsPerPage),
                 }))
             );
         } else {
@@ -127,8 +130,7 @@ export default class AttackSrfcPage extends Component {
         }
     }
     // TODO only load active (green) CPEs. reload CVEs on active state cange as well
-    // FIXME: show total page number and activate paging
-    
+
     handleCpeToggleClick = (toggleCpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.map((cpe) => {
@@ -156,11 +158,11 @@ export default class AttackSrfcPage extends Component {
     handleEditCpeClick = (editCpeId) => {
         console.log("Edit " + editCpeId);
     }
-    
+
     render() {
         if (this.state._redirect) {
             return {
-                PRICING: <Redirect push to="/pricing" />, 
+                PRICING: <Redirect push to="/pricing" />,
             }[this.state._redirect];
         }
         return (
@@ -171,9 +173,9 @@ export default class AttackSrfcPage extends Component {
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><h4 className="ui inverted header">
-                               AttackSrfc - CVE Search and Vulnerability Management 
-                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities 
-                               - Last updated: {this.formatDate(this.state.stats.lastModified)} 
+                               AttackSrfc - CVE Search and Vulnerability Management
+                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
+                               - Last updated: {this.formatDate(this.state.stats.lastModified)}
                                </h4>
                            </div>
                            <div class="right menu primary">
@@ -198,7 +200,7 @@ export default class AttackSrfcPage extends Component {
         <div className='ui stackable padded grid'>
             <div className='two column row'>
                 <div className='five wide column'>
-                
+
                     <EditableInventoryList
                         selectedCpes={this.state.selectedCpes}
                         onSelectCpeClick={this.handleAddCpeClick}
@@ -209,28 +211,28 @@ export default class AttackSrfcPage extends Component {
                     />
                 </div>
                 <div className='eleven wide column'>
-                    <CveGraph 
+                    <CveGraph
                         selectedCves={this.state.selectedCves}
                         activeCpes={this.state.selectedCpes}
                     />
                 </div>
             </div>
-            
+
             <div className='one column row'>
                 <div className='sixteen wide column'>
-                    <CveList 
+                    <CveList
                         selectedCvesPage={this.state.selectedCvesPage}
                         numTotalPages={this.state.numTotalPages}
                         numCurrentPage={this.state.numCurrentPage}
                         onPaginationChange={this.handlePaginationChange}
                     />
                 </div>
-            </div> 
-        </div> 
+            </div>
+        </div>
                     <div class="ui  vertical footer segment">
                     <div class="ui center aligned container">
-                    
-                     
+
+
                       <div class="ui  section divider"></div>
                       <a className="item"href="/homepage.html">
                       <img class="ui centered image" src="images/logos/cstoolio_60.png" />
@@ -247,5 +249,4 @@ export default class AttackSrfcPage extends Component {
         );
         }
   }
-  
-  
+

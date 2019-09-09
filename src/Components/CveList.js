@@ -108,15 +108,15 @@ export default class CveList extends Component {
                 <thead>
                 <tr><th colSpan="6">
                      <div className="ui right floated pagination menu">
-                         <a className={this.props.numCurrentPage>1 ? "icon item" : "disabled icon item"}>
-                           <i className="left chevron icon" onClick={this.handlePrevPageClick} ></i>
+                         <a onClick={this.handlePrevPageClick} className={this.props.numCurrentPage>1 ? "icon item" : "disabled icon item"}>
+                           <i className="chevron circle left icon"  ></i>
                          </a>
                          <a className="disabled icon item">
                            {"Page " + this.props.numCurrentPage + "/" + this.props.numTotalPages}
                          </a>
-                         <a className={this.props.numCurrentPage < this.props.numTotalPages
+                         <a onClick={this.handleNextPageClick} className={this.props.numCurrentPage < this.props.numTotalPages
                                  ? "icon item" : "disabled icon item"}>
-                           <i className="right chevron icon" onClick={this.handleNextPageClick} ></i>
+                           <i className="chevron circle right icon" ></i>
                          </a>
                      </div>
                 </th></tr>
