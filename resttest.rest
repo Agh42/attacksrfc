@@ -40,8 +40,8 @@ POST http://localhost:8080/cvesearch HTTP/1.1
 content-type: application/json
 
 {
-    "vulnerableCpes": ["cpe:/o:redhat:linux"],
-    "fields": ["id", "vulnerable_product", "summary"],
+    "vulnerableCpes": ["cpe:/o:microsoft:windows_xp"],
+    "fields": ["id", "Modified", "summary"],
     "itemsPerPage": 25,
     "requestedPage": 1
 }

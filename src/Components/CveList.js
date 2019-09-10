@@ -56,7 +56,7 @@ function formatDate(aDate) {
 }
 
 /**
- *
+ * FIXME reload cvelist on pagination change. reset to page 1 when cpe selection changes. add first/last buttons.
  *
  * Receives list of CVEs to display on one page.
  * 
@@ -106,6 +106,7 @@ export default class CveList extends Component {
                     </div>
                 <table className="ui sortable celled padded table">
                 <thead>
+                
                 <tr><th colSpan="6">
                      <div className="ui right floated pagination menu">
                          <a onClick={this.handlePrevPageClick} className={this.props.numCurrentPage>1 ? "icon item" : "disabled icon item"}>

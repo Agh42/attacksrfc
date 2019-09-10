@@ -1,6 +1,6 @@
 import React from 'react';
-export const CpeClient = {getCvesForCpe, getCvesForCpes,getAutoCompleteItems, 
-        getExampleCpes, getStats}; 
+export const CpeClient = {getCvesForCpes,getAutoCompleteItems,
+        getExampleCpes, getStats};
 export default CpeClient;
 
 // edit .env to change this value:
@@ -8,7 +8,7 @@ const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
 
 const cves = [];
 
- 
+
 function getVendor(cpe) {
   return cpe.id.split(':')[3];
 }
@@ -21,13 +21,13 @@ function getProduct(cpe) {
 
 /**
 * Searches CPE titles. Returns array of matching CPEs: {id, title}
-* 
+*
 * @param {any} toComplete the string to search for
 * @param {any} success function to call with sucessfull result
-*/    
+*/
 function getAutoCompleteItems(toComplete, success) {
-   console.log(CVESERVICE_URL+'/cpe?startsWith='+toComplete);
-   return fetch(CVESERVICE_URL+'/cpe?startsWith='+toComplete, {
+   console.log(CVESERVICE_URL+'/api/v1/cpes/prefix/'+toComplete);
+   return fetch(CVESERVICE_URL+'/api/v1/cpes/prefix/'+toComplete, {
      headers: {
        Accept: 'application/json',
      },
@@ -54,24 +54,6 @@ function checkStatus(response) {
 
 
 /**
- * Search CVEs for a single CPE.
- *
- * @export
- * @param {*} cpe
- * @param {*} success
- * @returns
- */
-export function getCvesForCpe(cpe, success) {
-   let encodedCpe = encodeURIComponent(cpe);
-   return fetch(CVESERVICE_URL+'/cve?vulnerable_cpe='+encodedCpe+'&fields=id,cvss,references,vulnerable_configuration,vulnerable_product,summary', {
-       headers: {
-         Accept: 'application/json',
-       },
-     }).then(checkStatus)
-       .then(parseJSON)
-       .then(success);
-}
-/**
  * Search CVEs for a collection of CPEs.
  * Return only one specific page number from the result.
  *
@@ -84,8 +66,8 @@ export function getCvesForCpe(cpe, success) {
  */
 export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
   let fields = ["id", "cvss", "references", "Modified", "Published", "summary"];
-  
-  fetch(CVESERVICE_URL + '/cvesearch', {
+
+  fetch(CVESERVICE_URL + '/api/v1/cves/search', {
     method: 'post',
     headers: {
       'Accept': 'application/json',
@@ -103,7 +85,7 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
 }
 
 export function getStats(success) {
- return fetch(CVESERVICE_URL+'/stats', {
+ return fetch(CVESERVICE_URL+'/api/v1/stats', {
        headers: {
          Accept: 'application/json',
        },
@@ -126,4 +108,3 @@ export function getExampleCpes() {
 }
 
 
-    
