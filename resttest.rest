@@ -1,12 +1,9 @@
-GET http://localhost:8080/stats HTTP/1.1
-
-###
 
 GET http://localhost:8080/cve?vulnerable_cpe=avm:fritz&fields=id,cvss,summary HTTP/1.1
 
 ###
 
-POST http://localhost:8080/cvesearch HTTP/1.1
+POST http://localhost:8080/api/v1/cves/search HTTP/1.1
 content-type: application/json
 
 {
@@ -18,25 +15,20 @@ content-type: application/json
 
 ###
 
-GET http://34.77.225.216:8080/stats HTTP/1.1
+GET http://34.77.225.216:8080/api/v1/stats HTTP/1.1
 
 ###
 
-POST http://34.77.225.216:8080/cvesearch HTTP/1.1
-content-type: application/json
 
-{
-    "vulnerableCpes": ["avm:fritz", "redhat:linux"],
-    "fields": ["id", "vulnerable_product", "summary"],
-    "itemsPerPage": 10,
-    "requestedPage": 1
-}
+
+GET http://localhost:8080/api/v1/stats HTTP/1.1
 
 ###
 
+
 ###
 
-POST http://localhost:8080/cvesearch HTTP/1.1
+POST http://localhost:8080/api/v1/cves/search HTTP/1.1
 content-type: application/json
 
 {
@@ -47,3 +39,14 @@ content-type: application/json
 }
 
 ###
+
+GET http://localhost:8080/api/v1/cpes/prefix/microsoft HTTP/1.1
+
+###
+
+GET http://localhost:8080/api/v1/cves/vulnerable_product/microsoft HTTP/1.1
+
+###
+
+
+

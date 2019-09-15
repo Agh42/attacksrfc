@@ -71,8 +71,9 @@ export default class AttackSrfcPage extends Component {
     }
 
     handlePaginationChange = (newPage) => {
-        this.setState({numCurrentPage: newPage,});
-
+        this.setState({numCurrentPage: newPage,
+            _cveAction: CVE_ACTION_RELOAD,
+        });
     }
 
     handleDeleteCpeClick = (cpeId) => {
@@ -104,7 +105,7 @@ export default class AttackSrfcPage extends Component {
      *
      */
     loadCvesPage = () => {
-        let reCutOff = /(cpe:\/.*?)[:-]*$/; //remove all trailing ":-"
+        let reCutOff = /(cpe:\/.*?)[:-]*$/; //removes all trailing ":-"
         let pageToGet = this.state.numCurrentPage;
 
         let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
@@ -126,7 +127,12 @@ export default class AttackSrfcPage extends Component {
                 }))
             );
         } else {
-            this.setState( {selectedCvesPage: []});
+            this.setState( {
+                selectedCvesPage: [],
+                selectedCvesTotalCount: 0,
+                numTotalPages: 1,
+                numCurrentPage: 1,
+            });
         }
     }
     // TODO only load active (green) CPEs. reload CVEs on active state cange as well
@@ -172,10 +178,12 @@ export default class AttackSrfcPage extends Component {
                   <div class="column">
                       <div class="ui top fixed inverted teal icon menu">
                           <a className="item"href="/homepage.html"><i className="home icon" /></a>
-                           <div className="ui item"><h4 className="ui inverted header">
+                           <div className="ui item"><h4 className="ui left aligned inverted header">
                                AttackSrfc - CVE Search and Vulnerability Management
-                               - Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
+                               <div className="sub header">
+                               Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
                                - Last updated: {this.formatDate(this.state.stats.lastModified)}
+                               </div>
                                </h4>
                            </div>
                            <div class="right menu primary">
@@ -184,7 +192,7 @@ export default class AttackSrfcPage extends Component {
                              &nbsp;&nbsp;Login
                            </Link>
                            <Link to="/settings" class="item">
-                             <i className="cog icon" />
+                             <i className="disabled cog icon" />
                            </Link>
                            <Link to="/toolbox" class="item">
                              <i className="th icon" />
@@ -225,6 +233,7 @@ export default class AttackSrfcPage extends Component {
                         numTotalPages={this.state.numTotalPages}
                         numCurrentPage={this.state.numCurrentPage}
                         onPaginationChange={this.handlePaginationChange}
+                        numTotalCves={this.state.selectedCvesTotalCount}
                     />
                 </div>
             </div>
@@ -234,7 +243,7 @@ export default class AttackSrfcPage extends Component {
 
 
                       <div class="ui  section divider"></div>
-                      <a className="item"href="/homepage.html">
+                      <a className="item" href="/homepage.html">
                       <img class="ui centered image" src="images/logos/cstoolio_60.png" />
                       </a>
                       <div class="ui horizontal  small divided link list">
