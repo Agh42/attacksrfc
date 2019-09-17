@@ -47,7 +47,7 @@ export default class AttackSrfcPage extends Component {
     }
 
     // FIXME make initial cve exaple load work again (from server based on example CPEs)
-    // FIXME make pagination work
+    // FIXME cvss sort incorrect over multiple CPEs
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
