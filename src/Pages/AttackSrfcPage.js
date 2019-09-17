@@ -48,6 +48,8 @@ export default class AttackSrfcPage extends Component {
 
     // FIXME make initial cve exaple load work again (from server based on example CPEs)
     // FIXME cvss sort incorrect over multiple CPEs
+    // FIXME add sort index to CVSS
+    // FIXME add vendor and product field insert to cvesearch cronjob
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
@@ -135,7 +137,6 @@ export default class AttackSrfcPage extends Component {
             });
         }
     }
-    // TODO only load active (green) CPEs. reload CVEs on active state cange as well
 
     handleCpeToggleClick = (toggleCpeId) => {
         this.setState({
@@ -158,7 +159,7 @@ export default class AttackSrfcPage extends Component {
 
     formatDate(isoDate) {
         let mom = moment(isoDate, moment.ISO_8601, true);
-        return mom.format('YYYY-MM-DDTHH:mm:ssZ');
+        return mom.format('YYYY-MM-DDTHH:mmZ');
     }
 
     handleEditCpeClick = (editCpeId) => {
@@ -247,10 +248,10 @@ export default class AttackSrfcPage extends Component {
                       <img class="ui centered image" src="images/logos/cstoolio_60.png" />
                       </a>
                       <div class="ui horizontal  small divided link list">
-                        <a class="item" href="fixed.html#">Site Map</a>
-                        <a class="item" href="fixed.html#">Contact Us</a>
-                        <a class="item" href="fixed.html#">Terms and Conditions</a>
-                        <a class="item" href="fixed.html#">Privacy Policy</a>
+                        <a class="item" href="welcome.html#">Home</a>
+                        <a class="item" href="contact.html#">Contact</a>
+                        <a class="item" href="legal.html#">Legal Notice and License</a>
+                        <a class="item" href="contact.html#">Support</a>
                       </div>
                     </div>
                   </div>
