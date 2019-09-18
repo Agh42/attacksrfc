@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
-
+import CVEs from '../Dto/CVEs';
 
 /*
  * Displays details of one CVE.
@@ -14,12 +13,12 @@ import PropTypes from 'prop-types';
 export default class CveDetails extends Component {
 
     static propTypes = {
-        cve: propTypes.object.isRequired,
+        cve: PropTypes.object,
     };
 
-    
+
     render () {
-        const modified = Cve.formatDate(this.props.cve.Modified);
+        const modified = CVEs.formatDate(this.props.cve.Modified);
 
         return(
             <div className='ui raised segment'>
@@ -27,8 +26,8 @@ export default class CveDetails extends Component {
                   <div className='header'>{this.props.cve.id}</div>
                    <div class="ui small list">
                     <div class="item">
-                    <span class="ui {CVEs.colorNameForScore(cve.cvss)} circular label">{this.props.cve.cvss}</span>
-                     <span class="ui {CVEs.colorNameForScore(cve.cvss)} circular label">{CVEs.severityForScore(cve.cvss)}</span>
+                    <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">{this.props.cve.cvss}</span>
+                     <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">{CVEs.severityForScore(this.props.cve.cvss)}</span>
                     </div>
                     </div>
                     <div class="item"><i class="check circle red icon"></i>Published: </div>
@@ -43,7 +42,7 @@ export default class CveDetails extends Component {
                           this.props.cve.references.map( (reference, index) => {
                               return (
                                 <div key={index} >
-                                <a href={reference} target="_blank">{getHostname(reference)}</a>
+                                <a href={reference} target="_blank">{CVEs.getHostname(reference)}</a>
                                 <br/>
                                 </div>
                                 );
@@ -51,10 +50,10 @@ export default class CveDetails extends Component {
                       }
                     </div>
                     <div class="item"><i class="check circle red icon"></i>{this.props.cve.summary}</div>
-                  
-                  
-                  
-                  
+
+
+
+
                  <div className='extra content'>
                     <span className='right floated edit icon'>
                       <i className='edit icon' />
@@ -68,7 +67,7 @@ export default class CveDetails extends Component {
                   Start
                 </div>
             </div>
-            
+
         );
     }
 }
@@ -91,7 +90,7 @@ export default class CveDetails extends Component {
         </div>
       </div>
     </div>
-    
+
     <div class="hidden content">
       <div class="ui card">
       <div class="content">

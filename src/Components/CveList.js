@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import CVEs from '../Dto/CVEs';
 
 class CveItem extends React.Component {
     render() {
@@ -13,34 +14,16 @@ class CveItem extends React.Component {
                   {this.props.cve.cvss}
                 </td>
                 <td class="single line">
-                  {formatDate(this.props.cve.Modified)}
+                  {CVEs.formatDate(this.props.cve.Modified)}
                 </td>
                 <td class="single line">
-                  {formatDate(this.props.cve.Published)}
+                  {CVEs.formatDate(this.props.cve.Published)}
                 </td>
                 <td>{this.props.cve.summary}</td>
-               
+
               </tr>
               );
     }
-}
-
-/**
- * getHostname()
- * Thanks for this function to
- * @author Finn Westendorf
- * @param {any} url
- */
-function getHostname(url) {
-    var a = document.createElement("a");
-    a.href = url;
-    return a.hostname;
-}
-
-function formatDate(aDate) {
-    let isoDate = aDate['$date'];
-    let mom = moment(isoDate, moment.ISO_8601, true);
-    return mom.format('YYYY-MM-DD');
 }
 
 /**
@@ -156,7 +139,6 @@ export default class CveList extends Component {
                   <th>Modified</th>
                   <th>Published</th>
                   <th>Summary</th>
-                  <th>References</th>
                 </tr></thead>
                 <tbody>
                   {cveItems}

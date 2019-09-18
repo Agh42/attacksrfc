@@ -1,4 +1,6 @@
-export const CVEs = {colorForScore};
+import moment from 'moment';
+
+export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate, getHostname};
 export default CVEs;
 
 const MEDIUM_THRESHOLD = 4.00; // medium severity lower bound inclusive
@@ -22,10 +24,28 @@ function colorNameForScore(score) {
     return "yellow";
 }
 
-function severityForScore(score) {    
+function severityForScore(score) {
     if (score < MEDIUM_THRESHOLD) return SEVERITY_LOW;
     if (score > CRITICAL_THRESHOLD) return SEVERITY_CRITICAL;
     if (score > HIGH_THRESHOLD) return SEVERITY_HIGH;
     return SEVERITY_MEDIUM;
-
 }
+
+/**
+ * getHostname()
+ * Thanks for this function to
+ * @author Finn Westendorf
+ * @param {any} url
+ */
+function getHostname(url) {
+    var a = document.createElement("a");
+    a.href = url;
+    return a.hostname;
+}
+
+function formatDate(aDate) {
+    let isoDate = aDate['$date'];
+    let mom = moment(isoDate, moment.ISO_8601, true);
+    return mom.format('YYYY-MM-DD');
+}
+

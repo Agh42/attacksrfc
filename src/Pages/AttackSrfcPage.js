@@ -4,7 +4,7 @@ import moment from 'moment';
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
-import CveDetials from 'Components/CveDetails';
+import CveDetails from '../Components/CveDetails';
 import CpeClient from '../Gateways/CpeClient';
 
 import {Link, Redirect} from 'react-router-dom';
@@ -54,7 +54,7 @@ export default class AttackSrfcPage extends Component {
     // TODO add iphone and adobe reader to example cves
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
-    
+
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
@@ -117,8 +117,8 @@ export default class AttackSrfcPage extends Component {
 
         let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
             .map ( (newCpe) => {
-            //get cpe2_2, if not there try to create it ourselves by replacing version number:
-            let cpe22 = newCpe.cpe_2_2 ? newCpe.cpe_2_2 : newCpe.id.replace(/2.[23]/, "/");
+            //create cpe 2.2 by replacing version number:
+            let cpe22 = newCpe.id.replace(/2.[23]:/, "/");
             let match = reCutOff.exec(cpe22);
             let cutOffCpe = match ? match[1] : cpe22;
             console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
@@ -231,14 +231,16 @@ export default class AttackSrfcPage extends Component {
                     />
                 </div>
             </div>
-            
+
             <div className='two column row'>
                 <div className='six wide column'>
+                {/*
                     <CveDetails
                         selectedCve={this.state.selectedCve}
-                    />                
+                    />
+                */}
                 </div>
-            
+
                 <div className='ten wide column'>
                     <CveList
                         selectedCvesPage={this.state.selectedCvesPage}

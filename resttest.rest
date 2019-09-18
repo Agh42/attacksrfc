@@ -32,15 +32,23 @@ POST http://localhost:8080/api/v1/cves/search HTTP/1.1
 content-type: application/json
 
 {
-    "vulnerableCpes": ["cpe:/o:microsoft:windows_xp"],
-    "fields": ["id", "Modified", "summary"],
-    "itemsPerPage": 25,
-    "requestedPage": 1
+    "vulnerableCpes": ["cpe:/o:microsoft:windows_xp",
+        "cpe:/o:apple:iphone_os",
+        "cpe:/a:adobe:acrobat_reader",
+        "cpe:/a:microsoft:outlook",
+        "cpe:/a:microsoft:.net_framework:",
+        "cpe:/a:microsoft",
+        "cpe:/o:linux",
+        "cpe:/a:redhat"],
+    "fields": ["id", "cvss", "references", "Modified", 
+        "Published", "summary"],
+    "itemsPerPage": 20,
+    "requestedPage": 120
 }
 
 ###
 
-GET http://localhost:8080/api/v1/cpes/prefix/microsoft HTTP/1.1
+GET http://localhost:8080/api/v1/cpes/prefix/redhat HTTP/1.1
 
 ###
 
