@@ -19,19 +19,7 @@ class CveItem extends React.Component {
                   {formatDate(this.props.cve.Published)}
                 </td>
                 <td>{this.props.cve.summary}</td>
-                <td class="right aligned">
-                  {
-                      this.props.cve.references.slice(0,3).map( (reference, index) => {
-                          return (
-                            <div key={index} >
-                            <a href={reference} target="_blank">{getHostname(reference)}</a>
-                            <br/>
-                            </div>
-                            );
-                      })
-                  }
-                  <div>{this.props.cve.references.length > 3 ? "[...]": ""}</div>
-                </td>
+               
               </tr>
               );
     }
@@ -39,7 +27,7 @@ class CveItem extends React.Component {
 
 /**
  * getHostname()
- * Thanks for this function to:
+ * Thanks for this function to
  * @author Finn Westendorf
  * @param {any} url
  */
@@ -56,7 +44,6 @@ function formatDate(aDate) {
 }
 
 /**
- * FIXME reload cvelist on pagination change. reset to page 1 when cpe selection changes. add first/last buttons.
  *
  * Receives list of CVEs to display on one page.
  *

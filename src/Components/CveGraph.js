@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import * as vis from 'vis';
+import CVEs from '../Dto/CVEs';
 
-function colorForScore(score) {
-    if (score < 5.01) return "#11A100";
-    if (score > 8.99) return "#db0000";
-    return "#ffa200";
-}
+
 
 function getCpesGenericForm(cpes) {
     let result = new Set();
@@ -42,7 +39,7 @@ export default class CveGraph extends Component {
             this.nodes.add( {id: cve.id, 
                 label: cve.cvss.toString(), 
                 title: cve.id,
-                color: colorForScore(cve.cvss) } );
+                color: CVEs.colorForScore(cve.cvss) } );
             
             let primaryCpe='';
             cve.vulnerable_product.forEach( (vulnerableCpe) => {

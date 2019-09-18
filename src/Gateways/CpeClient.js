@@ -3,7 +3,7 @@ export const CpeClient = {getCvesForCpes,getAutoCompleteItems,
         getExampleCpes, getStats};
 export default CpeClient;
 
-// edit .env to change this value:
+// edit .env/.env.local to change this value:
 const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
 
 const cves = [];
@@ -105,6 +105,7 @@ export function getExampleCpes() {
     id: "cpe:2.3:o:avm:fritz:-:-:-",
     cpe_2_2: "cpe:/o:avm:fritz:-:-:-",
   },];
+  
 }
 
 

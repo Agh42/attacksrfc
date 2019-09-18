@@ -4,6 +4,7 @@ import moment from 'moment';
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
+import CveDetials from 'Components/CveDetails';
 import CpeClient from '../Gateways/CpeClient';
 
 import {Link, Redirect} from 'react-router-dom';
@@ -20,6 +21,7 @@ export default class AttackSrfcPage extends Component {
     state = {
             selectedCpes: [],
             selectedCves: [],
+            selectedCve: "",
             selectedCvesPage: [],
             selectedCvesTotalCount: 0,
             stats: [],
@@ -46,10 +48,13 @@ export default class AttackSrfcPage extends Component {
         }
     }
 
-    // FIXME make initial cve exaple load work again (from server based on example CPEs)
     // FIXME cvss sort incorrect over multiple CPEs
     // FIXME add sort index to CVSS
     // FIXME add vendor and product field insert to cvesearch cronjob
+    // TODO add iphone and adobe reader to example cves
+    // TODO add red "Full. Text. Search." to cpe dropdown
+    // TODO make word after space search windows_10 AND narrow windows results
+    
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
@@ -226,9 +231,15 @@ export default class AttackSrfcPage extends Component {
                     />
                 </div>
             </div>
-
-            <div className='one column row'>
-                <div className='sixteen wide column'>
+            
+            <div className='two column row'>
+                <div className='six wide column'>
+                    <CveDetails
+                        selectedCve={this.state.selectedCve}
+                    />                
+                </div>
+            
+                <div className='ten wide column'>
                     <CveList
                         selectedCvesPage={this.state.selectedCvesPage}
                         numTotalPages={this.state.numTotalPages}
