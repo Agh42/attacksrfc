@@ -3,9 +3,10 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
 
-class CveItem extends React.Component {
+const CveItem = (props) => {
     render() {
         return (
+        props.cpes.map ... create rows here
                 <tr>
                 <td class="single line">
                 <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} target="_blank">{this.props.cve.id}</a>
@@ -83,7 +84,7 @@ export default class CveList extends Component {
 
     render () {
 
-        //stateless component for cve list:
+        //component for cve list:
         const cveItems = this.props.selectedCvesPage.map( (cve) => (
                 <CveItem
                     key={cve.id}

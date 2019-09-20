@@ -240,7 +240,9 @@ export default class AttackSrfcPage extends Component {
                     />
                 */}
                 </div>
-
+                
+                {this.state.showCpeSummaryList
+                
                 <div className='ten wide column'>
                     <CveList
                         selectedCvesPage={this.state.selectedCvesPage}
