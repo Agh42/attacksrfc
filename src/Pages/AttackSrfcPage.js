@@ -233,7 +233,7 @@ export default class AttackSrfcPage extends Component {
             </div>
 
             <div className='two column row'>
-                <div className='six wide column'>
+                <div className='five wide column'>
                 {/*
                     <CveDetails
                         selectedCve={this.state.selectedCve}
@@ -241,7 +241,7 @@ export default class AttackSrfcPage extends Component {
                 */}
                 </div>
 
-                <div className='ten wide column'>
+                <div className='eleven wide column'>
                     <CveList
                         selectedCvesPage={this.state.selectedCvesPage}
                         numTotalPages={this.state.numTotalPages}
