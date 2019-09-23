@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 /**
  * Single selectable CPE entry row.
- 
+
  * CPE format is: cpe:cpeversion:type:vendor:product:version:update:edition
  *                :lang:sw_edition:target_sw:target_hw:other
- * 
+ *
  */
 class CpeSummaryItem extends React.Component {
 
@@ -17,16 +17,16 @@ class CpeSummaryItem extends React.Component {
         isSelected: propTypes.boolean.isRequired,
         onClick: propTypes.function.isRequired,
     };
-        
+
     handleCpeClick = () => {
         this.props.onCpeClick(this.props.cpe.id);
     }
-    
+
     render() {
         let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
-        [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
+        [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest]
             = this.props.cpe.id.split(":");
-        
+
             return (
              <tr>
                 <td class="single line">
@@ -42,23 +42,23 @@ class CpeSummaryItem extends React.Component {
                 </td>
                  <td class="single line">
                 </td>
-                 
+
               </tr>
             )};
 }
 
 
 /**
- * List of all searched and saved CPEs. 
- * 
+ * List of all searched and saved CPEs.
+ *
  */
 export default class SelectableCpeDetailsTable extends Component {
 
 static propTypes = {
-        cpes: PropTypes.array.isRequired;
+        cpes: PropTypes.array.isRequired,
         onSelect: PropTypes.function.isRequired,
     };
-    
+
     constructor() {
         super();
         this.state = {
@@ -66,19 +66,27 @@ static propTypes = {
             _isLoading: false,
         }
      }
-          
+
     render() {
         //component for cpe list:
         const selectableCpeItemList = this.props.cpes.map((cpe) => (
-            <CpeSummaryItem 
+            <CpeSummaryItem
                 onClick={this.props.onSelect}
                 cpe={cpe}
                 key={cpe.id}
             />
         ));
-       
+
         return (
-           
+            <table className="ui sortable celled padded table">
+                <thead>
+                    <tr><th colSpan="6"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
         );
     }
 }
