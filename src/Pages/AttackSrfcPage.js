@@ -15,9 +15,22 @@ const itemsPerPage = 20;
 const CVE_ACTION_NONE = '_NONE';
 const CVE_ACTION_RELOAD = '_RELOAD';
 
+const REDIRECT_PRICING = '/pricing';
+
 export default class AttackSrfcPage extends Component {
 
 
+/*
+ * selectedCpes:            cpe list used by cpe inventory
+ * selectedCves:            cve list used by graph display
+ * selectedCve:
+ * selectedCvesPage:        paginated cve list used by cvelist component
+ * selectedCvesTotalCount:  number of all cves for current inventory
+ * stats:                   amount of cves/cpes in database and time of last update
+ * numTotalPages:           total cve pages available           
+ * numCurrentPage:          cve page being displayed
+ * 
+*/
     state = {
             selectedCpes: [],
             selectedCves: [],
@@ -54,6 +67,7 @@ export default class AttackSrfcPage extends Component {
     // TODO add iphone and adobe reader to example cves
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
+    // FIXME page counter not reset when cpe has only 1 cve
 
 
     initSelectedCpes = () => {
@@ -74,7 +88,7 @@ export default class AttackSrfcPage extends Component {
     }
 
     handleSaveClick = () => {
-          this.setState({_redirect: "PRICING"});
+          this.setState({_redirect: REDIRECT_PRICING});
     }
 
     handlePaginationChange = (newPage) => {
@@ -174,7 +188,7 @@ export default class AttackSrfcPage extends Component {
     render() {
         if (this.state._redirect) {
             return {
-                PRICING: <Redirect push to="/pricing" />,
+                REDIRECT_PRICING: <Redirect push to={REDIRECT_PRICING} />,
             }[this.state._redirect];
         }
         return (
@@ -233,15 +247,22 @@ export default class AttackSrfcPage extends Component {
             </div>
 
             <div className='two column row'>
-                <div className='five wide column'>
+                <div className='six wide column'>
                 {/*
                     <CveDetails
                         selectedCve={this.state.selectedCve}
                     />
                 */}
                 </div>
-
-                <div className='eleven wide column'>
+                
+                <div className='ten wide column'>
+                {this.state._summaryDisplay === SHOW_SUMMARY_CPE ?
+                
+                    <SelectableCpeDetailsTable
+                        
+                    />
+                
+                :
                     <CveList
                         selectedCvesPage={this.state.selectedCvesPage}
                         numTotalPages={this.state.numTotalPages}
@@ -249,6 +270,8 @@ export default class AttackSrfcPage extends Component {
                         onPaginationChange={this.handlePaginationChange}
                         numTotalCves={this.state.selectedCvesTotalCount}
                     />
+                    
+                }
                 </div>
             </div>
         </div>

@@ -3,27 +3,27 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
 
-class CveItem extends React.Component {
-    render() {
-        return (
-                <tr>
+const CveItems = (props) => {
+        <tbody>
+        props.cves.map( (cve) => (
+                <tr key="{props.cve.id}">
                 <td class="single line">
-                <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} target="_blank">{this.props.cve.id}</a>
+                <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+props.cve.id} target="_blank">{props.cve.id}</a>
                 </td>
                 <td class="single line">
-                  {this.props.cve.cvss}
+                  {props.cve.cvss}
                 </td>
                 <td class="single line">
-                  {CVEs.formatDate(this.props.cve.Modified)}
+                  {CVEs.formatDate(props.cve.Modified)}
                 </td>
                 <td class="single line">
-                  {CVEs.formatDate(this.props.cve.Published)}
+                  {CVEs.formatDate(props.cve.Published)}
                 </td>
-                <td>{this.props.cve.summary}</td>
-
+                <td>{props.cve.summary}</td>
               </tr>
-              );
-    }
+        ));
+        </tbody>
+
 }
 
 /**
@@ -83,14 +83,6 @@ export default class CveList extends Component {
 
     render () {
 
-        //stateless component for cve list:
-        const cveItems = this.props.selectedCvesPage.map( (cve) => (
-                <CveItem
-                    key={cve.id}
-                    cve={cve}
-                />
-        ));
-
         return(
                 <div className='ui raised segment'>
                     <div className='ui field'>
@@ -140,9 +132,9 @@ export default class CveList extends Component {
                   <th>Published</th>
                   <th>Summary</th>
                 </tr></thead>
-                <tbody>
-                  {cveItems}
-                </tbody>
+                    <CveItems
+                        cves={this.props.selectedCvesPage}
+                    />
               </table>
             </div>
         );
