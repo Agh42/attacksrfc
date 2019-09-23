@@ -30,7 +30,7 @@ class CpeSummaryItem extends React.Component {
             return (
              <tr>
                 <td class="single line">
-                    
+                    {this.props}
                 </td>
                 <td class="single line">
                 </td>
