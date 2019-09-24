@@ -10,11 +10,23 @@ import CpeClient from '../Gateways/CpeClient';
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
 
+// cve items displayed per page:
 const itemsPerPage = 20;
 
+// trigger actions for cve loading:
+// TODO move to redux store and actions
 const CVE_ACTION_NONE = '_NONE';
 const CVE_ACTION_RELOAD = '_RELOAD';
 
+// which summary list to show:
+const SHOW_SUMMARY_CPE = 'SHOW_SUMMARY_CPE';
+const SHOW_SUMMARY_CVE = 'SHOW_SUMMARY_CVE';
+
+// trigger cpe summary loading:
+const CPE_ACTION_NONE = '_NONE';
+const CPE_ACTION_RELOAD = '_RELOAD';
+
+// page load redirects:
 const REDIRECT_PRICING = '/pricing';
 
 export default class AttackSrfcPage extends Component {
@@ -40,8 +52,13 @@ export default class AttackSrfcPage extends Component {
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
+            
+            cpeSummaries: [],
+            _summaryDisplay: SHOW_SUMMARY_CPE
+            
             _redirect: "",
-            _cveAction: CVE_ACTION_NONE,
+            _cveAction: CVE_ACTION_NONE, 
+            -cpeAction: CPE_ACTION_NONE
     };
 
     componentDidMount() {
@@ -55,9 +72,18 @@ export default class AttackSrfcPage extends Component {
                 this.setState({_cveAction: CVE_ACTION_NONE});
                 this.loadCvesPage();
                 break;
-
             default:
                 break;
+                
+        }
+         switch (this.state._cpeAction) {
+            case CPE_ACTION_RELOAD:
+                this.setState({_cpeAction: CPE_ACTION_NONE});
+                this.loadCpeSummaries();
+                break;
+            default:
+                break;
+                
         }
     }
 
@@ -119,16 +145,15 @@ export default class AttackSrfcPage extends Component {
         }
     }
 
+
     /*
      * For the query the URI format of the CPE is used (see NISTIR 7695) because this is how CVEs
      * store references to CPEs in the database. This also allows left aligned regex matching to use the database index
      * which speeds up the search significantly.
      *
-     */
-    loadCvesPage = () => {
+     */    
+    getCpesAsUriBinding = () => {
         let reCutOff = /(cpe:\/.*?)[:-]*$/; //removes all trailing ":-"
-        let pageToGet = this.state.numCurrentPage;
-
         let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
             .map ( (newCpe) => {
             //create cpe 2.2 by replacing version number:
@@ -138,8 +163,14 @@ export default class AttackSrfcPage extends Component {
             console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
             return cutOffCpe;
         });
+        return cpesLeftAlignedUriBinding;
+    }
 
-        if (cpesLeftAlignedURIBinding.length > 0) {
+    loadCvesPage = () => {
+        let pageToGet = this.state.numCurrentPage;
+        let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
+        
+        if (cpesLeftAlignedURIBinding().length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
                 this.setState({
                     selectedCvesPage: newCves.result,
@@ -155,6 +186,20 @@ export default class AttackSrfcPage extends Component {
                 numCurrentPage: 1,
             });
         }
+    }
+    
+    // load cve counts for selected cpes:
+    loadCpeSummaries = () => {
+         let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
+        
+        if (cpesLeftAlignedURIBinding().length > 0) {
+     
+        } else {
+            this.setState( {
+                cpeSummaries: [],
+            });
+        }
+    }   
     }
 
     handleCpeToggleClick = (toggleCpeId) => {
@@ -256,22 +301,23 @@ export default class AttackSrfcPage extends Component {
                 </div>
                 
                 <div className='ten wide column'>
-                {this.state._summaryDisplay === SHOW_SUMMARY_CPE ?
-                
-                    <SelectableCpeDetailsTable
-                        
-                    />
-                
-                :
-                    <CveList
-                        selectedCvesPage={this.state.selectedCvesPage}
-                        numTotalPages={this.state.numTotalPages}
-                        numCurrentPage={this.state.numCurrentPage}
-                        onPaginationChange={this.handlePaginationChange}
-                        numTotalCves={this.state.selectedCvesTotalCount}
-                    />
-                    
-                }
+                   <div className='ui raised segment'>
+              
+                        {this.state._summaryDisplay === SHOW_SUMMARY_CPE
+                        ?   <SelectableCpeDetailsTable
+                                cpesWithCveCounts={this.state.cpesWithCveCounts}
+                                onSelect={this.handleCpeSummarySelected}
+                            />
+                        :
+                            <CveList
+                                selectedCvesPage={this.state.selectedCvesPage}
+                                numTotalPages={this.state.numTotalPages}
+                                numCurrentPage={this.state.numCurrentPage}
+                                onPaginationChange={this.handlePaginationChange}
+                                numTotalCves={this.state.selectedCvesTotalCount}
+                            />   
+                        }
+                    </div>
                 </div>
             </div>
         </div>

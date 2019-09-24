@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 
+
+
 /**
  * Single selectable CPE entry row.
  
@@ -13,13 +15,12 @@ class CpeSummaryItem extends React.Component {
 
     static propTypes = {
         key: propTypes.string.isRequired,
-        cpe: propTypes.object.isRequired,
-        isSelected: propTypes.boolean.isRequired,
+        cpeSummary: propTypes.object.iRequired,
         onClick: propTypes.function.isRequired,
     };
         
     handleCpeClick = () => {
-        this.props.onCpeClick(this.props.cpe.id);
+        this.props.onCpeClick(this.props.cpeSummary.cpe.id);
     }
     
     render() {
@@ -28,22 +29,31 @@ class CpeSummaryItem extends React.Component {
             = this.props.cpe.id.split(":");
         
             return (
+             <tbody>
              <tr>
                 <td class="single line">
-                    {this.props}
+                    {this.props.cpeSummary.cpe.title}
                 </td>
                 <td class="single line">
+                    {this.props.cpeSummary._isLoading
+                        ? <i className="sync icon" />
+                        : {this.props.cpeSummary.criticalCount}
+                    }
                 </td>
                  <td class="single line">
+                  {this.props.cpeSummary._isLoading
+                        ? this.props.cpeSummary.highCount}
                 </td>
                  <td class="single line">
+                  {this.props.cpeSummary._isLoading
+                        ? this.props.cpeSummary.mediumCount}
                 </td>
                  <td class="single line">
+                  {this.props.cpeSummary._isLoading
+                        ? this.props.cpeSummary.lowCount}
                 </td>
-                 <td class="single line">
-                </td>
-                 
               </tr>
+              </tbody>
             )};
 }
 
@@ -55,30 +65,40 @@ class CpeSummaryItem extends React.Component {
 export default class SelectableCpeDetailsTable extends Component {
 
 static propTypes = {
-        cpes: PropTypes.array.isRequired;
+        cpesWithCveCounts: PropTypes.array.isRequired;
         onSelect: PropTypes.function.isRequired,
     };
     
     constructor() {
         super();
         this.state = {
-            cpesWithCveCounts: [],
             _isLoading: false,
         }
      }
           
     render() {
         //component for cpe list:
-        const selectableCpeItemList = this.props.cpes.map((cpe) => (
+        const selectableCpeItemList = this.props.cpesWithCveCounts.map((cpeWithCount) => (
             <CpeSummaryItem 
                 onClick={this.props.onSelect}
-                cpe={cpe}
+                cpeSummary={cpeWithCount}
                 key={cpe.id}
             />
         ));
-       
+            
         return (
-           
+          <table className="ui sortable celled padded table">
+                <thead>
+                  <tr>
+                  <th>Product</th>
+                  <th>Critical</th>
+                  <th>High</th>
+                  <th>Medium</th>
+                  <th>Low</th>
+                  </tr>
+                </thead>
+                {selectableCpeItemList}
+          </table> 
         );
     }
 }

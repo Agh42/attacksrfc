@@ -82,15 +82,14 @@ export default class CveList extends Component {
     }
 
     render () {
-
         return(
-                <div className='ui raised segment'>
-                    <div className='ui field'>
-                         <div className="ui positive button"
-                              data-tooltip="Save this list as an Excel file."
-                              onClick={this.props.onSaveClick} >
-                             Save as .xlsx</div>
-                    </div>
+               <div className='ui field'>
+                     <div className="ui positive button"
+                          data-tooltip="Save this list as an Excel file."
+                          onClick={this.props.onSaveClick} >
+                         Save as .xlsx</div>
+                </div>
+                    
                 <table className="ui sortable celled padded table">
                 <thead>
 
@@ -136,7 +135,6 @@ export default class CveList extends Component {
                         cves={this.props.selectedCvesPage}
                     />
               </table>
-            </div>
         );
     }
 }
