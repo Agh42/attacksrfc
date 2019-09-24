@@ -6,10 +6,10 @@ import PropTypes from 'prop-types';
 
 /**
  * Single selectable CPE entry row.
- 
+
  * CPE format is: cpe:cpeversion:type:vendor:product:version:update:edition
  *                :lang:sw_edition:target_sw:target_hw:other
- * 
+ *
  */
 class CpeSummaryItem extends React.Component {
 
@@ -18,16 +18,16 @@ class CpeSummaryItem extends React.Component {
         cpeSummary: propTypes.object.iRequired,
         onClick: propTypes.function.isRequired,
     };
-        
+
     handleCpeClick = () => {
         this.props.onCpeClick(this.props.cpeSummary.cpe.id);
     }
-    
+
     render() {
         let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
-        [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
+        [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest]
             = this.props.cpe.id.split(":");
-        
+
             return (
              <tbody>
              <tr>
@@ -52,6 +52,9 @@ class CpeSummaryItem extends React.Component {
                   {this.props.cpeSummary._isLoading
                         ? this.props.cpeSummary.lowCount}
                 </td>
+                 <td class="single line">
+                </td>
+
               </tr>
               </tbody>
             )};
@@ -59,8 +62,8 @@ class CpeSummaryItem extends React.Component {
 
 
 /**
- * List of all searched and saved CPEs. 
- * 
+ * List of all searched and saved CPEs.
+ *
  */
 export default class SelectableCpeDetailsTable extends Component {
 
@@ -68,14 +71,14 @@ static propTypes = {
         cpesWithCveCounts: PropTypes.array.isRequired;
         onSelect: PropTypes.function.isRequired,
     };
-    
+
     constructor() {
         super();
         this.state = {
             _isLoading: false,
         }
      }
-          
+
     render() {
         //component for cpe list:
         const selectableCpeItemList = this.props.cpesWithCveCounts.map((cpeWithCount) => (
