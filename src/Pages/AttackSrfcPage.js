@@ -193,7 +193,8 @@ export default class AttackSrfcPage extends Component {
          let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
         
         if (cpesLeftAlignedURIBinding().length > 0) {
-     
+            this.state.selectedCpes.filter(c => c.isActive).foreach
+                CpeClient.
         } else {
             this.setState( {
                 cpeSummaries: [],

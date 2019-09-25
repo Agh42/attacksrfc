@@ -84,6 +84,21 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
     .then(success);
 }
 
+
+export function getCveSummaryForCpe(cpe) {
+  console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_configuration/' 
+        + cpe;
+  fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_configuration/' 
+        + cpe, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(success);
+}
+
 export function getStats(success) {
  return fetch(CVESERVICE_URL+'/api/v1/stats', {
        headers: {
