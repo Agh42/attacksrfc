@@ -61,7 +61,7 @@ class CpeItem extends React.Component {
                     <div className="item">
                         <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
                             <i className="delete icon"
-                                onClick={this.handleDeleteClick}></i>&nbsp;
+                                onClick={this.handleDeleteClick}></i>&nbsp;&nbsp;
                             <i className="tags icon"
                                 onClick={this.handleEditCpeClick}></i>
                             <a className="detail"

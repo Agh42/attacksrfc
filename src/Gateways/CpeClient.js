@@ -17,6 +17,7 @@ function getProduct(cpe) {
   return cpe.id.split(':')[4];
 }
 
+########
 
 
 /**
@@ -84,7 +85,10 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
     .then(success);
 }
 
-
+/*
+ * Returns count of CVEs grouped by severity for the given CPE:
+ * { "LOW" : 42, "MEDIUM" : 23 }
+ */
 export function getCveSummaryForCpe(cpe) {
   console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_configuration/' 
         + cpe;

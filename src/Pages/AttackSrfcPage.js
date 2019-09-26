@@ -32,6 +32,11 @@ const REDIRECT_PRICING = '/pricing';
 export default class AttackSrfcPage extends Component {
 
 
+class CpeSummaryDTO {
+    cpe;
+    cveSummaryCount;
+}
+
 /*
  * selectedCpes:            cpe list used by cpe inventory
  * selectedCves:            cve list used by graph display
@@ -87,8 +92,7 @@ export default class AttackSrfcPage extends Component {
         }
     }
 
-    // FIXME cvss sort incorrect over multiple CPEs
-    // FIXME add sort index to CVSS
+    // FIXME cvss sort incorrect over multiple CPEs - some cvss are strings
     // FIXME add vendor and product field insert to cvesearch cronjob
     // TODO add iphone and adobe reader to example cves
     // TODO add red "Full. Text. Search." to cpe dropdown
@@ -127,6 +131,7 @@ export default class AttackSrfcPage extends Component {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
             _cveAction: CVE_ACTION_RELOAD,
+            _cpeAction: CPE_ACTION_RELOAD,
         });
     }
 
@@ -141,6 +146,7 @@ export default class AttackSrfcPage extends Component {
             this.setState( {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
                 _cveAction: CVE_ACTION_RELOAD,
+                _cpeAction: CPE_ACTION_RELOAD,
             });
         }
     }
@@ -190,11 +196,23 @@ export default class AttackSrfcPage extends Component {
     
     // load cve counts for selected cpes:
     loadCpeSummaries = () => {
-         let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
+        let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
+        // sync cpe to cpesummary list:
+        // add missing:
         
+        xxx remove deleted
+         
+        // load cve counts where missing:
         if (cpesLeftAlignedURIBinding().length > 0) {
-            this.state.selectedCpes.filter(c => c.isActive).foreach
-                CpeClient.
+            this.state.selectedCpes.filter(c => c.isActive).foreach( (cpe) => {
+            
+            })
+                CpeClient.getCveSummaryForCpe(cpesummary.cpe.id, (summary) => {
+                    cpesummary.count = count;
+                    this.setState(
+                    );
+                });
+
         } else {
             this.setState( {
                 cpeSummaries: [],
@@ -215,6 +233,7 @@ export default class AttackSrfcPage extends Component {
                }
             }),
             _cveAction: CVE_ACTION_RELOAD,
+            _cpeAction: CPE_ACTION_RELOAD,
         });
     }
 
@@ -222,7 +241,7 @@ export default class AttackSrfcPage extends Component {
         return number ? number.toLocaleString() : number;
     }
 
-    formatDate(isoDate) {
+    formatDateTime(isoDate) {
         let mom = moment(isoDate, moment.ISO_8601, true);
         return mom.format('YYYY-MM-DDTHH:mmZ');
     }
@@ -248,7 +267,7 @@ export default class AttackSrfcPage extends Component {
                                AttackSrfc - CVE Search and Vulnerability Management
                                <div className="sub header">
                                Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
-                               - Last updated: {this.formatDate(this.state.stats.lastModified)}
+                               - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
                                </div>
                                </h4>
                            </div>
@@ -332,9 +351,8 @@ export default class AttackSrfcPage extends Component {
                       </a>
                       <div class="ui horizontal  small divided link list">
                         <a class="item" href="welcome.html#">Home</a>
-                        <a class="item" href="contact.html#">Contact</a>
-                        <a class="item" href="legal.html#">Legal Notice and License</a>
-                        <a class="item" href="contact.html#">Support</a>
+                        <a class="item" href="contact.html#">Support and Contact</a>
+                        <a class="item" href="legal.html#">Legal Notice and License</a>             
                       </div>
                     </div>
                   </div>
