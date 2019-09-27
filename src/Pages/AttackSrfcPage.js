@@ -92,12 +92,13 @@ class CpeSummaryDTO {
         }
     }
 
-    // FIXME cvss sort incorrect over multiple CPEs - some cvss are strings
+    // FIXME cvss sort incorrect over multiple CPEs because some cvss are strings
     // FIXME add vendor and product field insert to cvesearch cronjob
     // TODO add iphone and adobe reader to example cves
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
+    // TODO add mobile only top menu
 
 
     initSelectedCpes = () => {
@@ -130,6 +131,7 @@ class CpeSummaryDTO {
     handleDeleteCpeClick = (cpeId) => {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
+            cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cveAction: CVE_ACTION_RELOAD,
             _cpeAction: CPE_ACTION_RELOAD,
         });
@@ -158,23 +160,28 @@ class CpeSummaryDTO {
      * which speeds up the search significantly.
      *
      */    
-    getCpesAsUriBinding = () => {
+    getCpeAsUriBinding = (cpe) => {
         let reCutOff = /(cpe:\/.*?)[:-]*$/; //removes all trailing ":-"
-        let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
+       //create cpe 2.2 by replacing version number:
+        let cpe22 = newCpe.id.replace(/2.[23]:/, "/");
+        let match = reCutOff.exec(cpe22);
+        let cutOffCpe = match ? match[1] : cpe22;
+        console.log("Converted CPE to URI format: " + cutOffCpe);
+        return cutOffCpe;
+    }
+    
+     getSelectedCpesAsUriBinding = () => {
+       let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
             .map ( (newCpe) => {
-            //create cpe 2.2 by replacing version number:
-            let cpe22 = newCpe.id.replace(/2.[23]:/, "/");
-            let match = reCutOff.exec(cpe22);
-            let cutOffCpe = match ? match[1] : cpe22;
-            console.log("Getting CVEs for reduced CPE: " + cutOffCpe);
-            return cutOffCpe;
+                return getCpeAsUriBinding(newCpe);
         });
         return cpesLeftAlignedUriBinding;
     }
+    
 
     loadCvesPage = () => {
         let pageToGet = this.state.numCurrentPage;
-        let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
+        let cpesLeftAlignedURIBinding = getSelectedCpesAsUriBinding();
         
         if (cpesLeftAlignedURIBinding().length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
@@ -194,30 +201,30 @@ class CpeSummaryDTO {
         }
     }
     
-    // load cve counts for selected cpes:
-    loadCpeSummaries = () => {
-        let cpesLeftAlignedURIBinding = getCpesAsUriBinding();
-        // sync cpe to cpesummary list:
-        // add missing:
+    
+    // load cve summary counts for cpe, only where missing:
+    loadCpeSummaries = () => {         
+       this.state.cpeSummaries.forEach( (cs) => {
+            if ( !Array.isArray(cs.summary) || !cs.summary.length ) { 
+                CpeClient.getCveSummaryForCpe(
+                    getCpeAsUriBinding(cs.cpe.id), 
+                    (response) => {
+                        this.setState(
+                            cpeSummaries: this.state.cpeSummaries.map((cs2) => {
+                                if (cs2.cpe.id === cs.cpe.id) {
+                                    return Object.assign({}, cs2, {
+                                        summary: response,
+                                    });
+                                } else {
+                                    return cs2;
+                                }
+                            }),
         
-        xxx remove deleted
-         
-        // load cve counts where missing:
-        if (cpesLeftAlignedURIBinding().length > 0) {
-            this.state.selectedCpes.filter(c => c.isActive).foreach( (cpe) => {
-            
-            })
-                CpeClient.getCveSummaryForCpe(cpesummary.cpe.id, (summary) => {
-                    cpesummary.count = count;
-                    this.setState(
-                    );
-                });
-
-        } else {
-            this.setState( {
-                cpeSummaries: [],
-            });
-        }
+                        );
+                    }
+                );
+            }
+        });
     }   
     }
 
