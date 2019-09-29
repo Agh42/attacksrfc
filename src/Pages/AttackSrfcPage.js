@@ -5,6 +5,7 @@ import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
 import CveDetails from '../Components/CveDetails';
+import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 
 import {Link, Redirect} from 'react-router-dom';
@@ -32,10 +33,6 @@ const REDIRECT_PRICING = '/pricing';
 export default class AttackSrfcPage extends Component {
 
 
-class CpeSummaryDTO {
-    cpe;
-    cveSummaryCount;
-}
 
 /*
  * selectedCpes:            cpe list used by cpe inventory
@@ -44,9 +41,9 @@ class CpeSummaryDTO {
  * selectedCvesPage:        paginated cve list used by cvelist component
  * selectedCvesTotalCount:  number of all cves for current inventory
  * stats:                   amount of cves/cpes in database and time of last update
- * numTotalPages:           total cve pages available           
+ * numTotalPages:           total cve pages available
  * numCurrentPage:          cve page being displayed
- * 
+ *
 */
     state = {
             selectedCpes: [],
@@ -57,13 +54,13 @@ class CpeSummaryDTO {
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
-            
+
             cpeSummaries: [],
-            _summaryDisplay: SHOW_SUMMARY_CPE
-            
+            _summaryDisplay: SHOW_SUMMARY_CPE,
+
             _redirect: "",
-            _cveAction: CVE_ACTION_NONE, 
-            -cpeAction: CPE_ACTION_NONE
+            _cveAction: CVE_ACTION_NONE,
+            _cpeAction: CPE_ACTION_NONE
     };
 
     componentDidMount() {
@@ -79,7 +76,7 @@ class CpeSummaryDTO {
                 break;
             default:
                 break;
-                
+
         }
          switch (this.state._cpeAction) {
             case CPE_ACTION_RELOAD:
@@ -88,7 +85,7 @@ class CpeSummaryDTO {
                 break;
             default:
                 break;
-                
+
         }
     }
 
@@ -159,8 +156,8 @@ class CpeSummaryDTO {
      * store references to CPEs in the database. This also allows left aligned regex matching to use the database index
      * which speeds up the search significantly.
      *
-     */    
-    getCpeAsUriBinding = (cpe) => {
+     */
+    getCpeAsUriBinding = (newCpe) => {
         let reCutOff = /(cpe:\/.*?)[:-]*$/; //removes all trailing ":-"
        //create cpe 2.2 by replacing version number:
         let cpe22 = newCpe.id.replace(/2.[23]:/, "/");
@@ -169,21 +166,21 @@ class CpeSummaryDTO {
         console.log("Converted CPE to URI format: " + cutOffCpe);
         return cutOffCpe;
     }
-    
+
      getSelectedCpesAsUriBinding = () => {
-       let cpesLeftAlignedURIBinding = this.state.selectedCpes.filter(c => c.isActive)
+       let cpesLeftAlignedUriBinding = this.state.selectedCpes.filter(c => c.isActive)
             .map ( (newCpe) => {
-                return getCpeAsUriBinding(newCpe);
+                return this.getCpeAsUriBinding(newCpe);
         });
         return cpesLeftAlignedUriBinding;
     }
-    
+
 
     loadCvesPage = () => {
         let pageToGet = this.state.numCurrentPage;
-        let cpesLeftAlignedURIBinding = getSelectedCpesAsUriBinding();
-        
-        if (cpesLeftAlignedURIBinding().length > 0) {
+        let cpesLeftAlignedURIBinding = this.getSelectedCpesAsUriBinding();
+
+        if (cpesLeftAlignedURIBinding.length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
                 this.setState({
                     selectedCvesPage: newCves.result,
@@ -200,16 +197,16 @@ class CpeSummaryDTO {
             });
         }
     }
-    
-    
+
+
     // load cve summary counts for cpe, only where missing:
-    loadCpeSummaries = () => {         
+    loadCpeSummaries = () => {
        this.state.cpeSummaries.forEach( (cs) => {
-            if ( !Array.isArray(cs.summary) || !cs.summary.length ) { 
+            if ( !Array.isArray(cs.summary) || !cs.summary.length ) {
                 CpeClient.getCveSummaryForCpe(
-                    getCpeAsUriBinding(cs.cpe.id), 
+                    this.getCpeAsUriBinding(cs.cpe.id),
                     (response) => {
-                        this.setState(
+                        this.setState({
                             cpeSummaries: this.state.cpeSummaries.map((cs2) => {
                                 if (cs2.cpe.id === cs.cpe.id) {
                                     return Object.assign({}, cs2, {
@@ -219,13 +216,12 @@ class CpeSummaryDTO {
                                     return cs2;
                                 }
                             }),
-        
-                        );
+
+                        });
                     }
                 );
             }
         });
-    }   
     }
 
     handleCpeToggleClick = (toggleCpeId) => {
@@ -319,20 +315,28 @@ class CpeSummaryDTO {
             </div>
 
             <div className='two column row'>
-                <div className='six wide column'>
-                {/*
+                <div className='five wide column'>
+
                     <CveDetails
                         selectedCve={this.state.selectedCve}
                     />
-                */}
+
                 </div>
-                
-                <div className='ten wide column'>
+
+                <div className='eleven wide column'>
                    <div className='ui raised segment'>
-              
+
+                        <div class="ui breadcrumb">
+                            <a class="section">Home</a>
+                            <i class="right arrow icon divider"></i>
+                            <a class="section">Product</a>
+                            <i class="right arrow icon divider"></i>
+                            <div class="active section">CVE-xxxx-yyyyy</div>
+                        </div>
+
                         {this.state._summaryDisplay === SHOW_SUMMARY_CPE
                         ?   <SelectableCpeDetailsTable
-                                cpesWithCveCounts={this.state.cpesWithCveCounts}
+                                cpesWithCveCounts={this.state.cpeSummaries}
                                 onSelect={this.handleCpeSummarySelected}
                             />
                         :
@@ -342,7 +346,7 @@ class CpeSummaryDTO {
                                 numCurrentPage={this.state.numCurrentPage}
                                 onPaginationChange={this.handlePaginationChange}
                                 numTotalCves={this.state.selectedCvesTotalCount}
-                            />   
+                            />
                         }
                     </div>
                 </div>
@@ -359,7 +363,7 @@ class CpeSummaryDTO {
                       <div class="ui horizontal  small divided link list">
                         <a class="item" href="welcome.html#">Home</a>
                         <a class="item" href="contact.html#">Support and Contact</a>
-                        <a class="item" href="legal.html#">Legal Notice and License</a>             
+                        <a class="item" href="legal.html#">Legal Notice and License</a>
                       </div>
                     </div>
                   </div>

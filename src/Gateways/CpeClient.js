@@ -17,7 +17,7 @@ function getProduct(cpe) {
   return cpe.id.split(':')[4];
 }
 
-########
+//########
 
 
 /**
@@ -89,10 +89,10 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
  * Returns count of CVEs grouped by severity for the given CPE:
  * { "LOW" : 42, "MEDIUM" : 23 }
  */
-export function getCveSummaryForCpe(cpe) {
-  console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_configuration/' 
-        + cpe;
-  fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_configuration/' 
+export function getCveSummaryForCpe(cpe, success) {
+  console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_configuration/'
+        + cpe);
+  fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_configuration/'
         + cpe, {
     headers: {
       'Accept': 'application/json',
@@ -104,13 +104,13 @@ export function getCveSummaryForCpe(cpe) {
 }
 
 export function getStats(success) {
- return fetch(CVESERVICE_URL+'/api/v1/stats', {
-       headers: {
-         Accept: 'application/json',
-       },
-   }).then(checkStatus)
-     .then(parseJSON)
-     .then(success);
+  return fetch(CVESERVICE_URL+'/api/v1/stats', {
+        headers: {
+          Accept: 'application/json',
+        },
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then(success);
 }
 
 export function getExampleCpes() {
@@ -124,7 +124,7 @@ export function getExampleCpes() {
     id: "cpe:2.3:o:avm:fritz:-:-:-",
     cpe_2_2: "cpe:/o:avm:fritz:-:-:-",
   },];
-  
+
 }
 
 

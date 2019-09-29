@@ -14,9 +14,9 @@ import PropTypes from 'prop-types';
 class CpeSummaryItem extends React.Component {
 
     static propTypes = {
-        key: propTypes.string.isRequired,
-        cpeSummary: propTypes.object.iRequired,
-        onClick: propTypes.function.isRequired,
+        key: PropTypes.string.isRequired,
+        cpeSummary: PropTypes.object.iRequired,
+        onClick: PropTypes.func.isRequired,
     };
 
     handleCpeClick = () => {
@@ -37,20 +37,20 @@ class CpeSummaryItem extends React.Component {
                 <td class="single line">
                     {this.props.cpeSummary._isLoading
                         ? <i className="sync icon" />
-                        : {this.props.cpeSummary.criticalCount}
+                        : this.props.cpeSummary.criticalCount
                     }
                 </td>
                  <td class="single line">
                   {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.highCount}
+                        ? this.props.cpeSummary.highCount : "" }
                 </td>
                  <td class="single line">
                   {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.mediumCount}
+                        ? this.props.cpeSummary.mediumCount : ""}
                 </td>
                  <td class="single line">
                   {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.lowCount}
+                        ? this.props.cpeSummary.lowCount : ""}
                 </td>
                  <td class="single line">
                 </td>
@@ -68,8 +68,8 @@ class CpeSummaryItem extends React.Component {
 export default class SelectableCpeDetailsTable extends Component {
 
 static propTypes = {
-        cpesWithCveCounts: PropTypes.array.isRequired;
-        onSelect: PropTypes.function.isRequired,
+        cpesWithCveCounts: PropTypes.array.isRequired,
+        onSelect: PropTypes.func.isRequired,
     };
 
     constructor() {
@@ -82,13 +82,13 @@ static propTypes = {
     render() {
         //component for cpe list:
         const selectableCpeItemList = this.props.cpesWithCveCounts.map((cpeWithCount) => (
-            <CpeSummaryItem 
+            <CpeSummaryItem
                 onClick={this.props.onSelect}
-                cpeSummary={cpeWithCount}
-                key={cpe.id}
+                cpeSummary={cpeWithCount.count}
+                key={cpeWithCount.cpe.id}
             />
         ));
-            
+
         return (
           <table className="ui sortable celled padded table">
                 <thead>
@@ -101,7 +101,7 @@ static propTypes = {
                   </tr>
                 </thead>
                 {selectableCpeItemList}
-          </table> 
+          </table>
         );
     }
 }

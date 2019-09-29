@@ -18,6 +18,19 @@ export default class CveDetails extends Component {
 
 
     render () {
+        if (!this.props.cve) {
+          return (
+             <div className='ui raised segment'>
+                  <div className='ui center aligned grey icon header'>
+                    <i class="grey info circle icon"></i>
+                    <div className='content'>
+                      Select a vulnerability...
+                    </div>
+                  </div>
+              </div>
+          );
+        }
+
         const modified = CVEs.formatDate(this.props.cve.Modified);
 
         return(
@@ -26,11 +39,20 @@ export default class CveDetails extends Component {
                   <div className='header'>{this.props.cve.id}</div>
                    <div class="ui small list">
                     <div class="item">
-                    <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">{this.props.cve.cvss}</span>
-                     <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">{CVEs.severityForScore(this.props.cve.cvss)}</span>
+                    <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">
+                      {this.props.cve.cvss}
+                    </span>
+                    <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">
+                      {CVEs.severityForScore(this.props.cve.cvss)}
+                    </span>
                     </div>
                     </div>
-                    <div class="item"><i class="check circle red icon"></i>Published: </div>
+                    <div class="item"><i class="check circle red icon"></i>
+                      <div class="content">
+                        <a class="header">Published:</a>
+                        <div class="description">Lorem ipsum.</div>
+                      </div>
+                    </div>
                     <div class="item"><i class="check circle red icon"></i>Modified: </div>
                     <div class="item"><i class="check circle red icon"></i>Weakness: </div>
                     <div class="item"><i class="check circle red icon"></i>Access:</div>

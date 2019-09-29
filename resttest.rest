@@ -48,13 +48,19 @@ content-type: application/json
 
 ###
 
-GET http://localhost:8080/api/v1/cpes/prefix/redhat HTTP/1.1
+GET http://localhost:8080/api/v1/cpes/prefix/samba HTTP/1.1
 
 ###
 
 GET http://localhost:8080/api/v1/cves/vulnerable_product/microsoft HTTP/1.1
 
 ###
+
+GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/cpe%3A%5E%5Eo%3Aapple%3Aiphone_os HTTP/1.1
+
+###
+
+
 
 
 
