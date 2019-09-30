@@ -56,6 +56,7 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
 
             cpeSummaries: [],
+            selectedCpeSummary: "",
             _summaryDisplay: SHOW_SUMMARY_CPE,
 
             _redirect: "",
@@ -149,6 +150,22 @@ export default class AttackSrfcPage extends Component {
             });
         }
     }
+    
+    // Load cves and switch to cve display
+    handleCpeSummarySelected = (cpeSummary) => {
+        this.setState({
+            selectedCpeSummary: cpeSummary,
+            _cveAction : CVE_ACTION_RELOAD,
+            _summaryDisplay : SHOW_SUMMARY_CVE,
+        });
+    }
+    
+    // Display cve in cve details component:
+    handleCveSelected = (cve) => {
+        this.setState({
+            selectedCve : cve,
+        });
+    } 
 
 
     /*
@@ -252,6 +269,12 @@ export default class AttackSrfcPage extends Component {
     handleEditCpeClick = (editCpeId) => {
         console.log("Edit " + editCpeId);
     }
+    
+    handleHomeClick = () => {
+        this.setState({
+            _summaryDisplay : SHOW_SUMMARY_CPE,
+        });
+    }
 
     render() {
         if (this.state._redirect) {
@@ -327,11 +350,22 @@ export default class AttackSrfcPage extends Component {
                    <div className='ui raised segment'>
 
                         <div class="ui breadcrumb">
-                            <a class="section">Home</a>
-                            <i class="right arrow icon divider"></i>
-                            <a class="section">Product</a>
-                            <i class="right arrow icon divider"></i>
-                            <div class="active section">CVE-xxxx-yyyyy</div>
+                            <a class="section" onClick={this.handleHomeClick()}>
+                                Home
+                            </a>
+                           if (this.state.selectedCpeSummary) {
+                                <i class="right arrow icon divider"></i>
+                                <a class="section" 
+                                    onClick={this.handleswitchbacktocpesummarylist()}>
+                                    {this.state.selectedCpeSummary.cpe.title}
+                                </a>
+                                if (this.state.selectedCve) {
+                                    <i class="right arrow icon divider"></i>
+                                    <div class="active section">
+                                        {this.state.selectedCve.id}
+                                    </div> 
+                                }
+                            }
                         </div>
 
                         {this.state._summaryDisplay === SHOW_SUMMARY_CPE
@@ -346,6 +380,7 @@ export default class AttackSrfcPage extends Component {
                                 numCurrentPage={this.state.numCurrentPage}
                                 onPaginationChange={this.handlePaginationChange}
                                 numTotalCves={this.state.selectedCvesTotalCount}
+                                onSelect={this.handleCveSelected}
                             />
                         }
                     </div>

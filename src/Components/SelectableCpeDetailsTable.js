@@ -20,7 +20,7 @@ class CpeSummaryItem extends React.Component {
     };
 
     handleCpeClick = () => {
-        this.props.onCpeClick(this.props.cpeSummary.cpe.id);
+        this.props.onCpeClick(this.props.cpeSummary);
     }
 
     render() {
@@ -30,7 +30,7 @@ class CpeSummaryItem extends React.Component {
 
             return (
              <tbody>
-             <tr>
+             <tr onClick="{this.handleCpeClick()}">
                 <td class="single line">
                     {this.props.cpeSummary.cpe.title}
                 </td>
