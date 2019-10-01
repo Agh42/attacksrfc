@@ -26,7 +26,7 @@ class CpeSummaryItem extends React.Component {
     render() {
         let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
         [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest]
-            = this.props.cpe.id.split(":");
+            = this.props.cpeSummary.cpe.id.split(":");
 
             return (
              <tbody>

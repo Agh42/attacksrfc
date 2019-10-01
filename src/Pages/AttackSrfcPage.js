@@ -130,7 +130,6 @@ export default class AttackSrfcPage extends Component {
         this.setState({
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
-            _cveAction: CVE_ACTION_RELOAD,
             _cpeAction: CPE_ACTION_RELOAD,
         });
     }
@@ -145,7 +144,7 @@ export default class AttackSrfcPage extends Component {
             let activeCpe = {...newCpe, isActive: true};
             this.setState( {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
-                _cveAction: CVE_ACTION_RELOAD,
+                cpeSummaries: [...this.state.cpeSummaries, {cpe: activeCpe, count: ""}],
                 _cpeAction: CPE_ACTION_RELOAD,
             });
         }
@@ -218,7 +217,7 @@ export default class AttackSrfcPage extends Component {
 
     // load cve summary counts for cpe, only where missing:
     loadCpeSummaries = () => {
-       this.state.cpeSummaries.forEach( (cs) => {
+        this.state.cpeSummaries.forEach( (cs) => {
             if ( !Array.isArray(cs.summary) || !cs.summary.length ) {
                 CpeClient.getCveSummaryForCpe(
                     this.getCpeAsUriBinding(cs.cpe.id),
@@ -242,6 +241,10 @@ export default class AttackSrfcPage extends Component {
     }
 
     handleCpeToggleClick = (toggleCpeId) => {
+        let toggledCpe = this.state.selectedCpes.find(cpe => cpe.id === toggleCpeId);
+        if (!toggledCpe)
+            return;
+
         this.setState({
             selectedCpes: this.state.selectedCpes.map((cpe) => {
                if (cpe.id === toggleCpeId) {
@@ -252,7 +255,7 @@ export default class AttackSrfcPage extends Component {
                    return cpe;
                }
             }),
-            _cveAction: CVE_ACTION_RELOAD,
+            cpeSummary : // toggle cpe in summary as well. use only active ones in list display
             _cpeAction: CPE_ACTION_RELOAD,
         });
     }
