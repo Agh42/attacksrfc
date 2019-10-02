@@ -131,6 +131,7 @@ export default class AttackSrfcPage extends Component {
             selectedCpes: this.state.selectedCpes.filter(c => c.id !== cpeId),
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cpeAction: CPE_ACTION_RELOAD,
+            _cveAction: CVE_ACTION_RELOAD,
         });
     }
 
@@ -255,7 +256,15 @@ export default class AttackSrfcPage extends Component {
                    return cpe;
                }
             }),
-            cpeSummary : // toggle cpe in summary as well. use only active ones in list display
+            cpeSummaries:  this.state.cpeSummaries.map((cs) => {
+               if (cs.cpe.id === toggleCpeId) {
+                   return Object.assign({}, cs.cpexxx set cpe summary with changed coe, {
+                       isActive: !cpe.isActive,
+                   });
+               } else {
+                   return cpe;
+               }
+            }),
             _cpeAction: CPE_ACTION_RELOAD,
         });
     }
@@ -356,6 +365,7 @@ export default class AttackSrfcPage extends Component {
                             <a class="section" onClick={this.handleHomeClick}>
                                 Home
                             </a>
+                            
                            { (Array.isArray(this.state.selectedCpeSummary) && this.state.selectedCpeSummary.length) ? (
                                <span>
                                     <i class="right arrow icon divider"></i>
@@ -366,6 +376,7 @@ export default class AttackSrfcPage extends Component {
                                 </span>
                            ) :""
                            }
+                           
                         { this.state._summaryDisplay === SHOW_SUMMARY_CVE ?
                                 (
                                     <span>
@@ -376,11 +387,14 @@ export default class AttackSrfcPage extends Component {
                                     </span>
                                 ) :""
                         }
+                        
                         </div>
 
                         {this.state._summaryDisplay === SHOW_SUMMARY_CPE
                         ?   <SelectableCpeDetailsTable
-                                cpesWithCveCounts={this.state.cpeSummaries}
+                                cpesWithCveCounts={this.state.cpeSummaries.filter(
+                                    isactive
+                                )}
                                 onSelect={this.handleCpeSummarySelected}
                             />
                         :
