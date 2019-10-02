@@ -101,7 +101,14 @@ export default class AttackSrfcPage extends Component {
 
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
+                        cpeSummaries: CpeClient.getExampleCpes().map( (c) => {
+                            return {
+                                cpe: c,
+                                count: "",
+                            };
+                        }),
                         _cveAction: CVE_ACTION_RELOAD,
+                        _cpeAction: CPE_ACTION_RELOAD,
                     });
     }
 
@@ -221,7 +228,7 @@ export default class AttackSrfcPage extends Component {
         this.state.cpeSummaries.forEach( (cs) => {
             if ( !Array.isArray(cs.summary) || !cs.summary.length ) {
                 CpeClient.getCveSummaryForCpe(
-                    this.getCpeAsUriBinding(cs.cpe.id),
+                    this.getCpeAsUriBinding(cs.cpe),
                     (response) => {
                         this.setState({
                             cpeSummaries: this.state.cpeSummaries.map((cs2) => {
@@ -258,11 +265,11 @@ export default class AttackSrfcPage extends Component {
             }),
             cpeSummaries:  this.state.cpeSummaries.map((cs) => {
                if (cs.cpe.id === toggleCpeId) {
-                   return Object.assign({}, cs.cpexxx set cpe summary with changed coe, {
-                       isActive: !cpe.isActive,
+                   return Object.assign({}, cs, {
+                       cpe: {...cs.cpe, isActive: !cs.cpe.isActive,}
                    });
                } else {
-                   return cpe;
+                   return cs;
                }
             }),
             _cpeAction: CPE_ACTION_RELOAD,
@@ -365,7 +372,7 @@ export default class AttackSrfcPage extends Component {
                             <a class="section" onClick={this.handleHomeClick}>
                                 Home
                             </a>
-                            
+
                            { (Array.isArray(this.state.selectedCpeSummary) && this.state.selectedCpeSummary.length) ? (
                                <span>
                                     <i class="right arrow icon divider"></i>
@@ -376,7 +383,7 @@ export default class AttackSrfcPage extends Component {
                                 </span>
                            ) :""
                            }
-                           
+
                         { this.state._summaryDisplay === SHOW_SUMMARY_CVE ?
                                 (
                                     <span>
@@ -387,14 +394,12 @@ export default class AttackSrfcPage extends Component {
                                     </span>
                                 ) :""
                         }
-                        
+
                         </div>
 
                         {this.state._summaryDisplay === SHOW_SUMMARY_CPE
                         ?   <SelectableCpeDetailsTable
-                                cpesWithCveCounts={this.state.cpeSummaries.filter(
-                                    isactive
-                                )}
+                                cpesWithCveCounts={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) }
                                 onSelect={this.handleCpeSummarySelected}
                             />
                         :

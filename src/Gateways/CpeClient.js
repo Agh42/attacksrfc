@@ -1,6 +1,6 @@
 import React from 'react';
 export const CpeClient = {getCvesForCpes,getAutoCompleteItems,
-        getExampleCpes, getStats};
+        getExampleCpes, getStats, getCveSummaryForCpe};
 export default CpeClient;
 
 // edit .env/.env.local to change this value:

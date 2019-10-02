@@ -15,12 +15,12 @@ class CpeSummaryItem extends React.Component {
 
     static propTypes = {
         key: PropTypes.string.isRequired,
-        cpeSummary: PropTypes.object.iRequired,
+        cpeSummary: PropTypes.object.isRequired,
         onClick: PropTypes.func.isRequired,
     };
 
     handleCpeClick = () => {
-        this.props.onCpeClick(this.props.cpeSummary);
+        this.props.onClick(this.props.cpeSummary);
     }
 
     render() {
@@ -30,14 +30,14 @@ class CpeSummaryItem extends React.Component {
 
             return (
              <tbody>
-             <tr onClick="{this.handleCpeClick()}">
+             <tr onClick={this.handleCpeClick}>
                 <td class="single line">
                     {this.props.cpeSummary.cpe.title}
                 </td>
                 <td class="single line">
                     {this.props.cpeSummary._isLoading
                         ? <i className="sync icon" />
-                        : this.props.cpeSummary.criticalCount
+                        : this.props.cpeSummary.count.criticalCount
                     }
                 </td>
                  <td class="single line">
@@ -84,7 +84,7 @@ static propTypes = {
         const selectableCpeItemList = this.props.cpesWithCveCounts.map((cpeWithCount) => (
             <CpeSummaryItem
                 onClick={this.props.onSelect}
-                cpeSummary={cpeWithCount.count}
+                cpeSummary={cpeWithCount}
                 key={cpeWithCount.cpe.id}
             />
         ));
