@@ -35,22 +35,26 @@ class CpeSummaryItem extends React.Component {
                     {this.props.cpeSummary.cpe.title}
                 </td>
                 <td class="single line">
-                    {this.props.cpeSummary._isLoading
-                        ? <i className="sync icon" />
-                        : this.props.cpeSummary.count.criticalCount
+                    { 'summary' in this.props.cpeSummary
+                       && 'CRITICAL' in this.props.cpeSummary.summary
+                        ? this.props.cpeSummary.summary.CRITICAL
+                        : <i className="sync icon" />
                     }
                 </td>
                  <td class="single line">
-                  {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.highCount : "" }
+                  {'summary' in this.props.cpeSummary
+                      && 'HIGH' in this.props.cpeSummary.summary
+                        ? this.props.cpeSummary.summary.HIGH : "" }
                 </td>
                  <td class="single line">
-                  {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.mediumCount : ""}
+                  {'summary' in this.props.cpeSummary
+                   && 'MEDIUM' in this.props.cpeSummary.summary
+                        ? this.props.cpeSummary.summary.MEDIUM : "" }
                 </td>
                  <td class="single line">
-                  {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.lowCount : ""}
+                  {'summary' in this.props.cpeSummary
+                   && 'LOW' in this.props.cpeSummary.summary
+                        ? this.props.cpeSummary.summary.LOW : "" }
                 </td>
                  <td class="single line">
                 </td>
