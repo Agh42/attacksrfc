@@ -191,18 +191,11 @@ export default class AttackSrfcPage extends Component {
         return cutOffCpe;
     }
 
-     getSelectedCpesAsUriBinding = () => {
-       let cpesLeftAlignedUriBinding = this.state.selectedCpes.filter(c => c.isActive)
-            .map ( (newCpe) => {
-                return this.getCpeAsUriBinding(newCpe);
-        });
-        return cpesLeftAlignedUriBinding;
-    }
-
-
     loadCvesPage = () => {
         let pageToGet = this.state.numCurrentPage;
-        let cpesLeftAlignedURIBinding = this.getSelectedCpesAsUriBinding();
+        let cpesLeftAlignedURIBinding = this.state.selectedCpeSummary.length
+            ? this.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)
+            : "";
 
         if (cpesLeftAlignedURIBinding.length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
@@ -378,7 +371,7 @@ export default class AttackSrfcPage extends Component {
                                     <i class="right arrow icon divider"></i>
                                     <a class="section"
                                         onClick={this.handlexxx}>
-                                        {this.state.selectedCpeSummary.cpe.title}
+                                        {this.state.selectedCpeSummary.cpe.id}
                                     </a>
                                 </span>
                            ) :""
