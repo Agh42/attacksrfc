@@ -56,7 +56,7 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
 
             cpeSummaries: [],
-            selectedCpeSummary: "",
+            selectedCpeSummary: {},
             _summaryDisplay: SHOW_SUMMARY_CPE,
 
             _redirect: "",
@@ -193,9 +193,9 @@ export default class AttackSrfcPage extends Component {
 
     loadCvesPage = () => {
         let pageToGet = this.state.numCurrentPage;
-        let cpesLeftAlignedURIBinding = this.state.selectedCpeSummary.length
-            ? this.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)
-            : "";
+        let cpesLeftAlignedURIBinding = 'cpe' in this.state.selectedCpeSummary
+            ? [this.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)]
+            : [];
 
         if (cpesLeftAlignedURIBinding.length > 0) {
             CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
@@ -284,7 +284,8 @@ export default class AttackSrfcPage extends Component {
 
     handleHomeClick = () => {
         this.setState({
-            _summaryDisplay : SHOW_SUMMARY_CPE,
+            _summaryDisplay: SHOW_SUMMARY_CPE,
+            selectedCpeSummary: {},
         });
     }
 
@@ -366,7 +367,7 @@ export default class AttackSrfcPage extends Component {
                                 Home
                             </a>
 
-                           { (Array.isArray(this.state.selectedCpeSummary) && this.state.selectedCpeSummary.length) ? (
+                           { 'cpe' in this.state.selectedCpeSummary ? (
                                <span>
                                     <i class="right arrow icon divider"></i>
                                     <a class="section"
@@ -374,10 +375,10 @@ export default class AttackSrfcPage extends Component {
                                         {this.state.selectedCpeSummary.cpe.id}
                                     </a>
                                 </span>
-                           ) :""
+                           ) : ""
                            }
 
-                        { this.state._summaryDisplay === SHOW_SUMMARY_CVE ?
+                        { this.state.selectedCve.length ?
                                 (
                                     <span>
                                         <i class="right arrow icon divider"></i>
@@ -385,10 +386,10 @@ export default class AttackSrfcPage extends Component {
                                             {this.state.selectedCve.id}
                                         </div>
                                     </span>
-                                ) :""
+                                ) : ""
                         }
-
                         </div>
+                        <br/><br/>
 
                         {this.state._summaryDisplay === SHOW_SUMMARY_CPE
                         ?   <SelectableCpeDetailsTable
