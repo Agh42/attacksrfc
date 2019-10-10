@@ -48,7 +48,7 @@ export default class AttackSrfcPage extends Component {
     state = {
             selectedCpes: [],
             selectedCves: [],
-            selectedCve: "",
+            selectedCve: {},
             selectedCvesPage: [],
             selectedCvesTotalCount: 0,
             stats: [],
@@ -97,6 +97,7 @@ export default class AttackSrfcPage extends Component {
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
+    // FIXME switch to page one when loading cvelist with fewer cves
 
 
     initSelectedCpes = () => {
@@ -354,7 +355,7 @@ export default class AttackSrfcPage extends Component {
                 <div className='five wide column'>
 
                     <CveDetails
-                        selectedCve={this.state.selectedCve}
+                        cve={this.state.selectedCve}
                     />
 
                 </div>
@@ -371,7 +372,7 @@ export default class AttackSrfcPage extends Component {
                                <span>
                                     <i class="right arrow icon divider"></i>
                                     <a class="section"
-                                        onClick={this.handlexxx}>
+                                        onClick={this.handlexxx}> 
                                         {this.state.selectedCpeSummary.cpe.id}
                                     </a>
                                 </span>

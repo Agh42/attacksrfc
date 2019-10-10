@@ -55,7 +55,7 @@ class CpeSummaryItem extends React.Component {
                                     {
                                         this.props.cpeSummary.cpe.title
                                         ? "(i.e. \"" + this.props.cpeSummary.cpe.title + "\")"
-                                        : "(No long titles specified.)"
+                                        : "(No detailed titles specified.)"
                                     }
                                 </div>
                             </div>
