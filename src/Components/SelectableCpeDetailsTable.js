@@ -19,42 +19,86 @@ class CpeSummaryItem extends React.Component {
         onClick: PropTypes.func.isRequired,
     };
 
+    sumCounts = (cpeSummary) => {
+        let counts = Object.values(cpeSummary);
+        return counts.reduce((a,b) => a+b, 0);
+    }
+
     handleCpeClick = () => {
         this.props.onClick(this.props.cpeSummary);
     }
 
     render() {
-        let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
-        [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest]
+        let  c,cpeversion,cpetype, vendor, product, version, update, edition, lang, sw_edition, rest;
+        [c,cpeversion,cpetype, vendor, product, version, update, edition, lang, sw_edition, ...rest]
             = this.props.cpeSummary.cpe.id.split(":");
 
             return (
              <tbody>
              <tr onClick={this.handleCpeClick}>
-                <td class="single line">
-                    {this.props.cpeSummary.cpe.title}
-                </td>
-                <td class="single line">
-                    {this.props.cpeSummary._isLoading
-                        ? <i className="sync icon" />
-                        : this.props.cpeSummary.count.criticalCount
-                    }
-                </td>
-                 <td class="single line">
-                  {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.highCount : "" }
-                </td>
-                 <td class="single line">
-                  {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.mediumCount : ""}
-                </td>
-                 <td class="single line">
-                  {this.props.cpeSummary._isLoading
-                        ? this.props.cpeSummary.lowCount : ""}
-                </td>
-                 <td class="single line">
+
+                <td>
+                    <div class="ui list">
+                        <div class="ui item">
+                            <i class={ {
+                                    'o': "large server middle aligned icon",
+                                    'a': "large keyboard middle aligned icon",
+                                    'h': "large computer middle aligned icon",
+                                }[cpetype]
+                            }
+                            ></i>
+                            <div class="content">
+                                <a class="header" onClick={this.handleCpeClick}>
+                                    {this.props.cpeSummary.cpe.id}
+                                </a>
+                                <div class="ui description">
+                                    {
+                                        this.props.cpeSummary.cpe.title
+                                        ? "(i.e. \"" + this.props.cpeSummary.cpe.title + "\")"
+                                        : "(No long titles specified.)"
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
 
+                <td class="center aligned">
+                    { 'summary' in this.props.cpeSummary 
+                    ? <a class="ui grey circular label">
+                        {this.sumCounts(this.props.cpeSummary.summary)}
+                        </a>
+                    : ""    
+                    }
+                </td>
+
+                <td class="center aligned">
+                    { 'summary' in this.props.cpeSummary
+                       && 'CRITICAL' in this.props.cpeSummary.summary
+                        ? <a class="ui red circular label">{this.props.cpeSummary.summary.CRITICAL}</a>
+                        : "" }
+                </td>
+
+                 <td class="center aligned">
+                  {'summary' in this.props.cpeSummary
+                      && 'HIGH' in this.props.cpeSummary.summary
+                        ? <a class="ui red circular label">{this.props.cpeSummary.summary.HIGH}</a>
+                        : "" }
+                </td>
+
+                 <td class="center aligned">
+                  {'summary' in this.props.cpeSummary
+                   && 'MEDIUM' in this.props.cpeSummary.summary
+                        ? <a class="ui yellow circular label">{this.props.cpeSummary.summary.MEDIUM}</a> 
+                        : "" }
+                </td>
+
+                 <td class="center aligned">
+                  {'summary' in this.props.cpeSummary
+                   && 'LOW' in this.props.cpeSummary.summary
+                        ? <a class="ui green circular label">{this.props.cpeSummary.summary.LOW}</a> 
+                        : "" }
+                </td>
               </tr>
               </tbody>
             )};
@@ -90,10 +134,11 @@ static propTypes = {
         ));
 
         return (
-          <table className="ui sortable celled padded table">
+          <table className="ui selectable striped table">
                 <thead>
-                  <tr>
+                  <tr class="center aligned">
                   <th>Product</th>
+                  <th>Vulns.</th>
                   <th>Critical</th>
                   <th>High</th>
                   <th>Medium</th>

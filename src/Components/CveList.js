@@ -3,28 +3,32 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
 
-const CveItems = (props) => {
-        <tbody>
-        props.cves.map( (cve) => (
-                <tr key="{props.cve.id}">
-                <td class="single line">
-                <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+props.cve.id} target="_blank">{props.cve.id}</a>
-                </td>
-                <td class="single line">
-                  {props.cve.cvss}
-                </td>
-                <td class="single line">
-                  {CVEs.formatDate(props.cve.Modified)}
-                </td>
-                <td class="single line">
-                  {CVEs.formatDate(props.cve.Published)}
-                </td>
-                <td>{props.cve.summary}</td>
-              </tr>
-        ));
-        </tbody>
-
-}
+const CveItems = (props) => (
+  <tbody>
+    {
+      props.cves.map( (cve) =>
+        <tr key={cve.id}>
+          <td class="single line">
+          <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+cve.id} 
+              target="_blank">
+              {cve.id}
+          </a>
+          </td>
+          <td class="single line">
+            {cve.cvss}
+          </td>
+          <td class="single line">
+            {CVEs.formatDate(cve.Modified)}
+          </td>
+          <td class="single line">
+            {CVEs.formatDate(cve.Published)}
+          </td>
+          <td>{cve.summary}</td>
+        </tr>
+      )
+    }
+  </tbody>
+)
 
 /**
  *

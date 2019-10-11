@@ -53,6 +53,20 @@ function checkStatus(response) {
    return response.json();
  }
 
+ function convertSummary(json) {
+    // flatten to [{HIGH:1}, {MEDIUM:2}, ...]
+    let flattened = json.map( (elmt) => {
+      return {
+        [elmt._id.severity] : elmt.count, 
+      };
+    }); 
+    // merge to {HIGH:1, MEDIMUM: 2}
+    if (flattened.length)
+      return Object.assign(...flattened);
+    else
+      return {};
+ }
+
 
 /**
  * Search CVEs for a collection of CPEs.
@@ -90,9 +104,10 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
  * { "LOW" : 42, "MEDIUM" : 23 }
  */
 export function getCveSummaryForCpe(cpe, success) {
-  console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_configuration/'
+  cpe = cpe.replace(/\//g, "^^").replace(/:/g, "%3A");
+  console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_product/'
         + cpe);
-  fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_configuration/'
+  fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_product/'
         + cpe, {
     headers: {
       'Accept': 'application/json',
@@ -100,6 +115,7 @@ export function getCveSummaryForCpe(cpe, success) {
     },
   }).then(checkStatus)
     .then(parseJSON)
+    .then(convertSummary)
     .then(success);
 }
 
