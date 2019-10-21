@@ -276,7 +276,7 @@ export default class AttackSrfcPage extends Component {
 
     formatDateTime(isoDate) {
         let mom = moment(isoDate, moment.ISO_8601, true);
-        return mom.format('YYYY-MM-DDTHH:mmZ');
+        return mom.format('YYYY-MM-DDTHH:mm') + ' UTC';
     }
 
     handleEditCpeClick = (editCpeId) => {

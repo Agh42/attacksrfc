@@ -57,17 +57,57 @@ export default class CveDetails extends Component {
                       
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
-                          <a class="header">Published: {CVEs.formatDate(this.props.cve.Published)} </a>
-                          <div class="description">Lorem ipsum.</div>
+                          <div class="header">Published: {CVEs.formatDate(this.props.cve.Published)} </div>
                         </div>
                       </div>
                       
-                      <div class="item"><i class="check circle teal icon"></i>Modified: {CVEs.formatDate(this.props.cve.Modified)}</div>
-                      <div class="item"><i class="check circle teal icon"></i>Weakness: {this.props.cve.cwe}</div>
-                      <div class="item"><i class="check circle teal icon"></i>Access:{this.props.cve.access}</div>
-                      <div class="item"><i class="check circle teal icon"></i>Impact:{this.props.cve.impact}</div>
-                      <div class="item"><i class="check circle teal icon"></i>Vulnerable Product: {this.props.cve.vulnerable_product}</div>
-                      <div class="item"><i class="check circle teal icon"></i>Vulnerable Configuration: {this.props.cve.vulnerable_configuration}</div>
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                          Modified: {CVEs.formatDate(this.props.cve.Modified)}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Weakness: {this.props.cve.cwe}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Access:{this.props.cve.access}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Impact:{this.props.cve.impact}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Vulnerable Product: {this.props.cve.vulnerable_product}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Vulnerable Configuration: {this.props.cve.vulnerable_configuration}
+                        </div>
+                        </div>
+                      </div>
                       
                       <div class="item"><i class="check circle teal icon"></i>
                       <div class="content">
@@ -87,7 +127,15 @@ export default class CveDetails extends Component {
                       </div>
                       
                       </div>
-                      <div class="item"><i class="check circle teal icon"></i>{this.props.cve.summary}</div>
+
+                      <div class="item"><i class="check circle teal icon"></i>
+                      <div class="content">
+                        <div class="header">Summary:</div>
+                        <div class="description">
+                        {this.props.cve.summary}
+                        </div>
+                        </div>
+                      </div>
                 </div>
             </div>
             </div>

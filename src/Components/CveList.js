@@ -23,7 +23,7 @@ const CveItems = (props) => (
           <td class="single line">
             {CVEs.formatDate(cve.Published)}
           </td>
-          <td>{cve.summary}</td>
+          <td>{cve.summary.substring(0,100) + "..."}</td>
         </tr>
       )
     }
