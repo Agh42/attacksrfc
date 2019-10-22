@@ -99,7 +99,7 @@ export default class CveList extends Component {
                      <div className="ui positive button"
                           data-tooltip="Save this list as an Excel file."
                           onClick={this.props.onSaveClick} >
-                         Save as .xlsx</div>
+                         Export as .xlsx</div>
                 </div>
 
                 <table className="ui selectable celled table">

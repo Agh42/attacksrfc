@@ -65,9 +65,9 @@ class CpeSummaryItem extends React.Component {
 
                 <td class="center aligned">
                     { 'summary' in this.props.cpeSummary 
-                    ? <a class="ui grey circular label">
+                    ? <div class="ui grey circular label">
                         {this.sumCounts(this.props.cpeSummary.summary)}
-                        </a>
+                        </div>
                     : ""    
                     }
                 </td>
@@ -75,28 +75,31 @@ class CpeSummaryItem extends React.Component {
                 <td class="center aligned">
                     { 'summary' in this.props.cpeSummary
                        && 'CRITICAL' in this.props.cpeSummary.summary
-                        ? <a class="ui red circular label">{this.props.cpeSummary.summary.CRITICAL}</a>
+                        ? <div  class="ui red circular label">{this.props.cpeSummary.summary.CRITICAL}
+                          </div>
                         : "" }
                 </td>
 
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
                       && 'HIGH' in this.props.cpeSummary.summary
-                        ? <a class="ui red circular label">{this.props.cpeSummary.summary.HIGH}</a>
+                        ? <div class="ui red circular label">{this.props.cpeSummary.summary.HIGH}</div>
                         : "" }
                 </td>
 
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
                    && 'MEDIUM' in this.props.cpeSummary.summary
-                        ? <a class="ui yellow circular label">{this.props.cpeSummary.summary.MEDIUM}</a> 
+                        ? <div class="ui yellow circular label">{this.props.cpeSummary.summary.MEDIUM}
+                          </div> 
                         : "" }
                 </td>
 
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
                    && 'LOW' in this.props.cpeSummary.summary
-                        ? <a class="ui green circular label">{this.props.cpeSummary.summary.LOW}</a> 
+                        ? <div class="ui green circular label">{this.props.cpeSummary.summary.LOW}
+                          </div> 
                         : "" }
                 </td>
               </tr>
