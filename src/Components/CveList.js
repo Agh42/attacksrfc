@@ -106,7 +106,7 @@ export default class CveList extends Component {
                 <thead>
 
                 <tr><th colSpan="6">
-                    <div className="ui label">Inventory matches {this.props.numTotalCves} vulnerabilities: </div>
+                    <div className="ui label">Filters match {this.props.numTotalCves} vulnerabilities: </div>
                      <div className="ui right floated pagination menu">
                          <a onClick={this.handleFirstPageClick} className={this.props.numCurrentPage>1 ? "icon item" : "disabled icon item"}>
                            <i className="fast backward  icon"  ></i>
