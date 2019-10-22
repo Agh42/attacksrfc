@@ -7,12 +7,12 @@ const CveItems = (props) => (
   <tbody>
     {
       props.cves.map( (cve) =>
-        <tr key={cve.id}>
+        <tr key={cve.id} onClick={() => props.onSelect(cve)} >
           <td class="single line">
-          <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+cve.id} 
-              target="_blank">
+          <div class="ui link items">
+          <div class="item"><a>
               {cve.id}
-          </a>
+          </a></div></div>
           </td>
           <td class="single line">
             {cve.cvss}
@@ -23,7 +23,7 @@ const CveItems = (props) => (
           <td class="single line">
             {CVEs.formatDate(cve.Published)}
           </td>
-          <td>{cve.summary}</td>
+          <td>{cve.summary.substring(0,100) + "..."}</td>
         </tr>
       )
     }
@@ -46,6 +46,7 @@ export default class CveList extends Component {
         numTotalPages: PropTypes.number.isRequired,
         numCurrentPage: PropTypes.number.isRequired,
         onPaginationChange: PropTypes.func.isRequired,
+        onSelect: PropTypes.func.isRequired,
         numTotalCves: PropTypes.number.isRequired
     };
 
@@ -85,6 +86,12 @@ export default class CveList extends Component {
         }
     }
 
+    handleSelect = (cve) => {
+      this.props.onSelect(cve);
+    }
+
+
+
     render () {
         return(
           <React.Fragment>
@@ -95,7 +102,7 @@ export default class CveList extends Component {
                          Save as .xlsx</div>
                 </div>
 
-                <table className="ui sortable celled padded table">
+                <table className="ui selectable celled table">
                 <thead>
 
                 <tr><th colSpan="6">
@@ -138,6 +145,7 @@ export default class CveList extends Component {
                 </tr></thead>
                     <CveItems
                         cves={this.props.selectedCvesPage}
+                        onSelect={this.handleSelect}
                     />
               </table>
               </React.Fragment>

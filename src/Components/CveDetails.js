@@ -13,12 +13,12 @@ import CVEs from '../Dto/CVEs';
 export default class CveDetails extends Component {
 
     static propTypes = {
-        cve: PropTypes.object,
+        cve: PropTypes.object.isRequired,
     };
 
 
     render () {
-        if (!this.props.cve) {
+        if (! ('id' in this.props.cve)) {
           return (
              <div className='ui raised segment'>
                   <div className='ui center aligned grey icon header'>
@@ -34,62 +34,111 @@ export default class CveDetails extends Component {
         const modified = CVEs.formatDate(this.props.cve.Modified);
 
         return(
-            <div className='ui raised segment'>
-                <div className='content'>
-                  <div className='header'>{this.props.cve.id}</div>
-                   <div class="ui small list">
-                    <div class="item">
-                    <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">
-                      {this.props.cve.cvss}
-                    </span>
-                    <span class="ui {CVEs.colorNameForScore(this.props.cve.cvss)} circular label">
-                      {CVEs.severityForScore(this.props.cve.cvss)}
-                    </span>
-                    </div>
-                    </div>
-                    <div class="item"><i class="check circle red icon"></i>
-                      <div class="content">
-                        <a class="header">Published:</a>
-                        <div class="description">Lorem ipsum.</div>
-                      </div>
-                    </div>
-                    <div class="item"><i class="check circle red icon"></i>Modified: </div>
-                    <div class="item"><i class="check circle red icon"></i>Weakness: </div>
-                    <div class="item"><i class="check circle red icon"></i>Access:</div>
-                    <div class="item"><i class="check circle red icon"></i>Impact:</div>
-                    <div class="item"><i class="check circle red icon"></i>Vulnerable Product: </div>
-                    <div class="item"><i class="check circle red icon"></i>Vulnerable Configuration: </div>
-                    <div class="item"><i class="check circle red icon"></i>
-                      {
-                          this.props.cve.references.map( (reference, index) => {
-                              return (
-                                <div key={index} >
-                                <a href={reference} target="_blank">{CVEs.getHostname(reference)}</a>
-                                <br/>
-                                </div>
-                                );
-                          })
-                      }
-                    </div>
-                    <div class="item"><i class="check circle red icon"></i>{this.props.cve.summary}</div>
-
-
-
-
-                 <div className='extra content'>
-                    <span className='right floated edit icon'>
-                      <i className='edit icon' />
-                    </span>
-                    <span className='right floated trash icon'>
-                      <i className='trash icon' />
-                    </span>
-                  </div>
+            <div className='ui raised segments'>
+                <div className='ui segment'>
+                <div class="ui large header">
+                    <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} 
+                        target="_blank">
+                        {this.props.cve.id}
+                    </a>
                 </div>
-                <div className='ui bottom attached blue basic button'>
-                  Start
+                  <div class="item">
+                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
+                        {this.props.cve.cvss}
+                      </div>&nbsp;
+                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
+                        {CVEs.severityForScore(this.props.cve.cvss)}
+                      </div>
+                   </div>
+                 </div>
+
+                   <div class="ui segment">
+                   <div class="ui small list">
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                          <div class="header">Published: {CVEs.formatDate(this.props.cve.Published)} </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                          Modified: {CVEs.formatDate(this.props.cve.Modified)}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Weakness: {this.props.cve.cwe}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Access:{this.props.cve.access}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Impact:{this.props.cve.impact}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Vulnerable Product: {this.props.cve.vulnerable_product}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">
+                        Vulnerable Configuration: {this.props.cve.vulnerable_configuration}
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                      <div class="content">
+                        <div class="header">References:</div>
+                        <div class="description">
+                        {
+                            this.props.cve.references.map( (reference, index) => {
+                                return (
+                                  <div key={index} >
+                                  <a href={reference} target="_blank">{CVEs.getHostname(reference)}</a>
+                                  <br/>
+                                  </div>
+                                  );
+                            })
+                        }
+                        </div>
+                      </div>
+                      
+                      </div>
+
+                      <div class="item"><i class="check circle teal icon"></i>
+                      <div class="content">
+                        <div class="header">Summary:</div>
+                        <div class="description">
+                        {this.props.cve.summary}
+                        </div>
+                        </div>
+                      </div>
                 </div>
             </div>
-
+            </div>
         );
     }
 }

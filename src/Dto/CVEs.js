@@ -21,7 +21,7 @@ function colorValueForScore(score) {
 function colorNameForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return "green";
     if (score > HIGH_THRESHOLD) return "red";
-    return "amber";
+    return "yellow";
 }
 
 function severityForScore(score) {
