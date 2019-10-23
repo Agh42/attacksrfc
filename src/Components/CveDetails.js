@@ -10,6 +10,9 @@ import CVEs from '../Dto/CVEs';
  * @class CveDetails
  * @extends {Component}
  */
+ 
+ // TODO check exploitb and display warning icon and link if exploits published
+ 
 export default class CveDetails extends Component {
 
     static propTypes = {
@@ -80,7 +83,7 @@ export default class CveDetails extends Component {
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
                         <div class="header">
-                        Access:{this.props.cve.access}
+                        Access: {this.props.cve.access}
                         </div>
                         </div>
                       </div>
@@ -88,7 +91,7 @@ export default class CveDetails extends Component {
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
                         <div class="header">
-                        Impact:{this.props.cve.impact}
+                        Impact: {this.props.cve.impact}
                         </div>
                         </div>
                       </div>

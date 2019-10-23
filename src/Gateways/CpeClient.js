@@ -129,6 +129,21 @@ export function getStats(success) {
       .then(success);
 }
 
+export function getCveById(id, success) {
+  let fields = ["id", "cvss", "references", "Modified", "Published", "summary",
+    "vulnerable_product", "vulnerable_configuration", "" xxx];
+  
+  
+  return fetch(CVESERVICE_URL+'/api/v1/cve/' + id, {
+        headers: {
+          Accept: 'application/json',
+        },
+    }).then(checkStatus)
+      .then(parseJSON)
+      .then(success);
+
+}
+
 export function getExampleCpes() {
   return [{
     "id": "cpe:2.3:o:microsoft:windows_xp:-:-:-",

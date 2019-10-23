@@ -75,6 +75,10 @@ export default class AttackSrfcPage extends Component {
                 this.setState({_cveAction: CVE_ACTION_NONE});
                 this.loadCvesPage();
                 break;
+            case CVE_ACTION_LOAD_DETAILS:
+                this.setState({_cveAction: CVE_ACTION_NONE});
+                this.loadCveDetails();
+                break;
             default:
                 break;
 
@@ -172,6 +176,7 @@ export default class AttackSrfcPage extends Component {
     handleCveSelected = (cve) => {
         this.setState({
             selectedCve : cve,
+            _cveAction: CVE_ACTION_LOAD_DETAILS
         });
     }
 
@@ -190,6 +195,14 @@ export default class AttackSrfcPage extends Component {
         let cutOffCpe = match ? match[1] : cpe22;
         console.log("Converted CPE to URI format: " + cutOffCpe);
         return cutOffCpe;
+    }
+    
+    loadCveDetails = () => {
+        CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => (
+            this.setState({
+                selectedCve: fullCve,
+            }))
+        );
     }
 
     loadCvesPage = () => {
@@ -372,7 +385,7 @@ export default class AttackSrfcPage extends Component {
                                <span>
                                     <i class="right arrow icon divider"></i>
                                     <a class="section"
-                                        onClick={this.handlexxx}> 
+                                        onClick={}> 
                                         {this.state.selectedCpeSummary.cpe.id}
                                     </a>
                                 </span>
