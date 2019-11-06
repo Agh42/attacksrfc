@@ -73,95 +73,24 @@ export default class CveDetails extends Component {
                         </div>
                         </div>
                       </div>
+
+                      <div class="item"><i class="check circle teal icon"></i>
+                      <div class="content">
+                        <div class="header">Summary:</div>
+                        <div class="description">
+                            {this.props.cve.summary}
+                        </div>
+                        </div>
+                      </div>
                       
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
                         <div class="header">
-                        Weakness: {this.props.cve.cwe}
+                          Weakness: {this.props.cve.cwe}
                         </div>
                         </div>
                       </div>
-                      
-                      <div class="item"><i class="check circle teal icon"></i>
-                        <div class="content">
-                        <div class="header">Access:</div>
-                        <div class="description">
-                            <div>{this.props.cve.access}</div>
-                            <div>{this.props.cve.access}</div>
-                            <div>{this.props.cve.access}</div>
-                            
-                        </div>
-                        </div>
-                      </div>
-                      
-                      <div class="item"><i class="check circle teal icon"></i>
-                        <div class="content">
-                        <div class="header">Impact:</div>
-                        <div class="description">
-                            <div>{this.props.cve.impact}</div>
-                            <div>{this.props.cve.impact}</div>
-                            <div>{this.props.cve.impact}</div>
-                        </div>
-                        </div>
-                      </div>
-                      
-                      <div class="item"><i class="check circle teal icon"></i>
-                        <div class="content">
-                        <div class="header">Vulnerable Product: </div>
-                        <div class="description">
-                           {
-                            this.props.cve.vulnerable_product.map( (vp, index) => {
-                                return (
-                                  <div key={index} >
-                                  vp
-                                  <br/>
-                                  </div>
-                                  );
-                            })
-                        }
-                        </div>
-                        </div>
-                      </div>
-                      
-                      <div class="item"><i class="check circle teal icon"></i>
-                        <div class="content">
-                            <div class="ui accordion">
-                                <div class="active title">
-                                    <i class="dropdown icon"></i>
-                                    Vulnerable configuration:
-                                </div>
-                                <div class="active content">
-                                    <p></p>
-                                </div>
-                            </div>
-                            
-                            {/*
-                                                div class="ui accordion field">
-                          <div class="title">
-                            <i class="icon dropdown"></i>
-                            Optional Details
-                          </div>
-                          <div class="content field">
-                            <label class="transition hidden">Maiden Name</label>
-                            <input placeholder="Maiden Name" type="text" class="transition hidden">
-                          </div>
-                        </div>
-                          */}                          
-                                    
-                            {
-                            this.props.cve.vulnerable_configuration.map( (vc, index) => {
-                                return (
-                                  <div key={index} >
-                                  vc
-                                  <br/>
-                                  </div>
-                                  ); 
-                            })
-                        }
-                        </div>
-                        </div>
-                      </div>
-                      
+
                       <div class="item"><i class="check circle teal icon"></i>
                       <div class="content">
                         <div class="header">References:</div>
@@ -178,20 +107,82 @@ export default class CveDetails extends Component {
                         }
                         </div>
                       </div>
+                      </div>
                       
-                      </div>
-
                       <div class="item"><i class="check circle teal icon"></i>
-                      <div class="content">
-                        <div class="header">Summary:</div>
+                        <div class="content">
+                        <div class="header">Access:</div>
                         <div class="description">
-                            {this.props.cve.summary}
+                          {'access' in this.props.cve ? (
+                            <span>
+                              <div>Vector: {this.props.cve.access.vector}</div>
+                              <div>Complexity: {this.props.cve.access.complexity}</div>
+                              <div>Authentication: {this.props.cve.access.authentication}</div>
+                            </span>
+                          ) : ""
+                          }
                         </div>
                         </div>
                       </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">Impact:</div>
+                        <div class="description">
+                        {'impact' in this.props.cve ? (
+                          <span>
+                            <div>Confidentiality: {this.props.cve.impact.confidentiality}</div>
+                            <div>Integrity: {this.props.cve.impact.integrity}</div>
+                            <div>Availability: {this.props.cve.impact.avaiability}</div>
+                          </span>
+                        ) : ""
+                        }
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                        <div class="header">Vulnerable Product: </div>
+                        <div class="description">
+                           { 'vulnerable_product' in this.props.cve ? (
+                                this.props.cve.vulnerable_product.map( (vp, index) => {
+                                  return (
+                                    <div key={index} >
+                                    {vp}
+                                    <br/>
+                                    </div>
+                                  );
+                                })
+                              ) : ""
+                            }
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <div class="item"><i class="check circle teal icon"></i>
+                        <div class="content">
+                          <div class="header">Vulnerable Configuration:</div>
+                            <div class="description">
+                              {
+                                'vulnerable_configuration' in this.props.cve ? (
+                                    this.props.cve.vulnerable_configuration.map( (vc, index) => {
+                                        return (
+                                          <div key={index}>
+                                            {vc}
+                                          </div>
+                                        ); 
+                                    })
+                                ) : ""
+                              }
+                            </div>
+                          </div>
+                      </div>
+                      
+                    
                 </div>
             </div>
-            </div>
+          </div>
         );
     }
 }

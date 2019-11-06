@@ -18,6 +18,7 @@ const itemsPerPage = 20;
 // TODO move to redux store and actions
 const CVE_ACTION_NONE = '_NONE';
 const CVE_ACTION_RELOAD = '_RELOAD';
+const CVE_ACTION_LOAD_DETAILS = '_LOAD_DETAILS';
 
 // which summary list to show:
 const SHOW_SUMMARY_CPE = 'SHOW_SUMMARY_CPE';
@@ -32,7 +33,9 @@ const REDIRECT_PRICING = '/pricing';
 
 export default class AttackSrfcPage extends Component {
 
-
+    noop = () => {
+        undefined;
+    }
 
 /*
  * selectedCpes:            cpe list used by cpe inventory
@@ -201,8 +204,8 @@ export default class AttackSrfcPage extends Component {
         CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => (
             this.setState({
                 selectedCve: fullCve,
-            }))
-        );
+            })
+        ));
     }
 
     loadCvesPage = () => {
@@ -385,7 +388,7 @@ export default class AttackSrfcPage extends Component {
                                <span>
                                     <i class="right arrow icon divider"></i>
                                     <a class="section"
-                                        onClick={}> 
+                                        onClick={this.noop}> 
                                         {this.state.selectedCpeSummary.cpe.id}
                                     </a>
                                 </span>
