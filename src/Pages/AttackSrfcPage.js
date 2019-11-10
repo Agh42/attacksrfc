@@ -50,7 +50,7 @@ export default class AttackSrfcPage extends Component {
 */
     state = {
             selectedCpes: [],
-            selectedCves: [],
+            cvesForGraph: [],
             selectedCve: {},
             selectedCvesPage: [],
             selectedCvesTotalCount: 0,
@@ -361,7 +361,7 @@ export default class AttackSrfcPage extends Component {
                 </div>
                 <div className='eleven wide column'>
                     <CveGraph
-                        selectedCves={this.state.selectedCves}
+                        selectedCves={this.state.cvesForGraph}
                         activeCpes={this.state.selectedCpes}
                     />
                 </div>
