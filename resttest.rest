@@ -52,7 +52,7 @@ GET http://localhost:8080/api/v1/cpes/prefix/samba HTTP/1.1
 
 ###
 
-GET http://localhost:8080/api/v1/cves/vulnerable_product/microsoft HTTP/1.1
+GET http://localhost:8080/api/v1/cves/vulnerable_product/microsoft?fields=id,cvss,vulnerable_product,vulnerable_configuration HTTP/1.1
 
 ###
 

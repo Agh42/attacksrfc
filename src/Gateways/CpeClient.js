@@ -17,6 +17,10 @@ function getProduct(cpe) {
   return cpe.id.split(':')[4];
 }
 
+function replaceSpecialChars(cpe) {
+  return cpe.replace(/\//g, "^^").replace(/:/g, "%3A");
+}
+
 //########
 
 
@@ -53,6 +57,27 @@ function checkStatus(response) {
    return response.json();
  }
 
+ /**
+  * Flatten json result to "{HIGH:1, MEDIMUM: 2,...}"
+  * from the format returned by the service:
+      [
+        {
+          "_id": {
+            "severity": "LOW"
+          },
+          "count": 151
+        },
+        {
+          "_id": {
+            "severity": "CRITICAL"
+          },
+          "count": 262
+        },
+        ...
+      ]
+
+  * @param {*} json 
+  */
  function convertSummary(json) {
     // flatten to [{HIGH:1}, {MEDIUM:2}, ...]
     let flattened = json.map( (elmt) => {
@@ -60,7 +85,7 @@ function checkStatus(response) {
         [elmt._id.severity] : elmt.count, 
       };
     }); 
-    // merge to {HIGH:1, MEDIMUM: 2}
+    // merge to new {HIGH:1, MEDIMUM: 2} object with spread operator:
     if (flattened.length)
       return Object.assign(...flattened);
     else
@@ -104,7 +129,7 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
  * { "LOW" : 42, "MEDIUM" : 23 }
  */
 export function getCveSummaryForCpe(cpe, success) {
-  cpe = cpe.replace(/\//g, "^^").replace(/:/g, "%3A");
+  cpe = replaceSpecialChars(cpe);
   console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_product/'
         + cpe);
   fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_product/'
@@ -119,6 +144,23 @@ export function getCveSummaryForCpe(cpe, success) {
     .then(success);
 }
 
+export function getCvesByCpeForGraph(cpe, success) {
+  const fields = "id,cvss,vulnerable_product,vulnerable_configuration";
+
+  cpe = replaceSpecialChars(cpe);
+  console.log(CVESERVICE_URL+'/api/v1/cves/vulnerable_product/'
+    + cpe + "?fields=" + fields);
+  fetch(CVESERVICE_URL + '/api/v1/cves/vulnerable_product/'
+    + cpe + "?fields=" + fields, {
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  }).then(checkStatus)
+  .then(parseJSON)
+  .then(success);
+}
+
 export function getStats(success) {
   return fetch(CVESERVICE_URL+'/api/v1/stats', {
         headers: {
@@ -129,9 +171,15 @@ export function getStats(success) {
       .then(success);
 }
 
+/**
+ * Get all details for a single CVE.
+ * 
+ * @param {*} id 
+ * @param {*} success 
+ */
 export function getCveById(id, success) {
-  let fields = ["id", "cvss", "references", "Modified", "Published", "summary",
-    "vulnerable_product", "vulnerable_configuration", "cwe", "access", "impact"];
+  //let fields = ["id", "cvss", "references", "Modified", "Published", "summary",
+  //  "vulnerable_product", "vulnerable_configuration", "cwe", "access", "impact"];
   
   return fetch(CVESERVICE_URL+'/api/v1/cve/' + id, {
         headers: {
