@@ -15,7 +15,20 @@ function getCpesGenericForm(cpes) {
     return result;
 }
 
+function getResultsCount(allCves) {
+    allCves.
+}
+
 export default class CveGraph extends Component {
+
+ static propTypes = {
+        allCves: PropTypes.object.isRequired,
+        totalCveCount: PropTypes.number.isRequired,
+        activeCpes: PropTypes.object.isRequired,
+        cpeSummaries: PropTypes.object.isRequired
+    };
+
+
    data;
    nodes;
    edges;
