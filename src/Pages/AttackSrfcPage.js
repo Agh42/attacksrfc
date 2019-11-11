@@ -50,13 +50,15 @@ export default class AttackSrfcPage extends Component {
 */
     state = {
             selectedCpes: [],
-            cvesForGraph: [],
             selectedCve: {},
             selectedCvesPage: [],
             selectedCvesTotalCount: 0,
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
+            
+            graphCves: [],
+            graphCvesTotalCount: 0,
 
             cpeSummaries: [],
             selectedCpeSummary: {},
@@ -99,12 +101,13 @@ export default class AttackSrfcPage extends Component {
 
     // FIXME cvss sort incorrect over multiple CPEs because some cvss are strings
     // FIXME add vendor and product field insert to cvesearch cronjob
-    // TODO add iphone and adobe reader to example cves
+    // TODO add iphone, android, windows 10, macos, linux, and adobe reader to example cves
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
     // FIXME switch to page one when loading cvelist with fewer cves
+    // FIXME limit cpe inventory to 50 cpes
 
 
     initSelectedCpes = () => {
@@ -222,12 +225,21 @@ export default class AttackSrfcPage extends Component {
                     numTotalPages : Math.ceil(newCves.resultCount / itemsPerPage),
                 }))
             );
+             
+            CpeClient.getCvesByCpesForGraph(cpesLeftAlignedURIBinding, (newCves) => (
+                this.setState({
+                    graphCves: newCves.result,
+                    graphCvesTotalCount: newCves.resultCount,
+                }))
+            );
         } else {
             this.setState( {
                 selectedCvesPage: [],
                 selectedCvesTotalCount: 0,
                 numTotalPages: 1,
                 numCurrentPage: 1,
+                graphCves: [],
+                graphCvesTotalCount: 0,
             });
         }
     }
@@ -360,9 +372,12 @@ export default class AttackSrfcPage extends Component {
                     />
                 </div>
                 <div className='eleven wide column'>
+                
                     <CveGraph
-                        selectedCves={this.state.cvesForGraph}
+                        allCves={this.state.graphCves}
+                        totalCveCount={this.state.graphCveCount}
                         activeCpes={this.state.selectedCpes}
+                        cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) }
                     />
                 </div>
             </div>

@@ -144,21 +144,25 @@ export function getCveSummaryForCpe(cpe, success) {
     .then(success);
 }
 
-export function getCvesByCpeForGraph(cpe, success) {
+export function getCvesByCpesForGraph(cpes, success) {
   const fields = "id,cvss,vulnerable_product,vulnerable_configuration";
 
-  cpe = replaceSpecialChars(cpe);
-  console.log(CVESERVICE_URL+'/api/v1/cves/vulnerable_product/'
-    + cpe + "?fields=" + fields);
-  fetch(CVESERVICE_URL + '/api/v1/cves/vulnerable_product/'
-    + cpe + "?fields=" + fields, {
+  fetch(CVESERVICE_URL + '/api/v1/cves/search', {
+    method: 'post',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
+    body: JSON.stringify({
+      "vulnerableCpes": cpes,
+      "itemsPerPage": 100,
+      "requestedPage": 1,
+      "fields": fields
+    })
   }).then(checkStatus)
-  .then(parseJSON)
-  .then(success);
+    .then(parseJSON)
+    .then(success);
+
 }
 
 export function getStats(success) {
