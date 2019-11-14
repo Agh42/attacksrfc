@@ -15,6 +15,10 @@ function getCpesGenericForm(cpes) {
     return result;
 }
 
+function vendorProduct(cpe) {
+    return cpe.split(":")[2] + " " + cpe.split(":")[3]
+}
+
 function getResultsCount(allCves) {
     allCves.
 }
@@ -56,14 +60,26 @@ export default class CveGraph extends Component {
             
             let primaryCpe='';
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
-                const vendor_product = vulnerableCpe.split(":")[2] + " " + vulnerableCpe.split(":")[3];
+                const vendor_product = vendorProduct(vulnerableCpe);
                 if (!primaryCpe && userSelectedCpes.has(vendor_product)) {
                     primaryCpe = vendor_product;
                 }
             });
+            
+            // add summary nodes with severity count:
+             cpeSummaries.forEach( (cs) => {
+                if (vendorProduct(cs.cpe.id) === primaryCpe) {
+                    if (!createdNodes.has(primaryCpe+"_critical")
+                        &&  'summary' in this.props.cpeSummary
+                        && 'CRITICAL' in this.props.cpeSummary.summary
+                      xxx
+                    ) {
+                    }
+                }
+             });
 
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
-                const vendor_product = vulnerableCpe.split(":")[2] + " " + vulnerableCpe.split(":")[3];
+                const vendor_product = vendorProduct(vulnerableCpe);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(vendor_product)) {
                     let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#c0c0c0';
