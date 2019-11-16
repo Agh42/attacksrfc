@@ -43,9 +43,21 @@ content-type: application/json
     "fields": ["id", "cvss", "references", "Modified", 
         "Published", "summary"],
     "itemsPerPage": 20,
-    "requestedPage": 120
+    "requestedPage": 1
 }
 
+###
+POST http://localhost:8080/api/v1/cves/search HTTP/1.1
+content-type: application/json
+
+{
+    "vulnerableCpes": [
+        "cpe:/o:microsoft:windows_xp"
+        ],
+    "fields": ["id", "cvss", "vulnerable_product", "vulnerable_configuration"],
+    "itemsPerPage": 100,
+    "requestedPage": 1
+}
 ###
 
 GET http://localhost:8080/api/v1/cpes/prefix/samba HTTP/1.1
