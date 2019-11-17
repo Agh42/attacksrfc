@@ -451,8 +451,7 @@ export default class AttackSrfcPage extends Component {
                       <img class="ui centered image" src="images/logos/cstoolio_60.png" />
                       </a>
                       <div class="ui horizontal  small divided link list">
-                        <a class="item" href="welcome.html#">Home</a>
-                        <a class="item" href="contact.html#">Support and Contact</a>
+                        <a class="item" href="homepage.html#">Home</a>
                         <a class="item" href="legal.html#">Legal Notice and License</a>
                       </div>
                     </div>

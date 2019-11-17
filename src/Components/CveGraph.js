@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as vis from 'vis';
+import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
 
 
@@ -19,9 +20,55 @@ function vendorProduct(cpe) {
     return cpe.split(":")[2] + " " + cpe.split(":")[3]
 }
 
-function getResultsCount(allCves) {
-    allCves.
+/**
+ * Test if a summary node exists for the given severity.
+ * 
+ * @param {Object} cpeSummary a cve summary entry to check for existence of a matching severity count
+ * @param {Object[]} createdNodes all nodes created so far
+ * @param {string} primaryCpe cpe id of the primary cpe (selected by the user)
+ * @param {string} severity the severity level (CRITICAL, HIGH, ...)
+ */
+function checkSummaryNodePresent(cpeSummary, createdNodes, primaryCpe, severity) {
+    return (!createdNodes.has(primaryCpe+"_"+severity)
+                    &&  'summary' in cpeSummary
+                    && severity in cpeSummary.summary);
 }
+
+function createSummaryNode(severity, count, color) {
+    let node = {
+        id: vendorProduct+"_"+severity, 
+        label: count, 
+        title: "Found " + count + " critical CVEs. (Only the top 100 CVEs are shown individually.)",
+        color: color 
+    };
+    return node;
+}
+
+/**
+ * Returns an id for the correct summary node for a CVE.
+ * 
+ * @param {Object} cve the source CVE
+ * @param {string} primaryCpe the target product id
+ * @returns {string} 
+ */
+function determineCveTargetNodeId(cve, primaryCpe) {
+    return primaryCpe + "_" + CVEs.severityForScore(cve.cvss);
+}
+
+/*
+/**
+ * Find the correct target summary node by cvss level.
+ * 
+ * @param {Object[]} summaryNodes all CVE summary nodes for the current product (link target)
+ * @param {Object} cve the current cve (link source)
+ * @returns {Object}
+function determineTargetNode(summaryNodes, cve) {
+    let severity = CVEs.severityForScore(cve.cvss);
+    if (severity in summaryNodes) {
+        return summaryNodes[severity];
+    }
+}
+*/
 
 export default class CveGraph extends Component {
 
@@ -40,7 +87,7 @@ export default class CveGraph extends Component {
     convertCves= (props) => {
         this.nodes = new vis.DataSet();
         this.edges = new vis.DataSet();
-        const allCves = props.selectedCves;
+        const allCves = props.selectedCves || [];
         const userSelectedCpes = getCpesGenericForm(props.activeCpes);
         //let group = -1;
         
@@ -58,11 +105,13 @@ export default class CveGraph extends Component {
             this.nodes.add( {id: cve.id, 
                 label: cve.cvss.toString(), 
                 title: cve.id,
-                color: CVEs.colorForScore(cve.cvss) } );
+                color: CVEs.colorValueForScore(cve.cvss) } );
             
             let primaryCpe='';
             let summaryNodes = {};
 
+            // determine primary cpe for this cve:
+            // (primay cpe is one selected by the user)
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
                 const vendor_product = vendorProduct(vulnerableCpe);
                 if (!primaryCpe && userSelectedCpes.has(vendor_product)) {
@@ -70,25 +119,25 @@ export default class CveGraph extends Component {
                 }
             });
             
-            // add summary nodes with severity count:
-             cpeSummaries.forEach( (cs) => {
+            // add summary nodes with severity count for primary cpe:
+             props.cpeSummaries.forEach( (cs) => {
                 if (vendorProduct(cs.cpe.id) === primaryCpe) {
-                    if ( this.checkSummaryNodePresent(createdNodes, "CRITICAL") ) {
+                    if ( this.checkSummaryNodePresent(cs, createdNodes, "CRITICAL") ) {
                         summaryNodes.CRITICAL = createSummaryNode("CRITICAL", cs.summary.CRITICAL, CVEs.COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
                         createdNodes.add(summaryNodes.CRITICAL);
                     }
-                    else if ( this.checkSummaryNodePresent(createdNodes, "HIGH") ) {
+                    else if ( this.checkSummaryNodePresent(cs, createdNodes, "HIGH") ) {
                         summaryNodes.HIGH = createSummaryNode("HIGH", cs.summary.HIGH, CVEs.COLOR_RED);
                         this.nodes.add(summaryNodes.HIGH);
                         createdNodes.add(summaryNodes.HIGH);
                     }
-                    else if ( this.checkSummaryNodePresent(createdNodes, "MEDIUM") ) {
+                    else if ( this.checkSummaryNodePresent(cs, createdNodes, "MEDIUM") ) {
                         summaryNodes.MEDIUM = createSummaryNode("MEDIUM", cs.summary.MEDIUM, CVEs.COLOR_AMBER);
                         this.nodes.add(summaryNodes.MEDIUM);
                         createdNodes.add(summaryNodes.MEDIUM);
                     }
-                    else if ( this.checkSummaryNodePresent(createdNodes, "LOW") ) {
+                    else if ( this.checkSummaryNodePresent(cs, createdNodes, "LOW") ) {
                         summaryNodes.LOW = createSummaryNode("LOW", cs.summary.LOW, CVEs.COLOR_GREEN);
                         this.nodes.add(summaryNodes.LOW);
                         createdNodes.add(summaryNodes.LOW);
@@ -97,27 +146,33 @@ export default class CveGraph extends Component {
                 }
              });
 
+            // add all other vulnerable CPEs:
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
                 const vendor_product = vendorProduct(vulnerableCpe);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(vendor_product)) {
                     let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#c0c0c0';
                     
-                    this.nodes.add( {id: vendor_product, 
+                    this.nodes.add({
+                        id: vendor_product, 
                         shape: 'box',
                         color: color,
                         font: {color: '#ffffff'},
-                        label: vendor_product} );
+                        label: vendor_product
+                    });
                     createdNodes.add(vendor_product);
-                }
-                cveTargetNodeId = determineCveTargetNodeId(cve, primaryCpe);
-                if (!createdEdges.has(cve.id+cveTargetNodeId)) {
-                    targetNode = determineTargetNode(summaryNodes, cve);
-                    this.edges.add( {from: cve.id, to: cveTargetNodeId} );
-                    createdEdges.add(cve.id + cveTargetNodeId);
                 }
             });
 
+             // link cve node to summary node with correct criticality:
+             let cveTargetNodeId = determineCveTargetNodeId(cve, primaryCpe);
+             if (!createdEdges.has(cve.id + cveTargetNodeId)) {
+                 //targetNode = determineTargetNode(summaryNodes, cve);
+                 this.edges.add( {from: cve.id, to: cveTargetNodeId} );
+                 createdEdges.add(cve.id + cveTargetNodeId);
+             }
+
+            // add all CPEs for vulnerable configurations:
             cve.vulnerable_configuration.forEach( (cpe) => {
                 const vendor_product = cpe.split(":")[3] + " " + cpe.split(":")[4];
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
@@ -132,7 +187,7 @@ export default class CveGraph extends Component {
                         label: vendor_product} );
                     createdNodes.add(vendor_product);
                 }
-                
+                // link them to the primary cpe:
                 if (!createdEdges.has(primaryCpe+vendor_product)
                         && !(primaryCpe===vendor_product)) {
                     this.edges.add( {from: primaryCpe, to: vendor_product} );
@@ -176,28 +231,7 @@ export default class CveGraph extends Component {
         this.initGraph(nextProps);
     }
 
-    checkSummaryNodePresent(createdNodes, severity) {
-        return !createdNodes.has(primaryCpe+"_"+severity)
-                        &&  'summary' in cs
-                        && severity in cs.summary
-    }
-    createSummaryNode(severity, count, color) {
-        node = {
-            id: vendorProduct+"_"+severity, 
-            label: count, 
-            title: "Found " + label + " critical CVEs. (Only the top 100 CVEs are shown individually.)",
-            color: color 
-        };
-        return node;
-    }
-
-    determineCveTargetNodeId(cve) {
-
-    }
-
-    determineTargetNode(summaryNodes, cve) {
-        
-    }
+  
             
     render() {
         return (
