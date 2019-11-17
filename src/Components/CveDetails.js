@@ -86,7 +86,15 @@ export default class CveDetails extends Component {
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
                         <div class="header">
-                          Weakness: {this.props.cve.cwe}
+                        {'cwe' in this.props.cve ? (
+                          <span>
+                          Weakness: <a target="_blank" href={"https://cwe.mitre.org/data/definitions/"
+                            + this.props.cve.cwe.match(/CWE-(\d+)/)[1] + ".html"}>
+                              {this.props.cve.cwe}
+                            </a>
+                          </span>
+                        ) : "Weakness: -"
+                        }
                         </div>
                         </div>
                       </div>

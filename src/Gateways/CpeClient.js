@@ -1,6 +1,6 @@
 import React from 'react';
 export const CpeClient = {getCvesForCpes,getAutoCompleteItems,
-        getExampleCpes, getStats, getCveSummaryForCpe, getCveById};
+        getExampleCpes, getStats, getCveSummaryForCpe, getCveById, getCvesByCpesForGraph};
 export default CpeClient;
 
 // edit .env/.env.local to change this value:
@@ -124,9 +124,12 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
     .then(success);
 }
 
-/*
+/**
  * Returns count of CVEs grouped by severity for the given CPE:
  * { "LOW" : 42, "MEDIUM" : 23 }
+ * 
+ * @param {*} cpe 
+ * @param {*} success 
  */
 export function getCveSummaryForCpe(cpe, success) {
   cpe = replaceSpecialChars(cpe);
@@ -144,8 +147,13 @@ export function getCveSummaryForCpe(cpe, success) {
     .then(success);
 }
 
+/**
+ * 
+ * @param {Object[]} cpes 
+ * @callback {CpeClient~getCvesByCpesForGraph} success The function to call with positive result.
+ */
 export function getCvesByCpesForGraph(cpes, success) {
-  const fields = "id,cvss,vulnerable_product,vulnerable_configuration";
+  const fields = ["id","cvss","vulnerable_product","vulnerable_configuration"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
     method: 'post',
