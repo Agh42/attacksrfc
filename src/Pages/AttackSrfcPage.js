@@ -223,15 +223,15 @@ export default class AttackSrfcPage extends Component {
                     selectedCvesPage: newCves.result,
                     selectedCvesTotalCount: newCves.resultCount,
                     numTotalPages : Math.ceil(newCves.resultCount / itemsPerPage),
-                }))
-            );
+                })
+            ));
              
             CpeClient.getCvesByCpesForGraph(cpesLeftAlignedURIBinding, (newCves) => (
                 this.setState({
                     graphCves: newCves.result,
                     graphCvesTotalCount: newCves.resultCount,
-                }))
-            );
+                })
+            ));
         } else {
             this.setState( {
                 selectedCvesPage: [],
