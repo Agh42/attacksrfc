@@ -1,7 +1,6 @@
 import moment from 'moment';
 
-export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate, getHostname,
-    COLOR_RED, COLOR_AMBER, COLOR_GREEN};
+export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate, getHostname};
 export default CVEs;
 
 const MEDIUM_THRESHOLD = 3.99; // medium severity lower bound exclusive
@@ -13,9 +12,9 @@ const SEVERITY_MEDIUM ="MEDIUM";
 const SEVERITY_HIGH ="HIGH";
 const SEVERITY_CRITICAL ="CRITICAL";
 
-const COLOR_RED = "#db0000";
-const COLOR_AMBER = "#ffa200";
-const COLOR_GREEN = "#11A100";
+export const COLOR_RED = "#db0000";
+export const COLOR_AMBER = "#ffa200";
+export const COLOR_GREEN = "#11A100";
 
 function colorValueForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return COLOR_GREEN;
