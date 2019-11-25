@@ -28,11 +28,16 @@ const SHOW_SUMMARY_CVE = 'SHOW_SUMMARY_CVE';
 const CPE_ACTION_NONE = '_NONE';
 const CPE_ACTION_RELOAD = '_RELOAD';
 
+// trigger graph reload
+const GRAPH_ACTION_NONE = '_NONE';
+const GRAPH_ACTION_RELOAD = '_RELOAD';
+
 // page load redirects:
 const REDIRECT_PRICING = '/pricing';
 
 export default class AttackSrfcPage extends Component {
 
+    // used to explicitely state places where no action is wanted:
     noop = () => {
         undefined;
     }
@@ -58,7 +63,6 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
             
             graphCves: [],
-            graphCvesTotalCount: 0,
 
             cpeSummaries: [],
             selectedCpeSummary: {},
@@ -66,6 +70,7 @@ export default class AttackSrfcPage extends Component {
 
             _redirect: "",
             _cveAction: CVE_ACTION_NONE,
+            _graphAction: GRAPH_ACTION_NONE,
             _cpeAction: CPE_ACTION_NONE
     };
 
@@ -84,6 +89,10 @@ export default class AttackSrfcPage extends Component {
                 this.setState({_cveAction: CVE_ACTION_NONE});
                 this.loadCveDetails();
                 break;
+            case GRAPH_ACTION_RELOAD:
+                this.setState({_graphAction: GRAPH_ACTION_NONE});
+                this.loadGraphData();
+                break;
             default:
                 break;
 
@@ -98,16 +107,19 @@ export default class AttackSrfcPage extends Component {
 
         }
     }
-
+    
+    
+    // TODO add time slider to limit query for cves by publication date
     // FIXME cvss sort incorrect over multiple CPEs because some cvss are strings
     // FIXME add vendor and product field insert to cvesearch cronjob
     // TODO add iphone, android, windows 10, macos, linux, and adobe reader to example cves
+    // TODO add direct cve search support to cpe dropdown
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
     // FIXME switch to page one when loading cvelist with fewer cves
-    // FIXME limit cpe inventory to 50 cpes
+    // FIXME limit cpe inventory to 10 active cpes
 
 
     initSelectedCpes = () => {
@@ -120,6 +132,7 @@ export default class AttackSrfcPage extends Component {
                         }),
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
+                        _graphAction: GRAPH_ACTION_RELOAD,
                     });
     }
 
@@ -174,6 +187,7 @@ export default class AttackSrfcPage extends Component {
         this.setState({
             selectedCpeSummary: cpeSummary,
             _cveAction : CVE_ACTION_RELOAD,
+            _graphAction: GRAPH_ACTION_RELOAD,
             _summaryDisplay : SHOW_SUMMARY_CVE,
         });
     }
@@ -195,7 +209,7 @@ export default class AttackSrfcPage extends Component {
      */
     getCpeAsUriBinding = (newCpe) => {
         let reCutOff = /(cpe:\/.*?)[:-]*$/; //removes all trailing ":-"
-       //create cpe 2.2 by replacing version number:
+        //create cpe 2.2 by replacing version number:
         let cpe22 = newCpe.id.replace(/2.[23]:/, "/");
         let match = reCutOff.exec(cpe22);
         let cutOffCpe = match ? match[1] : cpe22;
@@ -225,21 +239,32 @@ export default class AttackSrfcPage extends Component {
                     numTotalPages : Math.ceil(newCves.resultCount / itemsPerPage),
                 })
             ));
-             
-            CpeClient.getCvesByCpesForGraph(cpesLeftAlignedURIBinding, (newCves) => (
-                this.setState({
-                    graphCves: newCves.result,
-                    graphCvesTotalCount: newCves.resultCount,
-                })
-            ));
         } else {
             this.setState( {
                 selectedCvesPage: [],
                 selectedCvesTotalCount: 0,
                 numTotalPages: 1,
                 numCurrentPage: 1,
+              
+            });
+        }
+    }
+    
+    loadGraphData = () => {
+        let cpesLeftAlignedURIBinding = 'cpe' in this.state.selectedCpeSummary
+            ? [this.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)]
+            : [];
+
+        if (cpesLeftAlignedURIBinding.length > 0) {
+              CpeClient.getCvesByCpesForGraph(cpesLeftAlignedURIBinding, (newCves) => (
+                this.setState({
+                    graphCves: newCves.result,
+                })
+            ));
+        }
+        else {
+            setState({
                 graphCves: [],
-                graphCvesTotalCount: 0,
             });
         }
     }
@@ -308,6 +333,7 @@ export default class AttackSrfcPage extends Component {
     }
 
     handleEditCpeClick = (editCpeId) => {
+        // TODO implement dialog to narrow down cpe by version range, platform etc.
         console.log("Edit " + editCpeId);
     }
 
@@ -375,7 +401,6 @@ export default class AttackSrfcPage extends Component {
                 
                     <CveGraph
                         allCves={this.state.graphCves}
-                        totalCveCount={this.state.graphCveCount}
                         activeCpes={this.state.selectedCpes}
                         cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) }
                     />
