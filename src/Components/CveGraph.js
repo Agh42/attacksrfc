@@ -235,12 +235,13 @@ export default class CveGraph extends Component {
     }
     
     componentWillReceiveProps(nextProps) {
-        console.log("graph will receive props: ");
-        console.log(nextProps);
-        this.initGraph(nextProps);
+        if (nextProps.allCves.length != this.props.allCves.length
+            || !nextProps.allCves.every(el => this.props.allCves.includes(el)) ) {
+            console.log("graph will receive props: ");
+            console.log(nextProps);
+            this.initGraph(nextProps);
+        }
     }
-
-  
             
     render() {
         return (

@@ -89,15 +89,16 @@ export default class AttackSrfcPage extends Component {
                 this.setState({_cveAction: CVE_ACTION_NONE});
                 this.loadCveDetails();
                 break;
+            default:
+                break;
+                }
+        switch (this.state._graphAction) {
             case GRAPH_ACTION_RELOAD:
                 this.setState({_graphAction: GRAPH_ACTION_NONE});
                 this.loadGraphData();
                 break;
-            default:
-                break;
-
         }
-         switch (this.state._cpeAction) {
+        switch (this.state._cpeAction) {
             case CPE_ACTION_RELOAD:
                 this.setState({_cpeAction: CPE_ACTION_NONE});
                 this.loadCpeSummaries();
@@ -163,6 +164,7 @@ export default class AttackSrfcPage extends Component {
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
+            _graphAction : GRAPH_ACTION_RELOAD,
         });
     }
 
@@ -178,6 +180,7 @@ export default class AttackSrfcPage extends Component {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
                 cpeSummaries: [...this.state.cpeSummaries, {cpe: activeCpe, count: ""}],
                 _cpeAction: CPE_ACTION_RELOAD,
+                _graphAction : GRAPH_ACTION_RELOAD,
             });
         }
     }
@@ -186,9 +189,9 @@ export default class AttackSrfcPage extends Component {
     handleCpeSummarySelected = (cpeSummary) => {
         this.setState({
             selectedCpeSummary: cpeSummary,
-            _cveAction : CVE_ACTION_RELOAD,
+            _cveAction: CVE_ACTION_RELOAD,
             _graphAction: GRAPH_ACTION_RELOAD,
-            _summaryDisplay : SHOW_SUMMARY_CVE,
+            _summaryDisplay: SHOW_SUMMARY_CVE,
         });
     }
 
@@ -263,7 +266,7 @@ export default class AttackSrfcPage extends Component {
             ));
         }
         else {
-            setState({
+            this.setState({
                 graphCves: [],
             });
         }
@@ -320,6 +323,7 @@ export default class AttackSrfcPage extends Component {
                }
             }),
             _cpeAction: CPE_ACTION_RELOAD,
+            _graphAction: GRAPH_ACTION_RELOAD,
         });
     }
 
