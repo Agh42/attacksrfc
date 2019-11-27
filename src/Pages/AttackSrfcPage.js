@@ -37,22 +37,22 @@ const REDIRECT_PRICING = '/pricing';
 
 export default class AttackSrfcPage extends Component {
 
-    // used to explicitely state places where no action is wanted:
+    // used to explicitely disable default actions where needed:
     noop = () => {
         undefined;
     }
 
-/*
- * selectedCpes:            cpe list used by cpe inventory
- * selectedCves:            cve list used by graph display
- * selectedCve:
- * selectedCvesPage:        paginated cve list used by cvelist component
- * selectedCvesTotalCount:  number of all cves for current inventory
- * stats:                   amount of cves/cpes in database and time of last update
- * numTotalPages:           total cve pages available
- * numCurrentPage:          cve page being displayed
- *
-*/
+    /*
+     * selectedCpes:            cpe list used by cpe inventory
+     * selectedCves:            cve list used by graph display
+     * selectedCve:
+     * selectedCvesPage:        paginated cve list used by cvelist component
+     * selectedCvesTotalCount:  number of all cves for current inventory
+     * stats:                   amount of cves/cpes in database and time of last update
+     * numTotalPages:           total cve pages available
+     * numCurrentPage:          cve page being displayed
+     *
+    */
     state = {
             selectedCpes: [],
             selectedCve: {},
@@ -63,6 +63,7 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
             
             graphCves: [],
+            selectedCpeSummaryInGraph: {},
 
             cpeSummaries: [],
             selectedCpeSummary: {},
@@ -70,7 +71,7 @@ export default class AttackSrfcPage extends Component {
 
             _redirect: "",
             _cveAction: CVE_ACTION_NONE,
-            _graphAction: GRAPH_ACTION_NONE,
+            _graphAction: GRAPH_ACTION_INIT,
             _cpeAction: CPE_ACTION_NONE
     };
 
@@ -78,7 +79,8 @@ export default class AttackSrfcPage extends Component {
         this.initSelectedCpes();
         this.initStats();
     }
-
+    
+    
     componentDidUpdate() {
         switch (this.state._cveAction) {
             case CVE_ACTION_RELOAD:
@@ -92,12 +94,29 @@ export default class AttackSrfcPage extends Component {
             default:
                 break;
                 }
+                
         switch (this.state._graphAction) {
             case GRAPH_ACTION_RELOAD:
                 this.setState({_graphAction: GRAPH_ACTION_NONE});
                 this.loadGraphData();
                 break;
+            case GRAPH_SUMMARIES_LOADED:
+                if (! 'cpe' in this.state.selectedCpeSummaryInGraph) {
+                    // inital graph data: 
+                    // after summaries are loaded, set a cpe and trigger initial cve loading:
+                    this.setState({
+                        _graphAction: GRAPH_ACTION_RELOAD,
+                        selectedCpeSummaryInGraph: cpeSummaries[0],
+                    });
+                }                
+                else {
+                    // graph is already displaying a cpe.
+                    // ignore summary loading. just switch when another cpe is selected.
+                    this.setState({_graphAction: GRAPH_ACTION_NONE});
+                }
+                break;
         }
+        
         switch (this.state._cpeAction) {
             case CPE_ACTION_RELOAD:
                 this.setState({_cpeAction: CPE_ACTION_NONE});
@@ -123,6 +142,10 @@ export default class AttackSrfcPage extends Component {
     // FIXME limit cpe inventory to 10 active cpes
 
 
+    /*
+     * Initilizes first CPE list. Triggers loading of CVE summaries for those CPEs. Then sets first of those CPEs
+     * as initial graph display and loads CVEs for graph.
+     */
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
                         cpeSummaries: CpeClient.getExampleCpes().map( (c) => {
@@ -133,7 +156,6 @@ export default class AttackSrfcPage extends Component {
                         }),
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
-                        _graphAction: GRAPH_ACTION_RELOAD,
                     });
     }
 
@@ -164,7 +186,6 @@ export default class AttackSrfcPage extends Component {
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
-            _graphAction : GRAPH_ACTION_RELOAD,
         });
     }
 
@@ -180,7 +201,6 @@ export default class AttackSrfcPage extends Component {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
                 cpeSummaries: [...this.state.cpeSummaries, {cpe: activeCpe, count: ""}],
                 _cpeAction: CPE_ACTION_RELOAD,
-                _graphAction : GRAPH_ACTION_RELOAD,
             });
         }
     }
@@ -189,9 +209,10 @@ export default class AttackSrfcPage extends Component {
     handleCpeSummarySelected = (cpeSummary) => {
         this.setState({
             selectedCpeSummary: cpeSummary,
+            selectedCpeSummaryForGraph: cpeSummary,
             _cveAction: CVE_ACTION_RELOAD,
-            _graphAction: GRAPH_ACTION_RELOAD,
             _summaryDisplay: SHOW_SUMMARY_CVE,
+            _graphAction: GRAPH_ACTION_RELOAD,
         });
     }
 
@@ -254,12 +275,12 @@ export default class AttackSrfcPage extends Component {
     }
     
     loadGraphData = () => {
-        let cpesLeftAlignedURIBinding = 'cpe' in this.state.selectedCpeSummary
-            ? [this.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)]
+        let cpeLeftAlignedURIBinding = 'cpe' in this.state.selectedCpeSummaryForGraph
+            ? [this.getCpeAsUriBinding(this.state.selectedCpeSummaryForGraph.cpe)]
             : [];
 
-        if (cpesLeftAlignedURIBinding.length > 0) {
-              CpeClient.getCvesByCpesForGraph(cpesLeftAlignedURIBinding, (newCves) => (
+        if (cpeLeftAlignedURIBinding.length > 0) {
+              CpeClient.getCvesByCpesForGraph(cpeLeftAlignedURIBinding, (newCves) => (
                 this.setState({
                     graphCves: newCves.result,
                 })
@@ -290,7 +311,7 @@ export default class AttackSrfcPage extends Component {
                                     return cs2;
                                 }
                             }),
-
+                            _graphAction: GRAPH_SUMMARIES_LOADED,
                         });
                     }
                 );
@@ -323,7 +344,6 @@ export default class AttackSrfcPage extends Component {
                }
             }),
             _cpeAction: CPE_ACTION_RELOAD,
-            _graphAction: GRAPH_ACTION_RELOAD,
         });
     }
 
@@ -405,7 +425,10 @@ export default class AttackSrfcPage extends Component {
                 
                     <CveGraph
                         allCves={this.state.graphCves}
-                        activeCpes={this.state.selectedCpes}
+                        currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph
+                            ? this.state.selectedCpeSummaryForGraph.cpe 
+                            : ""}
+                        activeCpes={this.state.selectedCpes}   
                         cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) }
                     />
                 </div>
