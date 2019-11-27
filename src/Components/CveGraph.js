@@ -76,10 +76,12 @@ function determineCveTargetNodeId(cve, primaryCpe) {
     return primaryCpe + " " + CVEs.severityForScore(cve.cvss);
 }
 
+
 export default class CveGraph extends Component {
 
  static propTypes = {
         allCves: PropTypes.object.isRequired,
+        currentCpe: PropTypes.object.isRequired,
         activeCpes: PropTypes.object.isRequired,
         cpeSummaries: PropTypes.object.isRequired
     };
@@ -117,12 +119,20 @@ export default class CveGraph extends Component {
 
             // determine primary cpe for this cve:
             // (primay cpe is one selected by the user)
+            
+            // FIXME use current instead. this may pick another active that is present in a cve
+            //       by accident instead of the currently selected.
+            
+            primaryCpe = vendorProduct(currentCpe);
+            
+            /*
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
                 const vendor_product = vendorProduct(vulnerableCpe);
                 if (!primaryCpe && userSelectedCpes.has(vendor_product)) {
                     primaryCpe = vendor_product;
                 }
             });
+            */
             
             // add summary nodes with severity count for primary cpe:
              props.cpeSummaries.forEach( (cs) => {
@@ -160,6 +170,9 @@ export default class CveGraph extends Component {
                 const vendor_product = vendorProduct(vulnerableCpe);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(vendor_product)) {
+                
+                // FIXME use cyan for all active cpes. not just primary/currently selected.
+                
                     let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#c0c0c0';
                     
                     this.nodes.add({
@@ -230,13 +243,27 @@ export default class CveGraph extends Component {
         new vis.Network(container, this.data, options);
     } 
     
-    componentDidMount() {
-        this.initGraph(this.props);
+    showPlaceholder = () => {
+        let container = document.getElementById('cvegraph');
+        new vis.Network(container, {}, {});
+    
     }
     
+    componentDidMount() {
+        showPlaceholder();
+    }
+    
+    // update only when allCves changes and all other properties are present as well:
     componentWillReceiveProps(nextProps) {
-        if (nextProps.allCves.length != this.props.allCves.length
-            || !nextProps.allCves.every(el => this.props.allCves.includes(el)) ) {
+        if (nextProps.allCves.length === 0){
+               this.showPlaceholder();
+               return;
+        }
+        if (!nextProps.allCves.every(el => this.props.allCves.includes(el)) 
+            && 'cpe' in nextProps.currentCpe
+            && activeCpes.length > 0
+            && cpeSummaries.length > 0
+        ) {
             console.log("graph will receive props: ");
             console.log(nextProps);
             this.initGraph(nextProps);
