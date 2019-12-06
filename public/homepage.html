@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>CSTOOL.io - The cybersecurity toolbox</title>
+    
+    <!-- 
+    <link rel="stylesheet" href="./semantic-dist/semantic.css" />
+    <script src="../../static/dist/jquery/jquery.min.js"></script>
+    <script src="./semantic-dist/semantic.min.js"></script>
+     -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+
+    
+    
+     <style type="text/css">
+    
+      
+      .masthead.segment {
+        min-height: 600px;
+        padding: 1em 0em;
+      }
+      .masthead .logo.item img {
+        margin-right: 1em;
+      }
+      .masthead .ui.menu .ui.button {
+        margin-left: 0.5em;
+      }
+      .masthead h1.ui.header {
+        margin-top: 2em;
+        margin-bottom: 0em;
+        font-size: 4em;
+        font-weight: normal;
+      }
+      .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+      }
+      
+      .ui.vertical.stripe {
+        padding: 8em 0em;
+      }
+      .ui.vertical.stripe h3 {
+        font-size: 2em;
+      }
+      .ui.vertical.stripe .button + h3,
+      .ui.vertical.stripe p + h3 {
+        margin-top: 3em;
+      }
+      .ui.vertical.stripe .floated.image {
+        clear: both;
+      }
+      .ui.vertical.stripe p {
+        font-size: 1.33em;
+      }
+      .ui.vertical.stripe .horizontal.divider {
+        margin: 3em 0em;
+      }
+      
+      .quote.stripe.segment {
+        padding: 0em;
+      }
+      .quote.stripe.segment .grid .column {
+        padding-top: 5em;
+        padding-bottom: 5em;
+      }
+      
+      .footer.segment {
+        padding: 5em 0em;
+      }
+      
+      .secondary.pointing.menu .toc.item {
+        display: none;
+      }
+      
+      @media only screen and (max-width: 700px) {
+        .ui.fixed.menu {
+          display: none !important;
+        }
+        .secondary.pointing.menu .item,
+        .secondary.pointing.menu .menu {
+          display: none;
+        }
+        .secondary.pointing.menu .toc.item {
+          display: block;
+        }
+        .masthead.segment {
+          min-height: 350px;
+        }
+        .masthead h1.ui.header {
+          font-size: 2em;
+          margin-top: 1.5em;
+        }
+        .masthead h2 {
+          margin-top: 0.5em;
+          font-size: 1.5em;
+        }
+      }
+    </style>
+     
+  </head>
+  <body>
+  
+    <!--Page Contents-->
+    <div class="pusher">
+      <div class="ui teal inverted vertical masthead center aligned segment">
+ 
+        <div class="ui text container">
+        <br/>
+        <br/>
+        <br/>
+        <img class="ui middle aligned image" src="./images/logos/cstoolio.PNG" alt="CSTOOL.io"/><br/>
+          <h1 class="ui inverted header">
+          Welcome to CSTOOL.io
+          </h1>
+          <h2>
+            The Cybersecurity Toolbox. 
+          </h2>
+          <a href="index.html" class="ui huge primary button">
+            Start now<i class="right arrow icon"></i>
+          </a>
+        </div>
+      </div>
+      <div class="ui vertical stripe segment">
+        <div class="ui middle aligned stackable grid container">
+          <div class="row">
+            <div class="eight wide column">
+              <h3 class="ui header">
+                Welcome to CSTOOL.io! 
+              </h3>
+              <p> 
+                The goal of this page is to offer a diverse set of simple cybersecurity tools. Right now you can start with AttackSrfc - a CVE search and vulnerability management app.
+              </p>
+              <h3 class="ui header">
+                Are you trying to initialize or improve a vulnerability management process?
+              </h3>
+              <p>
+              AttackSrfc can help you with the required steps in your risk assessment acc. to ISO 27005:2013 or NIST 800-53 RA-3.              
+                </p>
+            </div>
+            
+            <div class="six wide right floated column">
+                <div class="center">
+                    <img class="ui medium centered image" src="./images/shape/examplecvegraph-sm2.png" />
+                </div>
+            </div>
+          </div>
+            <div class="row">
+              <div class="center aligned column">
+                <a href="index.html" class="ui huge primary button">
+                  Launch AttackSrfc<i class="right arrow icon"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui vertical stripe quote segment">
+        <div class="ui equal width stackable internally celled grid">
+          <div class="center aligned row">
+            <div class="column">
+              <h3>
+                Don't wait for the perfect solution.
+                <br/> Do something right now.
+              </h3>
+              <p>
+                <br/> A vulnerability scanner is a valuable investment. CSTOOL.io is not meant to replace local scanning. It is supposed to help in those cases where you are not
+                 able to do it quickly. In some cases you are not able to actively run a host- or network-based scanner at all. 
+                 This may be the case when working with isolated assets or relying on external service providers.
+              </p>
+            </div>
+            <div class="column">
+              <h3>
+                CSTOOL.io scans for publicly known vulnerabilities.
+              </h3>
+              <p>
+                CSTOOL.io continuously scans public sources for published vulnerabilities in known software and hardware products. 
+                You simply add the products that you are using to your inventory. Stay current and show that without proper 
+                patch management the problem will not go away. Start with the components that you know that you 
+                are using. Add components that you know that your service providers are using. 
+                Improve your inventory as you become more aware of your infrastructure over time.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ui vertical stripe segment">
+      <div class="ui equal width stackable internally celled grid">
+          <div class="center aligned row">
+            <div class="column">
+                <img class="ui large centered image" src="/images/nist-csf.png" />
+            </div>        
+        <div class="ui text container">
+          <div class="ui medium header">
+            "It is possible to commit no mistakes and still loose. That is not a weakness. That is life. " 
+            <div class="ui sub header">— Cpt. Jean-Luc Picard</div>
+          </div>
+          <p>
+            Are you lacking a complete inventory of your assets? 
+            Are not all responsibilities for processes clearly assigned? 
+            Are you worried that you may have real risks that could lead to a critical security incident? 
+            Address these concerns with CSTOOL.io right now - don't wait. 
+            Get your cybersecurity process running in the real world.
+          </p>
+          <a href="index.html" class="ui huge primary button">
+              Engage!
+            </a>
+        </div>
+        </div>
+        </div>
+      </div>  
+  
+  <div class="ui vertical segment">
+          <h1 class="ui centered header">
+            Cybersecurity toolset
+          </h1>
+        <div class="ui middle aligned stackable grid container">
+          <div class="row">
+            <div class="sixteen wide column">
+            
+            
+            <div class="ui centered cards">
+            
+              <div class="card">
+                <div class="content">
+                  <img class="ui image" src="/images/logos/as.png" />
+                  <div class="centered header">AttackSrfc</div>
+                  <span class="ui teal ribbon label">Vulnerability Management</span>
+                  <div class="description">Start your vulnerability mitigation workflow with this tool. 
+                  Make your vulnerability landscape visible to management. 
+                  Involve necessary stakeholders to get rid of critical vulnerabilities - without having to 
+                  roll out vulnerability scanners first.  
+                  </div>
+                </div>
+                <a href="/attacksrfc" class="ui bottom attached primary button">
+                  <i class="play icon"></i>
+                  Launch now
+                </a>
+              </div>
+              
+            <div class="card">
+            <div class="content">
+              <img class="ui image" src="/images/logos/no_logo.png" />
+              <div class="centered header">
+              SpilledBns</div>
+              <span class="ui orange ribbon label">Disclosure Monitoring</span>
+              <div class="description">Domain discovery is being used against you by attackers. Start using it to protect 
+                your public web pages. Even the ones that you may not know about.
+              </div>
+            </div>
+                <a href="/attacksrfc" class="ui bottom attached disabled button">
+                      <i class="play icon"></i>
+                      Next project, no ETA ;-)
+                </a>
+            </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      
+       <div class="ui vertical stripe segment">
+           <div class="ui text container">
+         <h3 class="ui header">
+            Don't know where to start? Try this:
+          </h3>
+          <p>
+            With AttackSrfc you don't have to setup a host- or network-based scanner to get your vulnerability- 
+            and patch management-processes going. 
+          </p><p>  
+            The CPE inventory and CVE search allows you to get started immediately.
+          </p><p>  
+             CSTOOL.io can even be useful if you are already using another scanning tool. You can use the report 
+             from your scanner or asset discovery in AttackSrfc to improve your results! Simply add the identified 
+             CPEs to your CSTOOL.io inventory.
+          </p><p>  
+            A security scan of a system will give you a detailed view of the vulnerabilities present on that 
+            particular system. But what about systems you cannot scan, such as those of vendors, partners or 
+            SaaS solutions? You can use AttackSrfc to get a quick view of publicly known vulnerabilities to 
+            start a qualified discussion with your third parties about their mitigation workflow. 
+          </p>
+          <a href="index.html" class="ui primary large button">Let me see how that works!</a>
+         </div>
+         </div>
+         
+        
+      
+      <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+          <div class="ui stackable inverted divided equal height stackable grid">
+            <div class="three wide column">
+              <h4 class="ui inverted header">
+                About
+              </h4>
+              <div class="ui inverted link list">
+                <a class="item" href="legal.html#"> Contact</a>
+                <a class="item" href="legal.html#"> Legal Notice / Privacy</a>
+                <a class="item" target="_blank" href="https://bitbucket.org/Agh42/cveservice"> Source Code on Bitbucket</a>
+              </div>
+            </div>
+            <div class="three wide column">
+              <h4 class="ui inverted header">
+                Support
+              </h4>
+              <div class="ui inverted link list">
+                <a class="item" target="_blank" href="https://github.com/Agh42">Report issues on Github</a>
+                <a class="item" target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status on UptimeRobot</a>
+              </div>
+            </div>
+            <div class="seven wide column">
+                <h4 class="ui inverted header">
+                  Discuss and Follow
+                </h4>
+                <div class="ui inverted link list">
+                  <a class="item" target="_blank" href="https://www.reddit.com/r/CSTOOL_io/">CSTOOL.io on Reddit</a>
+                  
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      
+    </div> <!-- close pusher -->
+    
+
+    
+   
+    
+    <script>
+  
+    
+      $(document)
+        .ready(function() {
+            
+            $('.ui.shape')
+            .shape();
+            
+            setInterval(function() {
+                if (document.hasFocus()) { 
+                    $('.shape')
+                    .shape('flip right');
+                }
+            }, 2000);
+         
+        })
+      ;
+    </script>
+  </body>
+</html>
