@@ -2,7 +2,8 @@
 
 ## Simple vulnerability management.
 
-Master: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/master)
+Master: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/master) 
+
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/Agh42/attacksrfc)
 
 Develop: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/develop)
