@@ -2,7 +2,13 @@
 
 ## Simple vulnerability management.
 
+### Master branch status
+
 ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/master)
+
+### Develop branch status
+
+![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/develop)
 
 Uses [cveservice](https://bitbucket.org/Agh42/cveservice) to query a database of CVE entries. 
 The database is kept by [cve-search](https://github.com/cve-search/cve-search).
