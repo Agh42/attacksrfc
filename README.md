@@ -3,6 +3,7 @@
 ## Simple vulnerability management.
 
 ![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m783419130-f522a7c4e60c5abe0ae5318d)
+![Discord](https://img.shields.io/discord/653137568740933632)
 ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/cstool_io?style=social)
 
 Master: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/master) 
