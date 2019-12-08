@@ -30,7 +30,9 @@ const CPE_ACTION_RELOAD = '_RELOAD';
 
 // trigger graph reload
 const GRAPH_ACTION_NONE = '_NONE';
+const GRAPH_ACTION_INIT = '_INIT';
 const GRAPH_ACTION_RELOAD = '_RELOAD';
+const GRAPH_ACTION_SUMMARIES_LOADED = '_SUMMARIES_LOADED';
 
 // page load redirects:
 const REDIRECT_PRICING = '/pricing';
@@ -63,7 +65,7 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
             
             graphCves: [],
-            selectedCpeSummaryInGraph: {},
+            selectedCpeSummaryForGraph: {},
 
             cpeSummaries: [],
             selectedCpeSummary: {},
@@ -100,13 +102,13 @@ export default class AttackSrfcPage extends Component {
                 this.setState({_graphAction: GRAPH_ACTION_NONE});
                 this.loadGraphData();
                 break;
-            case GRAPH_SUMMARIES_LOADED:
-                if (! 'cpe' in this.state.selectedCpeSummaryInGraph) {
+            case GRAPH_ACTION_SUMMARIES_LOADED:
+                if (! ('cpe' in this.state.selectedCpeSummaryForGraph)) {
                     // inital graph data: 
                     // after summaries are loaded, set a cpe and trigger initial cve loading:
                     this.setState({
                         _graphAction: GRAPH_ACTION_RELOAD,
-                        selectedCpeSummaryInGraph: cpeSummaries[0],
+                        selectedCpeSummaryInGraph: this.state.cpeSummaries[0],
                     });
                 }                
                 else {
@@ -311,7 +313,7 @@ export default class AttackSrfcPage extends Component {
                                     return cs2;
                                 }
                             }),
-                            _graphAction: GRAPH_SUMMARIES_LOADED,
+                            _graphAction: GRAPH_ACTION_SUMMARIES_LOADED,
                         });
                     }
                 );

@@ -123,7 +123,7 @@ export default class CveGraph extends Component {
             // FIXME use current instead. this may pick another active that is present in a cve
             //       by accident instead of the currently selected.
             
-            primaryCpe = vendorProduct(currentCpe);
+            primaryCpe = vendorProduct(props.currentCpe);
             
             /*
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
@@ -250,7 +250,7 @@ export default class CveGraph extends Component {
     }
     
     componentDidMount() {
-        showPlaceholder();
+        this.showPlaceholder();
     }
     
     // update only when allCves changes and all other properties are present as well:
@@ -261,8 +261,8 @@ export default class CveGraph extends Component {
         }
         if (!nextProps.allCves.every(el => this.props.allCves.includes(el)) 
             && 'cpe' in nextProps.currentCpe
-            && activeCpes.length > 0
-            && cpeSummaries.length > 0
+            && nextProps.activeCpes.length > 0
+            && nextProps.cpeSummaries.length > 0
         ) {
             console.log("graph will receive props: ");
             console.log(nextProps);
