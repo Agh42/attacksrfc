@@ -2,11 +2,11 @@
 
 ## Simple vulnerability management.
 
+![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m783419130-f522a7c4e60c5abe0ae5318d)
+
 Master: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/master) 
 
 Develop: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/develop)
-
-![Uptime Robot ratio (30 days)](https://img.shields.io/uptimerobot/ratio/m783419130-f522a7c4e60c5abe0ae5318d)
 
 Uses [cveservice](https://bitbucket.org/Agh42/cveservice) to query a database of CVE entries. 
 The database is kept by [cve-search](https://github.com/cve-search/cve-search).
