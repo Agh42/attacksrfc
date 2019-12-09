@@ -100,6 +100,7 @@ export default class CveGraph extends Component {
         
         let createdEdges = new Set();
         let createdNodes = new Set();
+        let primaryCpe = vendorProduct(props.currentCpe.id);
         allCves.forEach( (cve) => {
             //console.log("CVE for graph: ");
             //console.log(cve);
@@ -109,12 +110,13 @@ export default class CveGraph extends Component {
 
             // Add nodes for CVEs with score:
             //group++;
-            this.nodes.add( {id: cve.id, 
+            this.nodes.add({
+                id: cve.id, 
                 label: cve.cvss.toString(), 
                 title: cve.id,
-                color: CVEs.colorValueForScore(cve.cvss) } );
+                color: CVEs.colorValueForScore(cve.cvss) 
+            });
             
-            let primaryCpe='';
             let summaryNodes = {};
 
             // determine primary cpe for this cve:
@@ -123,7 +125,7 @@ export default class CveGraph extends Component {
             // FIXME use current instead. this may pick another active that is present in a cve
             //       by accident instead of the currently selected.
             
-            primaryCpe = vendorProduct(currentCpe);
+          
             
             /*
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
@@ -250,7 +252,7 @@ export default class CveGraph extends Component {
     }
     
     componentDidMount() {
-        showPlaceholder();
+        this.showPlaceholder();
     }
     
     // update only when allCves changes and all other properties are present as well:
@@ -259,10 +261,10 @@ export default class CveGraph extends Component {
                this.showPlaceholder();
                return;
         }
-        if (!nextProps.allCves.every(el => this.props.allCves.includes(el)) 
-            && 'cpe' in nextProps.currentCpe
-            && activeCpes.length > 0
-            && cpeSummaries.length > 0
+        if (!nextProps.allCves.every(el => this.props.allCves.includes(el))
+            && 'id' in nextProps.currentCpe
+            && nextProps.activeCpes.length > 0
+            && nextProps.cpeSummaries.length > 0
         ) {
             console.log("graph will receive props: ");
             console.log(nextProps);
