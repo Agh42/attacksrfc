@@ -100,15 +100,36 @@ export default class CveGraph extends Component {
         
         let createdEdges = new Set();
         let createdNodes = new Set();
+        
+        // add node for primary cpe:
         let primaryCpe = vendorProduct(props.currentCpe.id);
+        this.nodes.add({
+            id: primaryCpe, 
+            shape: 'box',
+            color: '#00b5ad',
+            font: {color: '#ffffff'},
+            label: primaryCpe
+        });
+        createdNodes.add(vendor_product);
+        
+        // add group node for vulnerable configurations:
+        this.nodes.add({
+            id: 'vulnConfig', 
+            shape: 'box',
+            color: '#c0c0c0',
+            font: {color: '#ffffff'},
+            label: 'Runs on/with'
+        });
+        createdNodes.add('vulnConfig');
+
         allCves.forEach( (cve) => {
             //console.log("CVE for graph: ");
             //console.log(cve);
-            if (!cve.hasOwnProperty('vulnerable_product')) {
+            if (!cve.hasOwnProperty('vulnerable_product')) { // debug: reason for orphaned cpes?
                 return;
             }
 
-            // Add nodes for CVEs with score:
+            // Add node for CVE with score:
             //group++;
             this.nodes.add({
                 id: cve.id, 
@@ -118,27 +139,9 @@ export default class CveGraph extends Component {
             });
             
             let summaryNodes = {};
-
-            // determine primary cpe for this cve:
-            // (primay cpe is one selected by the user)
-            
-            // FIXME use current instead. this may pick another active that is present in a cve
-            //       by accident instead of the currently selected.
-            
-          
-            
-            /*
-            cve.vulnerable_product.forEach( (vulnerableCpe) => {
-                const vendor_product = vendorProduct(vulnerableCpe);
-                if (!primaryCpe && userSelectedCpes.has(vendor_product)) {
-                    primaryCpe = vendor_product;
-                }
-            });
-            */
-            
+  
             // add summary nodes with severity count for primary cpe:
              props.cpeSummaries.forEach( (cs) => {
-                if (vendorProduct(cs.cpe.id) === primaryCpe) {
                     if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "CRITICAL") ) {
                         summaryNodes.CRITICAL = createSummaryNode(primaryCpe, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
@@ -163,17 +166,13 @@ export default class CveGraph extends Component {
                         this.edges.add( {from: summaryNodes.LOW.id, to: primaryCpe} );
                         createdNodes.add(primaryCpe + " " + "LOW");
                     }
-                    
-                }
              });
 
-            // add all other vulnerable CPEs:
+            // add vulnerable product CPEs:
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
                 const vendor_product = vendorProduct(vulnerableCpe);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(vendor_product)) {
-                
-                // FIXME use cyan for all active cpes. not just primary/currently selected.
                 
                     let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#c0c0c0';
                     
@@ -198,7 +197,7 @@ export default class CveGraph extends Component {
 
             // add all CPEs for vulnerable configurations:
             cve.vulnerable_configuration.forEach( (cpe) => {
-                const vendor_product = cpe.split(":")[3] + " " + cpe.split(":")[4];
+                const vendor_product = vendorProduct(cpe);
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
 
                 if (!createdNodes.has(vendor_product)) {
@@ -211,12 +210,12 @@ export default class CveGraph extends Component {
                         label: vendor_product} );
                     createdNodes.add(vendor_product);
                 }
-                // link them to the primary cpe:
-                if (!createdEdges.has(primaryCpe+vendor_product)
+                // link them to the vulnconfig node for the primary cpe:
+                if (!createdEdges.has('vulnConfig'+vendor_product)
                         && !(primaryCpe===vendor_product)) {
-                    this.edges.add( {from: primaryCpe, to: vendor_product} );
+                    this.edges.add( {from: 'vulnConfig', to: vendor_product} );
                     //console.log("add cpe edge: " + primaryCpe + "---" + vendor_product);
-                    createdEdges.add(primaryCpe + vendor_product);
+                    createdEdges.add('vulnConfig' + vendor_product);
                 }
                 
             });
@@ -248,6 +247,7 @@ export default class CveGraph extends Component {
     showPlaceholder = () => {
         let container = document.getElementById('cvegraph');
         new vis.Network(container, {}, {});
+        // todo show loading indicator
     
     }
     

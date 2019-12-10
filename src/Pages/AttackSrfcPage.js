@@ -7,6 +7,7 @@ import CveList from '../Components/CveList';
 import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
+import DowntimeTimer from '../Components/DowntimeTimer';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -167,8 +168,15 @@ export default class AttackSrfcPage extends Component {
             cveCount: "<no data>",
             lastModified: "1977-10-20",
         }});
+        let uhoh = true;
         CpeClient.getStats( (dbStats) => {
             this.setState({stats: dbStats});
+            uhoh=false;
+        });
+        timer.sleep(5).then(()=> {
+            if (uhoh) {
+                this.setState(_uhoh: true) 
+            }
         });
     }
 
@@ -381,8 +389,25 @@ export default class AttackSrfcPage extends Component {
           <div class="ui grid">
               <div class="computer only row">
                   <div class="column">
-                      <div class="ui top fixed inverted teal icon menu">
-                          <a className="item"href="/homepage.html"><i className="home icon" /></a>
+                  {this.state._uhoh
+                  ?    <div class="ui top fixed inverted red icon menu">
+                           <div className="ui item">
+                           <h4 className="ui left aligned inverted header">
+                               Uh oh - the website is down
+                               <div className="sub header">
+                               The backend service is not responding fast enough. You can check <a target="_blank" href="">uptime robot</a> 
+                               to see if the site is down or <a target="_blank" href="">under heavy load</a>. Go to <a target="_blank" href="">the subreddit</a> to see
+                               if anyone else has problems. Or go to <a target="_blank" href="">the chat</a>and tell Alex about it.
+                               </div>
+                           </h4>
+                           </div>
+                           <div class="right menu primary">
+                                <DowntimeTimer/>
+                           </div>
+                       </div>
+                       
+                  :    <div class="ui top fixed inverted teal icon menu">
+                          <a className="item" href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><h4 className="ui left aligned inverted header">
                                AttackSrfc - CVE Search and Vulnerability Management
                                <div className="sub header">
@@ -405,6 +430,8 @@ export default class AttackSrfcPage extends Component {
                            </Link>
                          </div>
                       </div>
+                    } 
+                      
                   </div>
               </div>
           </div>
