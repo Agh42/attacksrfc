@@ -83,6 +83,13 @@ function determineCveTargetNodeId(cve, primaryCpe) {
 
 export default class CveGraph extends Component {
 
+    constructor() {
+        super();
+        this.state = {
+                _loadingbar: false,
+        }
+    }
+
  static propTypes = {
         allCves: PropTypes.object.isRequired,
         currentCpe: PropTypes.object.isRequired,
@@ -113,17 +120,21 @@ export default class CveGraph extends Component {
             font: {color: '#ffffff'},
             label: primaryCpe
         });
-        createdNodes.add(vendor_product);
+        createdNodes.add(primaryCpe);
         
         // add group node for vulnerable configurations:
         this.nodes.add({
             id: 'vulnConfig', 
             shape: 'box',
-            color: '#c0c0c0',
+            color: '#0062B5',
             font: {color: '#ffffff'},
             label: 'Runs on/with'
         });
         createdNodes.add('vulnConfig');
+        this.edges.add( {from: 'vulnConfig', to: primaryCpe} );
+        createdEdges.add('vulnConfig' + primaryCpe);
+
+        // iterate over all CVEs:
         allCves.forEach( (cve) => {
             //console.log("CVE for graph: ");
             //console.log(cve);
@@ -145,6 +156,7 @@ export default class CveGraph extends Component {
             
             // add summary nodes with severity count for primary cpe:
              props.cpeSummaries.forEach( (cs) => {
+                if (vendorProduct(cs.cpe.id) === primaryCpe) {
                     if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "CRITICAL") ) {
                         summaryNodes.CRITICAL = createSummaryNode(primaryCpe, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
@@ -169,7 +181,7 @@ export default class CveGraph extends Component {
                         this.edges.add( {from: summaryNodes.LOW.id, to: primaryCpe} );
                         createdNodes.add(primaryCpe + " " + "LOW");
                     }
-                    
+                }
              });
 
             // add vulnerable product CPEs:
@@ -243,16 +255,37 @@ export default class CveGraph extends Component {
                 interaction: {hover: false},
                 //layout: {randomSeed:44},
         };
-        
+        this.setState({_loadingbar: true});
         this.convertCves(props);
         let container = document.getElementById('cvegraph');
-        new vis.Network(container, this.data, options);
+        this.network = new vis.Network(container, this.data, options);
+        this.network.on("stabilizationProgress", function(params) {
+            var maxWidth = 496;
+            var minWidth = 20;
+            var widthFactor = params.iterations/params.total;
+            var width = Math.max(minWidth,maxWidth * widthFactor);
+
+            document.getElementById('bar').style.width = width + 'px';
+            document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+        });
+        var component = this;
+        this.network.once("stabilizationIterationsDone", function() {
+            document.getElementById('text').innerHTML = '100%';
+            document.getElementById('bar').style.width = '496px';
+            document.getElementById('loadingBar').style.opacity = 0;
+            // really clean the dom element
+            //setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+            setTimeout( () => 
+                component.setState({_loadingbar: false})
+            , 500);
+        });
+
     } 
     
     showPlaceholder = () => {
         let container = document.getElementById('cvegraph');
         if (container !== null) {
-            new vis.Network(container, {}, {});
+            this.network = new vis.Network(container, {}, {});
         }
         // todo show loading indicator
     
@@ -275,6 +308,7 @@ export default class CveGraph extends Component {
         ) {
             console.log("graph will receive props: ");
             console.log(nextProps);
+            this.showPlaceholder = false;
             this.initGraph(nextProps);
         }
     }
@@ -284,6 +318,17 @@ export default class CveGraph extends Component {
             <React.Fragment>
                 <div className='ui raised segment' style={{"height":"30em"}}>
                     <div id="cvegraph" style={{"height":"100%"}}></div>
+                    {this.state._loadingbar
+                    ? <div id="loadingBar" >
+                        <div class="outerBorder" >
+                            <div id="text" >0%</div>
+                            <div id="border" >
+                                <div id="bar" ></div>
+                            </div>
+                        </div>
+                      </div>
+                    : ""}
+
                 </div>
             </React.Fragment>
         );

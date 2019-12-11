@@ -168,7 +168,9 @@ export default class AttackSrfcPage extends Component {
             cveCount: "<no data>",
             lastModified: "1977-10-20",
         }});
-      
+        CpeClient.getStats( (dbStats) => {
+            this.setState({stats: dbStats});
+        });
     }
     
     initHealthCheck = () => {
@@ -178,10 +180,10 @@ export default class AttackSrfcPage extends Component {
     healthCheck =() => {
         try {
             CpeClient.getStats( (dbStats) => {
-                this.setState(_uhoh: false);
+                this.setState({_uhoh: false});
             });
         } catch (error) {
-            this.setState(_uhoh: true);
+            this.setState({_uhoh: true});
         }
     }
 
