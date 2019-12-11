@@ -7,6 +7,7 @@ import CveList from '../Components/CveList';
 import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
+import DowntimeTimer from '../Components/DowntimeTimer';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -167,9 +168,21 @@ export default class AttackSrfcPage extends Component {
             cveCount: "<no data>",
             lastModified: "1977-10-20",
         }});
-        CpeClient.getStats( (dbStats) => {
-            this.setState({stats: dbStats});
-        });
+      
+    }
+    
+    initHealthCheck = () => {
+        setInterval(this.healthCheck, 5000);    
+    }
+    
+    healthCheck =() => {
+        try {
+            CpeClient.getStats( (dbStats) => {
+                this.setState(_uhoh: false);
+            });
+        } catch (error) {
+            this.setState(_uhoh: true);
+        }
     }
 
     handleSaveClick = () => {
@@ -379,10 +392,15 @@ export default class AttackSrfcPage extends Component {
         return (
          <React.Fragment>
           <div class="ui grid">
-              <div class="computer only row">
+              <div class="row">
                   <div class="column">
-                      <div class="ui top fixed inverted teal icon menu">
-                          <a className="item"href="/homepage.html"><i className="home icon" /></a>
+                  {this.state._uhoh
+                  ?    <div class="ui top fixed inverted red icon menu">
+                         <DowntimeTimer/>               
+                       </div>
+                       
+                  :    <div class="ui top fixed inverted teal icon menu">
+                          <a className="item" href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><h4 className="ui left aligned inverted header">
                                AttackSrfc - CVE Search and Vulnerability Management
                                <div className="sub header">
@@ -405,6 +423,8 @@ export default class AttackSrfcPage extends Component {
                            </Link>
                          </div>
                       </div>
+                    } 
+                      
                   </div>
               </div>
           </div>
