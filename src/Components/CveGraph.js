@@ -22,8 +22,12 @@ function getCpesGenericForm(cpes) {
  */
 function vendorProduct(cpeId) {
     return (cpeId.split(":")[1].match(/\d.\d/))
-        ? cpeId.split(":")[3] + " " + cpeId.split(":")[4]
-        : cpeId.split(":")[2] + " " + cpeId.split(":")[3];
+        ? decodeCPE(cpeId.split(":")[3] + " " + cpeId.split(":")[4])
+        : decodeCPE(cpeId.split(":")[2] + " " + cpeId.split(":")[3]);
+}
+
+function decodeCPE(cpeId) {
+    return decodeURIComponent(cpeId).replace(/\\!/g, "!");
 }
 
 /**
@@ -247,7 +251,9 @@ export default class CveGraph extends Component {
     
     showPlaceholder = () => {
         let container = document.getElementById('cvegraph');
-        new vis.Network(container, {}, {});
+        if (container !== null) {
+            new vis.Network(container, {}, {});
+        }
     
     }
     
