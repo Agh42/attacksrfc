@@ -168,16 +168,21 @@ export default class AttackSrfcPage extends Component {
             cveCount: "<no data>",
             lastModified: "1977-10-20",
         }});
-        let uhoh = true;
-        CpeClient.getStats( (dbStats) => {
-            this.setState({stats: dbStats});
-            uhoh=false;
-        });
-        timer.sleep(5).then(()=> {
-            if (uhoh) {
-                this.setState(_uhoh: true) 
-            }
-        });
+      
+    }
+    
+    initHealthCheck = () => {
+        setInterval(this.healthCheck, 5000);    
+    }
+    
+    healthCheck =() => {
+        try {
+            CpeClient.getStats( (dbStats) => {
+                this.setState(_uhoh: false);
+            });
+        } catch (error) {
+            this.setState(_uhoh: true);
+        }
     }
 
     handleSaveClick = () => {
@@ -387,23 +392,11 @@ export default class AttackSrfcPage extends Component {
         return (
          <React.Fragment>
           <div class="ui grid">
-              <div class="computer only row">
+              <div class="row">
                   <div class="column">
                   {this.state._uhoh
                   ?    <div class="ui top fixed inverted red icon menu">
-                           <div className="ui item">
-                           <h4 className="ui left aligned inverted header">
-                               Uh oh - the website is down
-                               <div className="sub header">
-                               The backend service is not responding fast enough. You can check <a target="_blank" href="">uptime robot</a> 
-                               to see if the site is down or <a target="_blank" href="">under heavy load</a>. Go to <a target="_blank" href="">the subreddit</a> to see
-                               if anyone else has problems. Or go to <a target="_blank" href="">the chat</a>and tell Alex about it.
-                               </div>
-                           </h4>
-                           </div>
-                           <div class="right menu primary">
-                                <DowntimeTimer/>
-                           </div>
+                         <DowntimeTimer/>               
                        </div>
                        
                   :    <div class="ui top fixed inverted teal icon menu">
