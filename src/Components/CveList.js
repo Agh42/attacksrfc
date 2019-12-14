@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
+import Clipboard from "clipboard";
 
 const CveItems = (props) => (
   <tbody>
@@ -50,6 +51,20 @@ export default class CveList extends Component {
         numTotalCves: PropTypes.number.isRequired
     };
 
+    componentDidMount(){
+        var btn = document.getElementById('export-summaries-btn');
+        this.clipboard = new ClipboardJS(btn);
+        clipboard.on('success', function(e) {
+            console.log(e);
+            // todo show copied tooltip
+        });
+        clipboard.on('error', function(e) {
+            console.log(e);
+            // show error tooltip
+        });
+        //this.clipboard = new Clipboard('#export-summaries-btn');
+    }
+
     handlePrevPageClick = () => {
         if (this.props.numCurrentPage > 1) {
             this.props.onPaginationChange(this.props.numCurrentPage-1);
@@ -96,13 +111,16 @@ export default class CveList extends Component {
         return(
           <React.Fragment>
                <div className='ui field'>
-                     <div className="ui positive button"
-                          data-tooltip="Save this list as an Excel file."
+                     <div className="ui positive button" id="export-summaries-btn"
+                          data-clipboard-target="#cveSummaryTable"
+                          data-tooltip="Copy to clipboard."
+                          data-position="bottom center"
                           onClick={this.props.onSaveClick} >
-                         Export as .xlsx</div>
+                         Copy to clipboard</div>
                 </div>
 
-                <table className="ui selectable celled table">
+
+                <table className="ui selectable celled table" id="cveSummaryTable">
                 <thead>
 
                 <tr><th colSpan="6">

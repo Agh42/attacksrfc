@@ -187,6 +187,7 @@ export default class EditableInventoryList extends Component {
                 <div className="field">
                      <button className="positive ui button" 
                          data-tooltip="Remember this asset list." 
+                         data-position="bottom center"
                          onClick={this.props.onSaveClick} >
                           Save collection... 
                     </button>
