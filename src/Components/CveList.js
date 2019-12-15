@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
-import Clipboard from "clipboard";
+import ClipboardJS from "clipboard";
 
 const CveItems = (props) => (
   <tbody>
@@ -54,11 +54,11 @@ export default class CveList extends Component {
     componentDidMount(){
         var btn = document.getElementById('export-summaries-btn');
         this.clipboard = new ClipboardJS(btn);
-        clipboard.on('success', function(e) {
+        this.clipboard.on('success', function(e) {
             console.log(e);
             // todo show copied tooltip
         });
-        clipboard.on('error', function(e) {
+        this.clipboard.on('error', function(e) {
             console.log(e);
             // show error tooltip
         });

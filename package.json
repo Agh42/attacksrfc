@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "clipboard": "^2.0.4",
     "moment": "^2.22.2",
     "proptypes": "^1.1.0",
     "react": "^16.5.2",
