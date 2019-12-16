@@ -151,28 +151,29 @@ static propTypes = {
 
         return (
           <React.Fragment>
-           <div className='ui field'>
-                 <div className="ui positive button" id="export-summaries-btn"
-                      data-clipboard-target="#cpeSummaryTable"
-                      data-tooltip="Copy to clipboard."
-                      data-position="bottom center"
-                      onClick={this.props.onSaveClick} >
-                     Copy to clipboard</div>
-            </div>
+            <div className='ui field'>
+                    <div className="ui positive button" id="export-summaries-btn"
+                        data-clipboard-target="#cpeSummaryTable"
+                        data-tooltip="Copy to clipboard."
+                        data-position="bottom center"
+                        onClick={this.props.onSaveClick} >
+                        Copy to clipboard</div>
+                </div>
 
-          <table className="ui selectable striped table" id="cpeSummaryTable" >
-                <thead>
-                  <tr class="center aligned">
-                  <th>Product</th>
-                  <th>Vulns.</th>
-                  <th>Critical</th>
-                  <th>High</th>
-                  <th>Medium</th>
-                  <th>Low</th>
-                  </tr>
-                </thead>
-                {selectableCpeItemList}
-          </table>
+            <table className="ui selectable striped table" id="cpeSummaryTable" >
+                    <thead>
+                    <tr class="center aligned">
+                    <th>Product</th>
+                    <th>Vulns.</th>
+                    <th>Critical</th>
+                    <th>High</th>
+                    <th>Medium</th>
+                    <th>Low</th>
+                    </tr>
+                    </thead>
+                    {selectableCpeItemList}
+            </table>
+          </React.Fragment>
         );
     }
 }

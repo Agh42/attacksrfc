@@ -11,7 +11,6 @@ import {
 import AttackSrfcPage from './Pages/AttackSrfcPage';
 import PricingPage from './Pages/PricingPage';
 import LoginPage from './Pages/LoginPage';
-import ToolboxPage from './Pages/ToolboxPage';
 
 
 export default class App extends Component {
@@ -29,7 +28,6 @@ export default class App extends Component {
                     <Route path='/attacksrfc' component={AttackSrfcPage} />
                     <Route path='/pricing' component={PricingPage} />
                     <Route path='/login' component={LoginPage} />
-                    <Route path='/toolbox' component={ToolboxPage} />
                     <Route exact path='/' component={AttackSrfcPage} />
                     <Route exact path='/index.html' component={AttackSrfcPage} />
                     		      		

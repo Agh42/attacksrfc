@@ -419,10 +419,6 @@ export default class AttackSrfcPage extends Component {
                            <Link to="/settings" class="item">
                              <i className="disabled cog icon" />
                            </Link>
-                           <Link to="/toolbox" class="item">
-                             <i className="th icon" />
-                             <i class="angle down icon"></i>
-                           </Link>
                          </div>
                       </div>
                     } 
