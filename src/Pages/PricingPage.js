@@ -36,9 +36,11 @@ export default class PricingPage extends Component {
                             </a>
                           </div>
                           
-                           <div class="raised card">
+                          <div class="raised card">
                             <div class="content">
                               <div class="centered header">Personal Account</div>
+                              <span class="ui orange right corner label"><i className="star icon" /></span>
+                              <span class="ui yellow ribbon label">Coming soon</span>
                               <div class="description">
                                    <div class="ui list">
                                             <div class="item">
