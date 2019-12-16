@@ -26,7 +26,7 @@ export default class PricingPage extends Component {
                                       </div>
                                       <div class="item">
                                           <i class="check circle icon"></i>
-                                          <div class="content">Limited requests (Captcha)</div>
+                                          <div class="content">Limited requests</div>
                                       </div>
                                   </div>
                               </div>
@@ -38,7 +38,7 @@ export default class PricingPage extends Component {
                           
                            <div class="raised card">
                             <div class="content">
-                              <div class="centered header">Professional</div>
+                              <div class="centered header">Personal Account</div>
                               <div class="description">
                                    <div class="ui list">
                                             <div class="item">
@@ -51,7 +51,7 @@ export default class PricingPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                              Unlimited requests
+                                              Increased request limit
                                               </div>
                                           </div>
                                          
@@ -76,27 +76,28 @@ export default class PricingPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                               Alerts when new vulnerabilities for your asset inventory occur
+                                               Email notifications when new vulnerabilities for your asset inventory are found
                                               </div>
                                           </div>
                                           <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
-                                          Your data is stored on continuosly audited and highly secure cloud infrastructure. Our software is developed under secure coding guidelines and fully disclosed as open source.
+                                          Your data is stored on highly secure cloud infrastructure in the European Union and the CSTOOL.io source code is fully disclosed as open source.
                                           </div>
                                         </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                               <b>98,-€ per month</b>
+                                               <b>New accounts are currently not available publicly. Check the subreddit or chat 
+                                               to follow eventual updates.</b>
                                               </div>
                                           </div>
                                    </div>
                               </div>
                             </div>
-                            <Link to="/register" class="ui positive button">
+                            <Link to="/register" class="ui disabled button">
                               <i class="shopping cart icon"></i>
-                              Try 30 days for free
+                              Unavailable, sorry.
                             </Link>
                           </div>
                           
@@ -104,7 +105,7 @@ export default class PricingPage extends Component {
                             <div class="content">
                               <div class="centered header">Professional</div>
                               <span class="ui orange right corner label"><i className="star icon" /></span>
-                              <span class="ui yellow ribbon label">2 for 1 Special</span>
+                              <span class="ui yellow ribbon label">Commercial usage</span>
                               <div class="description"> 
                                   <div class="ui list">
                                    <div class="item">
@@ -154,7 +155,7 @@ export default class PricingPage extends Component {
                                         <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
-                                            <b>78,-€ per month</b><br/>(billed yearly)
+                                            <b>42,-€ per month</b><br/>(billed yearly)
                                           </div>
                                         </div>
                                         <div class="item">

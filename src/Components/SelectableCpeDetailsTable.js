@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import ClipboardJS from "clipboard";
 
 
 
@@ -125,6 +125,19 @@ static propTypes = {
             _isLoading: false,
         }
      }
+     
+    componentDidMount(){
+        var btn = document.getElementById('export-summaries-btn');
+        this.clipboard = new ClipboardJS(btn);
+        this.clipboard.on('success', function(e) {
+            console.log(e);
+            // todo show copied tooltip
+        });
+        this.clipboard.on('error', function(e) {
+            console.log(e);
+            // show error tooltip
+        });
+    }
 
     render() {
         //component for cpe list:
@@ -137,7 +150,17 @@ static propTypes = {
         ));
 
         return (
-          <table className="ui selectable striped table">
+          <React.Fragment>
+           <div className='ui field'>
+                 <div className="ui positive button" id="export-summaries-btn"
+                      data-clipboard-target="#cpeSummaryTable"
+                      data-tooltip="Copy to clipboard."
+                      data-position="bottom center"
+                      onClick={this.props.onSaveClick} >
+                     Copy to clipboard</div>
+            </div>
+
+          <table className="ui selectable striped table" id="cpeSummaryTable" >
                 <thead>
                   <tr class="center aligned">
                   <th>Product</th>

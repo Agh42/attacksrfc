@@ -52,7 +52,7 @@ export default class CveList extends Component {
     };
 
     componentDidMount(){
-        var btn = document.getElementById('export-summaries-btn');
+        var btn = document.getElementById('export-cvepage-btn');
         this.clipboard = new ClipboardJS(btn);
         this.clipboard.on('success', function(e) {
             console.log(e);
@@ -62,7 +62,6 @@ export default class CveList extends Component {
             console.log(e);
             // show error tooltip
         });
-        //this.clipboard = new Clipboard('#export-summaries-btn');
     }
 
     handlePrevPageClick = () => {
@@ -111,8 +110,8 @@ export default class CveList extends Component {
         return(
           <React.Fragment>
                <div className='ui field'>
-                     <div className="ui positive button" id="export-summaries-btn"
-                          data-clipboard-target="#cveSummaryTable"
+                     <div className="ui positive button" id="export-cvepage-btn"
+                          data-clipboard-target="#cveListTable"
                           data-tooltip="Copy to clipboard."
                           data-position="bottom center"
                           onClick={this.props.onSaveClick} >
@@ -120,7 +119,7 @@ export default class CveList extends Component {
                 </div>
 
 
-                <table className="ui selectable celled table" id="cveSummaryTable">
+                <table className="ui selectable celled table" id="cveListTable">
                 <thead>
 
                 <tr><th colSpan="6">

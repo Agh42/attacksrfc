@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Route,
     Link,
     Redirect,
@@ -12,6 +12,7 @@ import AttackSrfcPage from './Pages/AttackSrfcPage';
 import PricingPage from './Pages/PricingPage';
 import LoginPage from './Pages/LoginPage';
 import ToolboxPage from './Pages/ToolboxPage';
+
 
 export default class App extends Component {
     
