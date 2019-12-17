@@ -9,7 +9,7 @@ import {
   } from 'react-router-dom'
 
 import AttackSrfcPage from './Pages/AttackSrfcPage';
-import PricingPage from './Pages/PricingPage';
+import RegisterPage from './Pages/RegisterPage';
 import LoginPage from './Pages/LoginPage';
 
 
@@ -26,7 +26,7 @@ export default class App extends Component {
             <Router>
                 <Switch>
                     <Route path='/attacksrfc' component={AttackSrfcPage} />
-                    <Route path='/pricing' component={PricingPage} />
+                    <Route path='/register' component={RegisterPage} />
                     <Route path='/login' component={LoginPage} />
                     <Route exact path='/' component={AttackSrfcPage} />
                     <Route exact path='/index.html' component={AttackSrfcPage} />

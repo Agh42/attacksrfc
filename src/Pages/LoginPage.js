@@ -11,7 +11,7 @@ const gridStyle={
         height: '100%',
 };
 
-export default class PricingPage extends Component {
+export default class LoginPage extends Component {
     
     state={
             _redirect: "",
@@ -24,7 +24,7 @@ export default class PricingPage extends Component {
     render() {
         if (this.state._redirect) {
             return {
-                LOGIN: <Redirect push to="/pricing" />, 
+                LOGIN: <Redirect push to="/register" />, 
             }[this.state._redirect];
         }
         return (
@@ -60,7 +60,7 @@ export default class PricingPage extends Component {
                     </form>
                 
                     <div class="ui message">
-                      New to us? <Link to="/pricing">Sign Up</Link>
+                      New to us? <Link to="/register">Sign Up</Link>
                     </div>
                   </div>
                 </div>

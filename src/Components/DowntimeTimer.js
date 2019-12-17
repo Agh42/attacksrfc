@@ -15,7 +15,7 @@ export default class DowntimeTimer extends Component {
   }
   
   renderDowntime  = () => {
-    let totalElapsed = Date.now() - this.runningSince;
+    let totalElapsed = Date.now() - this.downSince;
     return this.millisecondsToHuman(totalElapsed);
   }
 
@@ -42,16 +42,25 @@ export default class DowntimeTimer extends Component {
   render() {
       return (
           <div className="ui item">
-            <h4 className="ui left aligned inverted header">
+            <h4 className="ui left aligned header">
                 Uh oh - the website is down.
                 <div className="sub header">
-                The backend service is not responding fast enough. You can check 
-                <a target="_blank" href="">uptime robot</a> 
-                to see if the site is down or <a target="_blank" href="">under heavy load</a>. Go to 
-                <a target="_blank" href="">the subreddit</a> to see
-                if anyone else has problems. Or go to <a target="_blank" href="">the chat</a>and tell Alex about it. 
-                Now down since {this.renderDowntime()}.
+                I cannot reach the backend service. You can check 
+                <a target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw"> uptime robot </a> 
+                to see if the site is down or <a target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw/783419130">under 
+                 heavy load</a>. Go to 
+                <a target="_blank" href="https://www.reddit.com/r/CSTOOL_io"> the subreddit </a> to see
+                if anyone else has problems. Or go to <a target="_blank" href="https://discord.gg/5HWZufA">the chat</a> and tell Alex about it. 
                 </div>
+                <div className="sub header">
+                If you cannot reach any of these sites, the world may be ending right now. Please check your surroundings for signs of 
+                ongoing Apocalypse such as lightning, earthquake and blackening of the sun. Also check if your wifi is down.
+                </div>
+                <div className="sub header">
+                Now gone since {this.renderDowntime()}.
+                </div>
+
+                
             </h4>
           </div>
                 

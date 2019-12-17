@@ -1,6 +1,6 @@
 import React from 'react';
 export const CpeClient = {getCvesForCpes,getAutoCompleteItems,
-        getExampleCpes, getStats, getCveSummaryForCpe, getCveById, getCvesByCpesForGraph};
+        getExampleCpes, getStats, healthCheck, getCveSummaryForCpe, getCveById, getCvesByCpesForGraph};
 export default CpeClient;
 
 // edit .env/.env.local to change this value:
@@ -181,6 +181,16 @@ export function getStats(success) {
     }).then(checkStatus)
       .then(parseJSON)
       .then(success);
+}
+
+export function healthCheck(success, failed) {
+  return fetch(CVESERVICE_URL+'/api/v1/stats', {
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(checkStatus)
+    .catch(failed)
+    .then(success);
 }
 
 /**

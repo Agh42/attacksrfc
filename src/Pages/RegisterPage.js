@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 
-export default class PricingPage extends Component {
+export default class RegisterPage extends Component {
     render() {
         return (
                 <React.Fragment>
@@ -32,7 +32,7 @@ export default class PricingPage extends Component {
                               </div>
                             </div>
                             <a href="/attacksrfc" class="ui disabled button">
-                              Free
+                              You got it
                             </a>
                           </div>
                           

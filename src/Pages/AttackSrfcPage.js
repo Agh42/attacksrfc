@@ -79,6 +79,7 @@ export default class AttackSrfcPage extends Component {
     };
 
     componentDidMount() {
+        this.initHealthCheck();
         this.initSelectedCpes();
         this.initStats();
     }
@@ -178,13 +179,16 @@ export default class AttackSrfcPage extends Component {
     }
     
     healthCheck =() => {
-        try {
-            CpeClient.getStats( (dbStats) => {
-                this.setState({_uhoh: false});
-            });
-        } catch (error) {
-            this.setState({_uhoh: true});
-        }
+            CpeClient.healthCheck( 
+                (success) => {
+                    if (success && this.state._uhoh) {
+                        this.initStats();   
+                        this.setState({_uhoh: false});
+                    }
+                },
+                (failure) => {
+                    this.setState({_uhoh: true});
+                });
     }
 
     handleSaveClick = () => {
@@ -397,7 +401,7 @@ export default class AttackSrfcPage extends Component {
               <div class="row">
                   <div class="column">
                   {this.state._uhoh
-                  ?    <div class="ui top fixed inverted red icon menu">
+                  ?    <div class="ui red message">
                          <DowntimeTimer/>               
                        </div>
                        
