@@ -144,6 +144,15 @@ export default class AttackSrfcPage extends Component {
     // TODO add mobile only top menu
     // FIXME switch to page one when loading cvelist with fewer cves
     // FIXME limit cpe inventory to 10 active cpes
+    
+    // TODO save selection of cpes
+    // fixme update cvesearch
+    // FIXME fix cvss values in cvesearch
+    // TODO add cache and rate limiting
+    // TODO add cookie consent
+    // TODO add tutorial
+    // FIXME redirect to register page not working
+    
 
 
     /*
