@@ -36,7 +36,7 @@ const GRAPH_ACTION_RELOAD = '_RELOAD';
 const GRAPH_ACTION_SUMMARIES_LOADED = '_SUMMARIES_LOADED';
 
 // page load redirects:
-const REDIRECT_PRICING = '/pricing';
+const REDIRECT_REGISTER = '/register';
 
 export default class AttackSrfcPage extends Component {
 
@@ -201,7 +201,7 @@ export default class AttackSrfcPage extends Component {
     }
 
     handleSaveClick = () => {
-          this.setState({_redirect: REDIRECT_PRICING});
+          this.setState({_redirect: REDIRECT_REGISTER});
     }
 
     handlePaginationChange = (newPage) => {
@@ -401,7 +401,7 @@ export default class AttackSrfcPage extends Component {
     render() {
         if (this.state._redirect) {
             return {
-                REDIRECT_PRICING: <Redirect push to={REDIRECT_PRICING} />,
+                REDIRECT_REGISTER: <Redirect to='/register' />
             }[this.state._redirect];
         }
         return (
