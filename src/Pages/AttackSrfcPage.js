@@ -142,16 +142,18 @@ export default class AttackSrfcPage extends Component {
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
+    // FIXME fix overly wide cve table on reduced page width
+    // FIXME fix cpe titles out of boundary box in cve details view
     // FIXME switch to page one when loading cvelist with fewer cves
     // FIXME limit cpe inventory to 10 active cpes
     
-    // TODO save selection of cpes
+    
+    // FIXME redirect to register page not working
     // fixme update cvesearch
     // FIXME fix cvss values in cvesearch
     // TODO add cache and rate limiting
     // TODO add cookie consent
     // TODO add tutorial
-    // FIXME redirect to register page not working
     
 
 
