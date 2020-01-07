@@ -38,7 +38,7 @@ export default class RegisterPage extends Component {
                           
                           <div class="raised card">
                             <div class="content">
-                              <div class="centered header">Personal Account</div>
+                              <div class="centered header">Sponsor</div>
                               <span class="ui orange right corner label"><i className="star icon" /></span>
                               <span class="ui yellow ribbon label">Coming soon</span>
                               <div class="description">
@@ -49,20 +49,38 @@ export default class RegisterPage extends Component {
                                               Access to over 99.900 products and more than 196.000 vulnerabilities.
                                               </div>
                                           </div>
-                                   
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Personal log in.
+                                              </div>
+                                          </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
                                               Increased request limit
                                               </div>
                                           </div>
-                                         
+                                         <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              No ads.
+                                              </div>
+                                          </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
                                                 Save your inventory of assets
                                               </div>
                                           </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                                All data is stored on secure cloud          
+                                          infrastructure in the European Union (Germany and Ireland).
+                                              </div>
+                                          </div>
+                                          
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
@@ -76,11 +94,19 @@ export default class RegisterPage extends Component {
                                                Email notifications when new vulnerabilities for your asset inventory are found
                                               </div>
                                           </div>
+                                          
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                               You get the sponsor role in the Discord chat.
+                                              </div>
+                                          </div>
+                                          
                                           <div class="item">
                                           <i class="check circle icon"></i>
                                           <div class="content">
-                                          All data is stored on secure cloud infrastructure in the European 
-                                          Union. The CSTOOL.io source code is fully disclosed as open source.
+                                          By becoming a sponsor you support open source software and help us to pay 
+                                          for cloud computing and storage.  
                                           </div>
                                         </div>
                                           <div class="item">

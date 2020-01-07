@@ -142,16 +142,18 @@ export default class AttackSrfcPage extends Component {
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
+    // FIXME fix overly wide cve table on reduced page width
+    // FIXME fix cpe titles out of boundary box in cve details view
     // FIXME switch to page one when loading cvelist with fewer cves
     // FIXME limit cpe inventory to 10 active cpes
     
-    // TODO save selection of cpes
+    
+    // FIXME redirect to register page not working
     // fixme update cvesearch
     // FIXME fix cvss values in cvesearch
     // TODO add cache and rate limiting
     // TODO add cookie consent
     // TODO add tutorial
-    // FIXME redirect to register page not working
     
 
 
@@ -538,6 +540,12 @@ export default class AttackSrfcPage extends Component {
                       <div class="ui horizontal  small divided link list">
                         <a class="item" href="homepage.html#">Home</a>
                         <a class="item" href="legal.html#">Legal Notice and License</a>
+                        <a class="item" target="_blank" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
+                        <a class="item" target="_blank" href="https://github.com/Agh42">Report issues</a>
+                <a class="item" target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
+                        <a class="item" target="_blank" href="https://www.reddit.com/r/CSTOOL_io/">Discuss on Reddit</a>
+                        <a class="item" target="_blank" href="https://discord.gg/5HWZufA">Join chat</a>
+                        
                       </div>
                     </div>
                   </div>
