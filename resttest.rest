@@ -32,14 +32,14 @@ POST http://localhost:8080/api/v1/cves/search HTTP/1.1
 content-type: application/json
 
 {
-    "vulnerableCpes": ["cpe:/o:microsoft:windows_xp",
-        "cpe:/o:apple:iphone_os",
-        "cpe:/a:adobe:acrobat_reader",
-        "cpe:/a:microsoft:outlook",
-        "cpe:/a:microsoft:.net_framework:",
-        "cpe:/a:microsoft",
-        "cpe:/o:linux",
-        "cpe:/a:redhat"],
+    "vulnerableCpes": ["cpe:2.3:a:microsoft:windows_xp",
+        "cpe:2.3:o:apple:iphone_os",
+        "cpe:2.3:a:adobe:acrobat_reader",
+        "cpe:2.3:a:microsoft:outlook",
+        "cpe:2.3:a:microsoft:.net_framework:",
+        "cpe:2.3:a:microsoft",
+        "cpe:2.3:o:linux",
+        "cpe:2.3:a:redhat"],
     "fields": ["id", "cvss", "references", "Modified", 
         "Published", "summary"],
     "itemsPerPage": 20,
@@ -52,15 +52,15 @@ content-type: application/json
 
 {
     "vulnerableCpes": [
-        "cpe:/o:microsoft:windows_xp"
+        "cpe:2.3:o:microsoft:windows_xp"
         ],
     "fields": ["id", "cvss", "vulnerable_product", "vulnerable_configuration"],
-    "itemsPerPage": 100,
+    "itemsPerPage": 20,
     "requestedPage": 1
 }
 ###
 
-GET http://localhost:8080/api/v1/cpes/prefix/samba HTTP/1.1
+GET http://localhost:8080/api/v1/cpes/prefix/android HTTP/1.1
 
 ###
 
@@ -68,7 +68,7 @@ GET http://localhost:8080/api/v1/cves/vulnerable_product/microsoft?fields=id,cvs
 
 ###
 
-GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/cpe%3A%5E%5Eo%3Aapple%3Aiphone_os HTTP/1.1
+GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/cpe%3A2.3%3Ao%3Aapple%3Aiphone_os HTTP/1.1
 
 ###
 

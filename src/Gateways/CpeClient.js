@@ -215,15 +215,28 @@ export function getCveById(id, success) {
 
 export function getExampleCpes() {
   return [{
-    "id": "cpe:2.3:o:microsoft:windows_xp:-:-:-",
-    cpe_2_2: "cpe:/o:microsoft:windows_xp:-:-:-",
-    "title": "Microsoft Windows XP Service Pack 2",
+    "id": "cpe:2.3:o:microsoft:windows_10:-:-:-:-:-:-:-:-",
+    cpe_2_2: "cpe:2.3:o:microsoft:windows_10:-:-:-:-:-:-:-:-",
+    "title": "Microsoft Windows 10",
     isActive: true,
   },
   {
-    id: "cpe:2.3:o:avm:fritz:-:-:-",
-    cpe_2_2: "cpe:/o:avm:fritz:-:-:-",
-  },];
+    id: "cpe:2.3:o:apple:mac_os:-:-:-:-:-:-:-:-",
+    cpe_2_2: "cpe:2.3:o:apple:mac_os:-:-:-:-:-:-:-:-",
+  },
+  {
+    id: "cpe:2.3:o:linux:linux_kernel:-:-:-:-:-:-:-:-",
+    cpe_2_2: "cpe:2.3:o:linux:linux_kernel:-:-:-:-:-:-:-:-",
+  },
+  {
+    id:"cpe:2.3:o:apple:iphone_os:-:-:-:-:-:-:-:-",
+    cpe_2_2: "cpe:2.3:o:apple:iphone_os:-:-:-:-:-:-:-:-",
+  },
+  {
+    id:"cpe:2.3:o:google:android:-:-:-:-:-:-:-:-",
+    cpe_2_2: "cpe:2.3:o:google:android:-:-:-:-:-:-:-:-",
+  },
+];
 
 }
 

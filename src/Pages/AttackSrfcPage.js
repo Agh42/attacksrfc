@@ -256,18 +256,18 @@ export default class AttackSrfcPage extends Component {
 
 
     /*
-     * For the query the URI format of the CPE is used (see NISTIR 7695) because this is how CVEs
-     * store references to CPEs in the database. This also allows left aligned regex matching to use the database index
+     * (Previously the URI format of the CPE was used (see NISTIR 7695) because this was how CVEs
+     * stored references to CPEs in the database. Now changed to CPE v2.2/2.3 format.)
+     * This allows left aligned regex matching to use the database index
      * which speeds up the search significantly.
      *
      */
-    getCpeAsUriBinding = (newCpe) => {
-        let reCutOff = /(cpe:\/.*?)[:-]*$/; //removes all trailing ":-"
-        //create cpe 2.2 by replacing version number:
-        let cpe22 = newCpe.id.replace(/2.[23]:/, "/");
+    getCpeAsUriBinding = (cpe) => {
+        let cpe22 = cpe.id;
+        let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
         let match = reCutOff.exec(cpe22);
         let cutOffCpe = match ? match[1] : cpe22;
-        console.log("Converted CPE to URI format: " + cutOffCpe);
+        console.log("Converted CPE to query format: " + cutOffCpe);
         return cutOffCpe;
     }
     

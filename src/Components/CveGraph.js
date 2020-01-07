@@ -308,7 +308,7 @@ export default class CveGraph extends Component {
         ) {
             console.log("graph will receive props: ");
             console.log(nextProps);
-            this.showPlaceholder = false;
+            //this.showPlaceholder = false;
             this.initGraph(nextProps);
         }
     }
