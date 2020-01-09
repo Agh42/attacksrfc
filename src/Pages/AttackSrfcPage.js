@@ -539,9 +539,9 @@ export default class AttackSrfcPage extends Component {
                       </a>
                       <div class="ui horizontal  small divided link list">
                         <a class="item" href="homepage.html#">Home</a>
-                        <a class="item" href="legal.html#">Legal Notice and License</a>
+                        <a class="item" href="legal.html#">Legal Notice and Contact</a>
                         <a class="item" target="_blank" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
-                        <a class="item" target="_blank" href="https://github.com/Agh42">Report issues</a>
+                        <a class="item" target="_blank" href="https://github.com/Agh42/attacksrfc/issues">Report issues</a>
                 <a class="item" target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
                         <a class="item" target="_blank" href="https://www.reddit.com/r/CSTOOL_io/">Discuss on Reddit</a>
                         <a class="item" target="_blank" href="https://discord.gg/5HWZufA">Join chat</a>
@@ -553,4 +553,3 @@ export default class AttackSrfcPage extends Component {
         );
         }
   }
-
