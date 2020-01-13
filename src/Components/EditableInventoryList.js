@@ -164,7 +164,7 @@ export default class EditableInventoryList extends Component {
         // attributes for autosuggest input:
         const {searchValue, suggestions} = this.state;
         const inputProps = {
-                placeholder: 'Windows, Redhat, Acrobat Reader...',
+                placeholder: 'Windows 10, Redhat, Acrobat Reader...',
                 value: searchValue,
                 onChange: this.onChange
         };
