@@ -413,7 +413,7 @@ export default class AttackSrfcPage extends Component {
                   <div class="column">
                   {this.state._uhoh
                   ?    <div class="ui red message">
-                         <DowntimeTimer/>               
+                         <DowntimeTimer/>
                        </div>
                        
                   :    <div class="ui top fixed inverted teal icon menu">

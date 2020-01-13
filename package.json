@@ -5,6 +5,7 @@
   "dependencies": {
     "clipboard": "^2.0.4",
     "moment": "^2.22.2",
+    "path-to-regexp": "^1.7.0",
     "proptypes": "^1.1.0",
     "react": "^16.5.2",
     "react-autosuggest": "^9.4.2",

@@ -30,16 +30,31 @@ export default class App extends Component {
                     <Route path='/attacksrfc' component={AttackSrfcPage} />
                     <Route path='/register' component={RegisterPage} />
                     <Route path='/login' component={LoginPage} />
-                    
-                    <Route path='/index.html' component={AttackSrfcPage} />
-                    
+
+                    <Route exact path='/' render={() => (
+                      <Redirect
+                        to='/attacksrfc'
+                      />
+                    )} />
                     <Route path="/homepage.html" render={reload} />
+
+                    
+                    {/*
+                    <Route exact path='/index.html' render={() => (
+                      <Redirect
+                        to='/attacksrfc'
+                      />
+                    )} />
+
+                    <Route path='/index.html' component={AttackSrfcPage} />
+                    <Route exact path='/' component={AttackSrfcPage} />
                     <Route exact path="/" render={() => <Redirect
                         to={{
                           pathname: "/homepage.html"
                         }}
                       />} 
                     />
+                    */}
                     
                     <Route render={({ location }) => (
                           <div className='ui inverted red segment'>
