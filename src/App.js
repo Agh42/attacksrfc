@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {
-    HashRouter as Router,
+    BrowserRouter as Router,
     Route,
     Link,
     Redirect,
@@ -22,45 +22,24 @@ export default class App extends Component {
     }
     
   render() {
-    const reload = () => window.location.reload();
     return (
             <Router>
                 <Switch>
                     
-                    <Route path='/attacksrfc' component={AttackSrfcPage} />
+                    <Route exact path='/' component={AttackSrfcPage} />
+                    <Route path='/index.html' component={AttackSrfcPage} />
                     <Route path='/register' component={RegisterPage} />
                     <Route path='/login' component={LoginPage} />
-
-                    <Route exact path='/' render={() => (
-                      <Redirect
-                        to='/attacksrfc'
-                      />
-                    )} />
-                    <Route path="/homepage.html" render={reload} />
-
                     
-                    {/*
-                    <Route exact path='/index.html' render={() => (
-                      <Redirect
-                        to='/attacksrfc'
-                      />
-                    )} />
-
-                    <Route path='/index.html' component={AttackSrfcPage} />
-                    <Route exact path='/' component={AttackSrfcPage} />
-                    <Route exact path="/" render={() => <Redirect
-                        to={{
-                          pathname: "/homepage.html"
-                        }}
-                      />} 
-                    />
-                    */}
-                    
+                    <Route exact path="/homepage.html" render={() => {window.location.href="homepage.html"}} />
+                   
                     <Route render={({ location }) => (
                           <div className='ui inverted red segment'>
                             <h3>
-                              Error! No routes for <code>{location.pathname}</code>
+                              Error! No routes for your URL. 
                             </h3>
+                            If you feel that this is a mistake please <a href="https://github.com/Agh42/attacksrfc/issues">report this as an issue.</a>
+                            Or simply return <a href="/">HOME.</a>
                           </div>
                         )} />
                 </Switch>
