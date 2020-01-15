@@ -14,6 +14,7 @@ export default class RegisterPage extends Component {
                          
                             <div class="content">
                               <div class="centered header">Free</div>
+                              <div class="ui hidden divider"></div>
                               <div class="description">
                                   <div class="ui list">
                                       <div class="item">
@@ -52,15 +53,19 @@ export default class RegisterPage extends Component {
                                               </div>
                                           </div>
                                           <div class="item">
-                                              <i class="check circle icon"></i>
-                                              <div class="content">
-                                              Personal login.
-                                              </div>
+                                          <i class="check circle icon"></i>
+                                          <div class="content">Vulnerability search and graph view</div>
                                           </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
                                               Increased request limit
+                                              </div>
+                                          </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Personal login.
                                               </div>
                                           </div>
                                          <div class="item">
