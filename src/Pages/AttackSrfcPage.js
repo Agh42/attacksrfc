@@ -36,7 +36,7 @@ const GRAPH_ACTION_RELOAD = '_RELOAD';
 const GRAPH_ACTION_SUMMARIES_LOADED = '_SUMMARIES_LOADED';
 
 // page load redirects:
-const REDIRECT_REGISTER = '/register';
+const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 
 export default class AttackSrfcPage extends Component {
 

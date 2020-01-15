@@ -22,6 +22,7 @@ export default class App extends Component {
     }
     
   render() {
+    const reload = () => window.location.reload();
     return (
             <Router>
                 <Switch>
@@ -31,7 +32,17 @@ export default class App extends Component {
                     <Route path='/register' component={RegisterPage} />
                     <Route path='/login' component={LoginPage} />
                     
-                    <Route exact path="/homepage.html" render={() => {window.location.href="homepage.html"}} />
+                    
+                    {/*
+                    <Route exact path="/homepage" render={() => {window.location.href="homepage.html"}} />
+                    <Route path="/homepage.html" render={reload} />
+                    <Route exact path="/homepage.html" render={() => <Redirect
+                        to={{
+                          pathname: "/homepage.html"
+                        }}
+                      />} 
+                    />
+                    */}
                    
                     <Route render={({ location }) => (
                           <div className='ui inverted red segment'>
