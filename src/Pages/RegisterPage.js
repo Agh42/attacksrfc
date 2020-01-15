@@ -18,11 +18,13 @@ export default class RegisterPage extends Component {
                                   <div class="ui list">
                                       <div class="item">
                                           <i class="check circle icon"></i>
-                                          <div class="content">Inventory and Vulnerability Search</div>
-                                      </div>
+                                          <div class="content">
+                                          Access to over 293.900 product identifiers and more than 136.000 vulnerabilities.
+                                          </div>
+                                      </div>  
                                       <div class="item">
                                           <i class="check circle icon"></i>
-                                          <div class="content">Vulnerability Landscape View</div>
+                                          <div class="content">Vulnerability search and graph view</div>
                                       </div>
                                       <div class="item">
                                           <i class="check circle icon"></i>
@@ -43,7 +45,7 @@ export default class RegisterPage extends Component {
                               <span class="ui yellow ribbon label">Coming soon</span>
                               <div class="description">
                                    <div class="ui list">
-                                            <div class="item">
+                                          <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
                                               Access to over 293.900 product identifiers and more than 136.000 vulnerabilities.
