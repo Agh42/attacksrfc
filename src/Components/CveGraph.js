@@ -128,7 +128,8 @@ export default class CveGraph extends Component {
             shape: 'box',
             color: '#0062B5',
             font: {color: '#ffffff'},
-            label: 'Runs on/with'
+            title: "These products may also be affected by the listed vulnerabilities if they are used in a configuration together with the vulnerable product.",
+            label: 'Also affects'
         });
         createdNodes.add('vulnConfig');
         this.edges.add( {from: 'vulnConfig', to: primaryCpe} );
