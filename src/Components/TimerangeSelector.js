@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { Slider } from "react-semantic-ui-range";
 
 // Range of days since 2002 (CVE start year)
 
 const startDate = "2002-01-01";
 
-allDays() {
+function allDays() {
     var start = moment(startDate);
     var now = moment();
     return now.diff(start, "days");
@@ -57,14 +58,14 @@ export default class TimerangeSelector extends Component {
     
     // Propagate no more than one state change per second:
     debounceChange() {
-        const thisDebounce = this.debounce = setInterval(() => {
+        const thisDebounce = this.debounce = setTimeout(() => {
             // If this is true, there is a newer event then this one, just return
             if (thisDebounce !== this.debounce) {
                 return;
             }
             
             this.props.onRangeChange(
-                toDateRange(this.state.daysRange)
+                this.toDateRange(this.state.daysRange)
             );
         }, 1000);
     }
@@ -80,10 +81,10 @@ export default class TimerangeSelector extends Component {
             <div className='ui raised segment'>
                 <Slider multiple color="blue" settings={this.settings} />
             
-                {dateRange.map((val, i) => (
-                  <Label key={i} color="blue">
+                {this.state.daysRange.map((val, i) => (
+                  <div  class="ui blue circular label" key={i}>
                     {val}
-                  </Label>
+                  </div>
                 ))}
             </div>
         );

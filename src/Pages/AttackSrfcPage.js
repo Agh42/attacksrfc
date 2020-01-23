@@ -8,6 +8,7 @@ import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
+import TimerangeSelector from '../Components/TimerangeSelector';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -385,7 +386,7 @@ export default class AttackSrfcPage extends Component {
 
     formatDateTime(isoDate) {
         let mom = moment(isoDate, moment.ISO_8601, true);
-        return mom.format('YYYY-MM-DD HH:mmZ');
+        return mom.format('YYYY-MM-DD HH:mm (UTC Z)');
     }
 
     handleEditCpeClick = (editCpeId) => {
@@ -479,6 +480,12 @@ export default class AttackSrfcPage extends Component {
                 </div>
 
                 <div className='eleven wide column'>
+                   <div className='ui raised segment'>
+                    <TimerangeSelector 
+                        onRangeChange={(value) => (console.log(value))}
+                    />
+                   </div>
+
                    <div className='ui raised segment'>
 
                         <div class="ui breadcrumb">
