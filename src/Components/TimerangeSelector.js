@@ -7,6 +7,7 @@ import { Slider } from "react-semantic-ui-range";
 
 const startDate = "2002-01-01";
 
+
 function allDays() {
     var start = moment(startDate);
     var now = moment();
@@ -72,7 +73,7 @@ export default class TimerangeSelector extends Component {
 
     toDateRange() {
         return this.state.daysRange.map( (days) => {
-            
+            return moment(startDate).add(days, "days");
         });
     }
   

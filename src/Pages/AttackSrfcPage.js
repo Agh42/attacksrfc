@@ -16,6 +16,9 @@ import { ENGINE_METHOD_NONE } from 'constants';
 // cve items displayed per page:
 const itemsPerPage = 20;
 
+// date constants
+const FIRST_CPE_DATE= moment("2002-01-01T00:00:00Z");
+
 // trigger actions for cve loading:
 // TODO move to redux store and actions
 const CVE_ACTION_NONE = '_NONE';
@@ -65,6 +68,8 @@ export default class AttackSrfcPage extends Component {
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
+            cpeStartDate: moment().subtract(182, "days"),
+            cpeEndDate: moment();
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -134,24 +139,13 @@ export default class AttackSrfcPage extends Component {
     }
     
     
-    // TODO add time slider to limit query for cves by publication date
-    // FIXME cvss sort incorrect over multiple CPEs because some cvss are strings
-    // FIXME add vendor and product field insert to cvesearch cronjob
-    // TODO add iphone, android, windows 10, macos, linux, and adobe reader to example cves
     // TODO add direct cve search support to cpe dropdown
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
-    // FIXME fix overly wide cve table on reduced page width
-    // FIXME fix cpe titles out of boundary box in cve details view
     // FIXME switch to page one when loading cvelist with fewer cves
     // FIXME limit cpe inventory to 10 active cpes
-    
-    
-    // FIXME redirect to register page not working
-    // fixme update cvesearch
-    // FIXME fix cvss values in cvesearch
     // TODO add cache and rate limiting
     // TODO add cookie consent
     // TODO add tutorial
@@ -247,6 +241,16 @@ export default class AttackSrfcPage extends Component {
             _summaryDisplay: SHOW_SUMMARY_CVE,
             _graphAction: GRAPH_ACTION_RELOAD,
         });
+    }
+    
+    handleDateRangeChanged = (range) => {
+        this.setState({
+            cpeStartDate: range[0],
+            cpeEndDate: range[1],
+            _cveAction: CVE_ACTION_RELOAD,
+            _graphAction: GRAPH_ACTION_RELOAD,
+        
+        )};    
     }
 
     // Display cve in cve details component:
