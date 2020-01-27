@@ -14,15 +14,18 @@ export default class RegisterPage extends Component {
                          
                             <div class="content">
                               <div class="centered header">Free</div>
+                              <div class="ui hidden divider"></div>
                               <div class="description">
                                   <div class="ui list">
                                       <div class="item">
                                           <i class="check circle icon"></i>
-                                          <div class="content">Inventory and Vulnerability Search</div>
-                                      </div>
+                                          <div class="content">
+                                          Access to over 293.900 product identifiers and more than 136.000 vulnerabilities.
+                                          </div>
+                                      </div>  
                                       <div class="item">
                                           <i class="check circle icon"></i>
-                                          <div class="content">Vulnerability Landscape View</div>
+                                          <div class="content">Vulnerability search and graph view</div>
                                       </div>
                                       <div class="item">
                                           <i class="check circle icon"></i>
@@ -43,22 +46,26 @@ export default class RegisterPage extends Component {
                               <span class="ui yellow ribbon label">Coming soon</span>
                               <div class="description">
                                    <div class="ui list">
-                                            <div class="item">
-                                              <i class="check circle icon"></i>
-                                              <div class="content">
-                                              Access to over 99.900 products and more than 196.000 vulnerabilities.
-                                              </div>
-                                          </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                              Personal log in.
+                                              Access to over 293.900 product identifiers and more than 136.000 vulnerabilities.
                                               </div>
+                                          </div>
+                                          <div class="item">
+                                          <i class="check circle icon"></i>
+                                          <div class="content">Vulnerability search and graph view</div>
                                           </div>
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
                                               Increased request limit
+                                              </div>
+                                          </div>
+                                          <div class="item">
+                                              <i class="check circle icon"></i>
+                                              <div class="content">
+                                              Personal login.
                                               </div>
                                           </div>
                                          <div class="item">
@@ -76,18 +83,11 @@ export default class RegisterPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                                All data is stored on secure cloud          
-                                          infrastructure in the European Union (Germany and Ireland).
+                                                All data is stored in redundant clouds          
+                                           in the European Union (Germany, Belgium and Ireland).
                                               </div>
                                           </div>
                                           
-                                          <div class="item">
-                                              <i class="check circle icon"></i>
-                                              <div class="content">
-                                              Assign mitigation tasks using email / JIRA / Slack integration
-                                              </div>
-                                          </div>
-                                        
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">

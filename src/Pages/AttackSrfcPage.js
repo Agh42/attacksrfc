@@ -40,7 +40,7 @@ const GRAPH_ACTION_RELOAD = '_RELOAD';
 const GRAPH_ACTION_SUMMARIES_LOADED = '_SUMMARIES_LOADED';
 
 // page load redirects:
-const REDIRECT_REGISTER = '/register';
+const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 
 export default class AttackSrfcPage extends Component {
 
@@ -550,8 +550,8 @@ export default class AttackSrfcPage extends Component {
                       <img class="ui centered image" src="images/logos/cstoolio_60.png" />
                       </a>
                       <div class="ui horizontal  small divided link list">
-                        <a class="item" href="homepage.html#">Home</a>
-                        <a class="item" href="legal.html#">Legal Notice and Contact</a>
+                        <a class="item" href="homepage.html">Home</a>
+                        <a class="item" href="legal.html">Legal Notice and Contact</a>
                         <a class="item" target="_blank" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
                         <a class="item" target="_blank" href="https://github.com/Agh42/attacksrfc/issues">Report issues</a>
                         <a class="item" target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
