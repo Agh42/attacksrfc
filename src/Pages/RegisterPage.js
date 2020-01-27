@@ -8,7 +8,7 @@ export default class RegisterPage extends Component {
             <div class="ui middle aligned stackable grid container">
                 <div class="row">
                   <div class="sixteen wide column">
-                      <div class="ui two centered cards">
+                      <div class="ui three centered cards">
                       
                          <div class="raised card">
                          

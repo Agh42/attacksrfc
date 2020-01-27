@@ -140,6 +140,7 @@ export default class AttackSrfcPage extends Component {
     
     
     // TODO add direct cve search support to cpe dropdown
+    // TODO add event listeners to graph nodes
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
