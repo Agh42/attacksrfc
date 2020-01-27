@@ -69,7 +69,7 @@ export default class AttackSrfcPage extends Component {
             numTotalPages: 1,
             numCurrentPage: 1,
             cpeStartDate: moment().subtract(182, "days"),
-            cpeEndDate: moment();
+            cpeEndDate: moment(),
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -251,7 +251,7 @@ export default class AttackSrfcPage extends Component {
             _cveAction: CVE_ACTION_RELOAD,
             _graphAction: GRAPH_ACTION_RELOAD,
         
-        )};    
+        });    
     }
 
     // Display cve in cve details component:
@@ -485,7 +485,7 @@ export default class AttackSrfcPage extends Component {
                 </div>
 
                 <div className='eleven wide column'>
-                   <div className='ui raised segment'>
+                   <div className='ui raised center aligned segment'>
                     <TimerangeSelector 
                         onRangeChange={(value) => (console.log(value))}
                     />

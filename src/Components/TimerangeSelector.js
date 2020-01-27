@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Slider } from "react-semantic-ui-range";
+import Slider from 'rc-slider';
+
+const Range = Slider.Range;
 
 // Range of days since 2002 (CVE start year)
-
-const startDate = "2002-01-01";
-
+const START_DATE = "2002-01-01";
 
 function allDays() {
-    var start = moment(startDate);
+    var start = moment(START_DATE);
     var now = moment();
     return now.diff(start, "days");
 }
-
-
-
 
               
 /**
@@ -35,26 +32,18 @@ export default class TimerangeSelector extends Component {
 
     constructor() {
         super();
+        const days = allDays();
         this.state = {
-                daysRange: [0,0], 
+                daysRange: [days-183,days], 
         }
     }
-
-    componentDidMount(){
-        const days = allDays();
-        this.settings = {
-            start: [days-183, days],
-            min: 0,
-            max: days,
-            step: 1,
-            onChange: value => {
-                this.setState({
-                    dateRange: value
-                }, () => {
-                    this.debounceChange();
-                });
-            }
-        };
+    
+    sliderChange = (newRange) => {
+        this.setState({
+            daysRange: newRange
+        }, () => {
+            this.debounceChange();
+        });
     }
     
     // Propagate no more than one state change per second:
@@ -66,28 +55,38 @@ export default class TimerangeSelector extends Component {
             }
             
             this.props.onRangeChange(
-                this.toDateRange(this.state.daysRange)
+                this.toDateRange()
             );
-        }, 1000);
+        }, 500);
     }
 
     toDateRange() {
         return this.state.daysRange.map( (days) => {
-            return moment(startDate).add(days, "days");
+            return moment(START_DATE).add(days, "days");
         });
     }
   
     render () {
         return(   
-            <div className='ui raised segment'>
-                <Slider multiple color="blue" settings={this.settings} />
+            <span>
+                <Range 
+                    min={0}
+                    max={allDays()}
+                    allowCross={false} 
+                    defaultValue={this.state.daysRange} 
+                    onChange={this.sliderChange} 
+                    pushable={30}
+                />
             
-                {this.state.daysRange.map((val, i) => (
-                  <div  class="ui blue circular label" key={i}>
-                    {val}
-                  </div>
-                ))}
-            </div>
+                <div  class="ui blue label" key="0">
+                    {moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}
+                </div>
+                <i class="resize horizontal icon" />
+                <div  class="ui blue label" key="1">
+                    {moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}
+                </div>
+
+            </span>
         );
     }
 }
