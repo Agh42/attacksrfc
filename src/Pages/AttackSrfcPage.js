@@ -154,7 +154,7 @@ export default class AttackSrfcPage extends Component {
 
 
     /*
-     * Initilizes first CPE list. Triggers loading of CVE summaries for those CPEs. Then sets first of those CPEs
+     * Initializes the first CPE list. Triggers loading of CVE summaries for those CPEs. Then sets first of those CPEs
      * as initial graph display and loads CVEs for graph.
      */
     initSelectedCpes = () => {

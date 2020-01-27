@@ -11,7 +11,6 @@ export default class RegisterPage extends Component {
                       <div class="ui three centered cards">
                       
                          <div class="raised card">
-                         
                             <div class="content">
                               <div class="centered header">Free</div>
                               <div class="ui hidden divider"></div>
