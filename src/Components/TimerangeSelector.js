@@ -68,25 +68,41 @@ export default class TimerangeSelector extends Component {
   
     render () {
         return(   
-            <span>
-                <Range 
-                    min={0}
-                    max={allDays()}
-                    allowCross={false} 
-                    defaultValue={this.state.daysRange} 
-                    onChange={this.sliderChange} 
-                    pushable={30}
-                />
-            
-                <div  class="ui blue label" key="0">
-                    {moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}
-                </div>
-                <i class="resize horizontal icon" />
-                <div  class="ui blue label" key="1">
-                    {moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}
-                </div>
+            <div class="ui items">
 
-            </span>
+            <div class="item">
+            
+            <div class="content">
+              <div class="header"><i class="calendar alternate outline icon" />Date range</div>
+              <div class="meta">
+              <span>{moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}</span>
+              <span><i class="resize horizontal icon" /></span>
+              <span>{moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}</span>
+              </div>
+              <div class="description">
+              <Range 
+                            min={0}
+                            max={allDays()}
+                            allowCross={false} 
+                            defaultValue={this.state.daysRange} 
+                            onChange={this.sliderChange} 
+                            pushable={30}
+                        />
+              </div>
+            </div>
+          </div>
+        </div>
+
+/*
+                        <div  class="ui blue label" key="0">
+                            {moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}
+                        </div>
+                        <i class="resize horizontal icon" />
+                        <div  class="ui blue label" key="1">
+                            {moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}
+                        </div>
+  */                     
+
         );
     }
 }

@@ -68,8 +68,8 @@ export default class AttackSrfcPage extends Component {
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
-            cpeStartDate: moment().subtract(182, "days"),
-            cpeEndDate: moment(),
+            cveStartDate: moment().subtract(182, "days"),
+            cveEndDate: moment(),
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -245,12 +245,13 @@ export default class AttackSrfcPage extends Component {
     }
     
     handleDateRangeChanged = (range) => {
+        console.log("Range changed: " + range);
         this.setState({
-            cpeStartDate: range[0],
-            cpeEndDate: range[1],
+            cveStartDate: range[0],
+            cveEndDate: range[1],
+            //_graphAction: GRAPH_ACTION_RELOAD,
+            _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
-            _graphAction: GRAPH_ACTION_RELOAD,
-        
         });    
     }
 
@@ -332,15 +333,20 @@ export default class AttackSrfcPage extends Component {
     }
 
 
-    // load cve summary counts for cpe, only where missing:
+    // load cve summary counts for cpe, only where missing or if date changed
     loadCpeSummaries = () => {
         this.state.cpeSummaries.forEach( (cs) => {
-            if ( !Array.isArray(cs.summary) || !cs.summary.length ) {
+            if ( !Array.isArray(cs.summary) 
+                || !cs.summary.length 
+                || this.state.lastLoadedEndDate !== this.state.cveEndDate
+                || this.state.lastLoadedStartDate !== this.state.cveStartDate) {
                 CpeClient.getCveSummaryForCpe(
                     this.getCpeAsUriBinding(cs.cpe),
+                    this.state.cveStartDate,
+                    this.state.cveEndDate,
                     (response) => {
-                        this.setState({
-                            cpeSummaries: this.state.cpeSummaries.map((cs2) => {
+                        this.setState((prevState, props) => ({
+                            cpeSummaries: prevState.cpeSummaries.map((cs2) => {
                                 if (cs2.cpe.id === cs.cpe.id) {
                                     return Object.assign({}, cs2, {
                                         summary: response,
@@ -349,8 +355,10 @@ export default class AttackSrfcPage extends Component {
                                     return cs2;
                                 }
                             }),
+                            lastLoadedStartDate: prevState.cveStartDate,
+                            lastLoadedEndDate: prevState.cveEndDate,
                             _graphAction: GRAPH_ACTION_SUMMARIES_LOADED,
-                        });
+                        }));
                     }
                 );
             }
@@ -485,9 +493,9 @@ export default class AttackSrfcPage extends Component {
                 </div>
 
                 <div className='eleven wide column'>
-                   <div className='ui raised center aligned segment'>
+                   <div className='ui raised segment'>
                     <TimerangeSelector 
-                        onRangeChange={(value) => (console.log(value))}
+                        onRangeChange={this.handleDateRangeChanged}
                     />
                    </div>
 

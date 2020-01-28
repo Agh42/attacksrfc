@@ -129,7 +129,7 @@ export default class CveGraph extends Component {
             color: '#0062B5',
             font: {color: '#ffffff'},
             title: "These products may also be affected if they are used in a configuration together with the vulnerable product.",
-            label: 'Also affects'
+            label: 'Affected'
         });
         createdNodes.add('vulnConfig');
         this.edges.add( {from: 'vulnConfig', to: primaryCpe} );
@@ -255,7 +255,7 @@ export default class CveGraph extends Component {
                     shadow: true},
                 interaction: {hover: false},
                 //layout: {randomSeed:44},
-                smoothCurves: {dynamic:false, type: "continuous"},
+                //smoothCurves: {dynamic:false, type: "continuous"},
                /*  stabilization: false,
                 physics: {barnesHut: {
                     gravitationalConstant: -5000, 
