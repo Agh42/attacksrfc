@@ -130,13 +130,15 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
  * 
  * @param {*} cpe 
  * @param {*} success 
+ * @param {*} start start for date range
+ * @param {*} end end for date range
  */
-export function getCveSummaryForCpe(cpe, success) {
+export function getCveSummaryForCpe(cpe, start, end, success) {
   cpe = replaceSpecialChars(cpe);
   console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_product/'
         + cpe);
   fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_product/'
-        + cpe, {
+        + cpe + "?publishedFrom=" + start.toISOString() + "&publishedUntil=" + end.toISOString(), {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
