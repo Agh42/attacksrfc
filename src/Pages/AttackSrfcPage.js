@@ -154,8 +154,8 @@ export default class AttackSrfcPage extends Component {
 
 
     /*
-     * Initializes the first CPE list. Triggers loading of CVE summaries for those CPEs. Then sets first of those CPEs
-     * as initial graph display and loads CVEs for graph.
+     * Initializes the first CPE list. Triggers loading of CVE summaries for those CPEs. Sets 
+     * the first of those CPEs as initial graph display and loads CVEs for graph.
      */
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
@@ -447,7 +447,7 @@ export default class AttackSrfcPage extends Component {
                              <i className="sign in icon" />
                              &nbsp;&nbsp;Login
                            </Link>
-                           <Link to="/settings" class="item">
+                           <Link to="/login" class="item" onClick={this.noop}>
                              <i className="disabled cog icon" />
                            </Link>
                          </div>
