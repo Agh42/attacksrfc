@@ -80,7 +80,7 @@ export default class AttackSrfcPage extends Component {
 
             _redirect: "",
             _cveAction: CVE_ACTION_NONE,
-            _graphAction: GRAPH_ACTION_INIT,
+            _graphAction: GRAPH_ACTION_NONE,
             _cpeAction: CPE_ACTION_NONE
     };
 
@@ -116,7 +116,7 @@ export default class AttackSrfcPage extends Component {
                     // after summaries are loaded, set a cpe and trigger initial cve loading:
                     this.setState({
                         _graphAction: GRAPH_ACTION_RELOAD,
-                        selectedCpeSummaryInGraph: this.state.cpeSummaries[0],
+                        selectedCpeSummaryForGraph: this.state.cpeSummaries[0],
                     });
                 }                
                 else {
@@ -159,6 +159,7 @@ export default class AttackSrfcPage extends Component {
      */
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
+                        selectedCpeSummaryForGraph: CpeClient.getExampleCpes()[0],
                         cpeSummaries: CpeClient.getExampleCpes().map( (c) => {
                             return {
                                 cpe: c,
@@ -167,6 +168,7 @@ export default class AttackSrfcPage extends Component {
                         }),
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
+                        _graphAction: GRAPH_ACTION_RELOAD,
                     });
     }
 
