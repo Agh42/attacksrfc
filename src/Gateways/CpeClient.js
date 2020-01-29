@@ -104,7 +104,7 @@ function checkStatus(response) {
  * @param {*} success
  * @returns
  */
-export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
+export function getCvesForCpes(cpes, itemsPerPage, numPage, start, end, success) {
   let fields = ["id", "cvss", "references", "Modified", "Published", "summary"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
@@ -117,7 +117,11 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, success) {
       "vulnerableCpes": cpes,
       "itemsPerPage": itemsPerPage,
       "requestedPage": numPage,
-      "fields": fields
+      "fields": fields,
+      "published": {
+        "from": start.toISOString(),
+        "until": end.toISOString()
+      }
     })
   }).then(checkStatus)
     .then(parseJSON)
@@ -154,7 +158,7 @@ export function getCveSummaryForCpe(cpe, start, end, success) {
  * @param {Object[]} cpes 
  * @callback {CpeClient~getCvesByCpesForGraph} success The function to call with positive result.
  */
-export function getCvesByCpesForGraph(cpes, success) {
+export function getCvesByCpesForGraph(cpes, start, end, success) {
   const fields = ["id","cvss","vulnerable_product","vulnerable_configuration"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
@@ -167,7 +171,11 @@ export function getCvesByCpesForGraph(cpes, success) {
       "vulnerableCpes": cpes,
       "itemsPerPage": 100,
       "requestedPage": 1,
-      "fields": fields
+      "fields": fields,
+      "published": {
+        "from": start.toISOString(),
+        "until": end.toISOString()
+      }
     })
   }).then(checkStatus)
     .then(parseJSON)

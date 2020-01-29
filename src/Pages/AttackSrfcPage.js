@@ -251,7 +251,7 @@ export default class AttackSrfcPage extends Component {
         this.setState({
             cveStartDate: range[0],
             cveEndDate: range[1],
-            //_graphAction: GRAPH_ACTION_RELOAD,
+            _graphAction: GRAPH_ACTION_RELOAD,
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
         });    
@@ -297,7 +297,12 @@ export default class AttackSrfcPage extends Component {
             : [];
 
         if (cpesLeftAlignedURIBinding.length > 0) {
-            CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
+            CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, 
+                itemsPerPage, 
+                pageToGet,
+                this.state.cveStartDate,
+                this.state.cveEndDate, 
+                (newCves) => (
                 this.setState({
                     selectedCvesPage: newCves.result,
                     selectedCvesTotalCount: newCves.resultCount,
@@ -321,7 +326,10 @@ export default class AttackSrfcPage extends Component {
             : [];
 
         if (cpeLeftAlignedURIBinding.length > 0) {
-              CpeClient.getCvesByCpesForGraph(cpeLeftAlignedURIBinding, (newCves) => (
+              CpeClient.getCvesByCpesForGraph(cpeLeftAlignedURIBinding,
+                this.state.cveStartDate,
+                this.state.cveEndDate,
+                (newCves) => (
                 this.setState({
                     graphCves: newCves.result,
                 })
