@@ -73,7 +73,7 @@ export default class TimerangeSelector extends Component {
             <div class="item">
             
             <div class="content">
-              <div class="header" data-tooltip="Set this to the oldest patch level in your inventory.">
+              <div class="header" data-tooltip="Adapt this to reflect your patch cycle.">
                 <i class="calendar alternate outline icon" />Date range:
               </div>
               <div class="meta">
