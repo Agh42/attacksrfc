@@ -191,14 +191,15 @@ export default class CveGraph extends Component {
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(vendor_product)) {
                 
-                
-                    let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#c0c0c0';
+                    let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#e8e8e8'; // teal : grey
+                    let fontColor = (primaryCpe === vendor_product) ? '#ffffff' : '#7c7c7c'; // white : dark-grey
+
                     
                     this.nodes.add({
                         id: vendor_product, 
                         shape: 'box',
                         color: color,
-                        font: {color: '#ffffff'},
+                        font: {color: fontColor},
                         label: vendor_product
                     });
                     createdNodes.add(vendor_product);
@@ -219,12 +220,12 @@ export default class CveGraph extends Component {
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
 
                 if (!createdNodes.has(vendor_product)) {
-                    let color = '#c0c0c0';
+                    let color = '#e8e8e8';
                     //console.log("adding vulnconf: " + vendor_product);
                     this.nodes.add( {id: vendor_product, 
                         shape: 'box',
                         color: color,
-                        font: {color: '#ffffff'},
+                        font: {color: '#7c7c7c'},
                         label: vendor_product} );
                     createdNodes.add(vendor_product);
                 }
@@ -275,11 +276,18 @@ export default class CveGraph extends Component {
             var widthFactor = params.iterations/params.total;
             var width = Math.max(minWidth,maxWidth * widthFactor);
 
-            document.getElementById('bar').style.width = width + 'px';
-            document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+            if (!document.getElementById('bar')) {
+                return;
+            }
+
+            document.getElementById('bar').style.width = width + 'px'
+            document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%'
         });
         var component = this;
         this.network.once("stabilizationIterationsDone", function() {
+            if (!document.getElementById('text')) {
+                return;
+            }
             document.getElementById('text').innerHTML = '100%';
             document.getElementById('bar').style.width = '496px';
             document.getElementById('loadingBar').style.opacity = 0;

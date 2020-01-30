@@ -73,7 +73,9 @@ export default class TimerangeSelector extends Component {
             <div class="item">
             
             <div class="content">
-              <div class="header"><i class="calendar alternate outline icon" />Date range</div>
+              <div class="header" data-tooltip="Set this to the oldest patch level in your inventory.">
+                <i class="calendar alternate outline icon" />Date range:
+              </div>
               <div class="meta">
               <span>{moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}</span>
               <span><i class="resize horizontal icon" /></span>

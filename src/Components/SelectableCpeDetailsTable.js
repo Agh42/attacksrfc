@@ -83,7 +83,7 @@ class CpeSummaryItem extends React.Component {
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
                       && 'HIGH' in this.props.cpeSummary.summary
-                        ? <div class="ui red circular label">{this.props.cpeSummary.summary.HIGH}</div>
+                        ? <div class="ui orange circular label">{this.props.cpeSummary.summary.HIGH}</div>
                         : "" }
                 </td>
 

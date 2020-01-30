@@ -12,10 +12,10 @@ const SEVERITY_MEDIUM ="MEDIUM";
 const SEVERITY_HIGH ="HIGH";
 const SEVERITY_CRITICAL ="CRITICAL";
 
-export const COLOR_RED = "#B03060";
-export const COLOR_ORANGE = "#FE9A76";
-export const COLOR_AMBER = "#FFD700";
-export const COLOR_GREEN = "#016936";
+export const COLOR_RED = "#db2828";
+export const COLOR_ORANGE = "#f2711c";
+export const COLOR_AMBER = "#fbbd08";
+export const COLOR_GREEN = "#21ba45";
 
 function colorValueForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return COLOR_GREEN;
