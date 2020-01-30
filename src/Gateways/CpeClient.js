@@ -58,7 +58,7 @@ function checkStatus(response) {
  }
 
  /**
-  * Flatten json result to "{HIGH:1, MEDIMUM: 2,...}"
+  * Flatten json result to "{HIGH:1, MEDIUM: 2,...}"
   * from the format returned by the service:
       [
         {
@@ -85,7 +85,7 @@ function checkStatus(response) {
         [elmt._id.severity] : elmt.count, 
       };
     }); 
-    // merge to new {HIGH:1, MEDIMUM: 2} object with spread operator:
+    // merge to new {HIGH:1, MEDIUM: 2} object with spread operator:
     if (flattened.length)
       return Object.assign(...flattened);
     else

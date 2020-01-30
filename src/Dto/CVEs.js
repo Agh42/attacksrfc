@@ -12,19 +12,22 @@ const SEVERITY_MEDIUM ="MEDIUM";
 const SEVERITY_HIGH ="HIGH";
 const SEVERITY_CRITICAL ="CRITICAL";
 
-export const COLOR_RED = "#db0000";
-export const COLOR_AMBER = "#ffa200";
-export const COLOR_GREEN = "#11A100";
+export const COLOR_RED = "#B03060";
+export const COLOR_ORANGE = "#FE9A76";
+export const COLOR_AMBER = "#FFD700";
+export const COLOR_GREEN = "#016936";
 
 function colorValueForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return COLOR_GREEN;
-    if (score > HIGH_THRESHOLD) return COLOR_RED;
+    if (score > CRITICAL_THRESHOLD) return COLOR_RED;
+    if (score > HIGH_THRESHOLD) return COLOR_ORANGE;
     return COLOR_AMBER; 
 }
 
 function colorNameForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return "green";
-    if (score > HIGH_THRESHOLD) return "red";
+    if (score > CRITICAL_THRESHOLD) return "red";
+    if (score > HIGH_THRESHOLD) return "orange";
     return "yellow";
 }
 

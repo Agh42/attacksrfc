@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as vis from 'vis';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
-import {COLOR_AMBER, COLOR_GREEN, COLOR_RED} from '../Dto/CVEs';
+import {COLOR_AMBER, COLOR_GREEN, COLOR_ORANGE, COLOR_RED} from '../Dto/CVEs';
 
 
 function getCpesGenericForm(cpes) {
@@ -165,7 +165,7 @@ export default class CveGraph extends Component {
                         createdNodes.add(primaryCpe + " " + "CRITICAL");
                     }
                     else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "HIGH") ) {
-                        summaryNodes.HIGH = createSummaryNode(primaryCpe, "HIGH", cs.summary.HIGH, COLOR_RED);
+                        summaryNodes.HIGH = createSummaryNode(primaryCpe, "HIGH", cs.summary.HIGH, COLOR_ORANGE);
                         this.nodes.add(summaryNodes.HIGH);
                         this.edges.add( {from: summaryNodes.HIGH.id, to: primaryCpe} );
                         createdNodes.add(primaryCpe + " " + "HIGH");
