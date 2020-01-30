@@ -128,7 +128,8 @@ export default class CveGraph extends Component {
             shape: 'box',
             color: '#0062B5',
             font: {color: '#ffffff'},
-            label: 'Runs on/with'
+            title: "These products may also be affected if they are used in a configuration together with the vulnerable product.",
+            label: 'Affected'
         });
         createdNodes.add('vulnConfig');
         this.edges.add( {from: 'vulnConfig', to: primaryCpe} );
@@ -254,6 +255,15 @@ export default class CveGraph extends Component {
                     shadow: true},
                 interaction: {hover: false},
                 //layout: {randomSeed:44},
+                //smoothCurves: {dynamic:false, type: "continuous"},
+               /*  stabilization: false,
+                physics: {barnesHut: {
+                    gravitationalConstant: -5000, 
+                    centralGravity: 0.3,
+                    springLength: 120, 
+                    springConstant: 0.04,
+                    avoidOverlap: 0.1
+                }}, */
         };
         this.setState({_loadingbar: true});
         this.convertCves(props);

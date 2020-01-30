@@ -114,7 +114,7 @@ class CpeSummaryItem extends React.Component {
  */
 export default class SelectableCpeDetailsTable extends Component {
 
-static propTypes = {
+    static propTypes = {
         cpesWithCveCounts: PropTypes.array.isRequired,
         onSelect: PropTypes.func.isRequired,
     };

@@ -8,12 +8,16 @@ import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
+import TimerangeSelector from '../Components/TimerangeSelector';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
 
 // cve items displayed per page:
 const itemsPerPage = 20;
+
+// date constants
+const FIRST_CPE_DATE= moment("2002-01-01T00:00:00Z");
 
 // trigger actions for cve loading:
 // TODO move to redux store and actions
@@ -64,6 +68,8 @@ export default class AttackSrfcPage extends Component {
             stats: [],
             numTotalPages: 1,
             numCurrentPage: 1,
+            cveStartDate: moment().subtract(182, "days"),
+            cveEndDate: moment(),
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -74,7 +80,7 @@ export default class AttackSrfcPage extends Component {
 
             _redirect: "",
             _cveAction: CVE_ACTION_NONE,
-            _graphAction: GRAPH_ACTION_INIT,
+            _graphAction: GRAPH_ACTION_NONE,
             _cpeAction: CPE_ACTION_NONE
     };
 
@@ -110,7 +116,7 @@ export default class AttackSrfcPage extends Component {
                     // after summaries are loaded, set a cpe and trigger initial cve loading:
                     this.setState({
                         _graphAction: GRAPH_ACTION_RELOAD,
-                        selectedCpeSummaryInGraph: this.state.cpeSummaries[0],
+                        selectedCpeSummaryForGraph: this.state.cpeSummaries[0],
                     });
                 }                
                 else {
@@ -133,24 +139,14 @@ export default class AttackSrfcPage extends Component {
     }
     
     
-    // TODO add time slider to limit query for cves by publication date
-    // FIXME cvss sort incorrect over multiple CPEs because some cvss are strings
-    // FIXME add vendor and product field insert to cvesearch cronjob
-    // TODO add iphone, android, windows 10, macos, linux, and adobe reader to example cves
     // TODO add direct cve search support to cpe dropdown
+    // TODO add event listeners to graph nodes
     // TODO add red "Full. Text. Search." to cpe dropdown
     // TODO make word after space search windows_10 AND narrow windows results
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
-    // FIXME fix overly wide cve table on reduced page width
-    // FIXME fix cpe titles out of boundary box in cve details view
     // FIXME switch to page one when loading cvelist with fewer cves
     // FIXME limit cpe inventory to 10 active cpes
-    
-    
-    // FIXME redirect to register page not working
-    // fixme update cvesearch
-    // FIXME fix cvss values in cvesearch
     // TODO add cache and rate limiting
     // TODO add cookie consent
     // TODO add tutorial
@@ -158,11 +154,12 @@ export default class AttackSrfcPage extends Component {
 
 
     /*
-     * Initilizes first CPE list. Triggers loading of CVE summaries for those CPEs. Then sets first of those CPEs
-     * as initial graph display and loads CVEs for graph.
+     * Initializes the first CPE list. Triggers loading of CVE summaries for those CPEs. Sets 
+     * the first of those CPEs as initial graph display and loads CVEs for graph.
      */
     initSelectedCpes = () => {
         this.setState( {selectedCpes: CpeClient.getExampleCpes(),
+                        selectedCpeSummaryForGraph: CpeClient.getExampleCpes()[0],
                         cpeSummaries: CpeClient.getExampleCpes().map( (c) => {
                             return {
                                 cpe: c,
@@ -171,6 +168,7 @@ export default class AttackSrfcPage extends Component {
                         }),
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
+                        _graphAction: GRAPH_ACTION_RELOAD,
                     });
     }
 
@@ -247,6 +245,17 @@ export default class AttackSrfcPage extends Component {
             _graphAction: GRAPH_ACTION_RELOAD,
         });
     }
+    
+    handleDateRangeChanged = (range) => {
+        console.log("Range changed: " + range);
+        this.setState({
+            cveStartDate: range[0],
+            cveEndDate: range[1],
+            _graphAction: GRAPH_ACTION_RELOAD,
+            _cpeAction: CPE_ACTION_RELOAD,
+            _cveAction: CVE_ACTION_RELOAD,
+        });    
+    }
 
     // Display cve in cve details component:
     handleCveSelected = (cve) => {
@@ -288,7 +297,12 @@ export default class AttackSrfcPage extends Component {
             : [];
 
         if (cpesLeftAlignedURIBinding.length > 0) {
-            CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, itemsPerPage, pageToGet, (newCves) => (
+            CpeClient.getCvesForCpes(cpesLeftAlignedURIBinding, 
+                itemsPerPage, 
+                pageToGet,
+                this.state.cveStartDate,
+                this.state.cveEndDate, 
+                (newCves) => (
                 this.setState({
                     selectedCvesPage: newCves.result,
                     selectedCvesTotalCount: newCves.resultCount,
@@ -312,7 +326,10 @@ export default class AttackSrfcPage extends Component {
             : [];
 
         if (cpeLeftAlignedURIBinding.length > 0) {
-              CpeClient.getCvesByCpesForGraph(cpeLeftAlignedURIBinding, (newCves) => (
+              CpeClient.getCvesByCpesForGraph(cpeLeftAlignedURIBinding,
+                this.state.cveStartDate,
+                this.state.cveEndDate,
+                (newCves) => (
                 this.setState({
                     graphCves: newCves.result,
                 })
@@ -326,15 +343,20 @@ export default class AttackSrfcPage extends Component {
     }
 
 
-    // load cve summary counts for cpe, only where missing:
+    // load cve summary counts for cpe, only where missing or if date changed
     loadCpeSummaries = () => {
         this.state.cpeSummaries.forEach( (cs) => {
-            if ( !Array.isArray(cs.summary) || !cs.summary.length ) {
+            if ( !Array.isArray(cs.summary) 
+                || !cs.summary.length 
+                || this.state.lastLoadedEndDate !== this.state.cveEndDate
+                || this.state.lastLoadedStartDate !== this.state.cveStartDate) {
                 CpeClient.getCveSummaryForCpe(
                     this.getCpeAsUriBinding(cs.cpe),
+                    this.state.cveStartDate,
+                    this.state.cveEndDate,
                     (response) => {
-                        this.setState({
-                            cpeSummaries: this.state.cpeSummaries.map((cs2) => {
+                        this.setState((prevState, props) => ({
+                            cpeSummaries: prevState.cpeSummaries.map((cs2) => {
                                 if (cs2.cpe.id === cs.cpe.id) {
                                     return Object.assign({}, cs2, {
                                         summary: response,
@@ -343,8 +365,10 @@ export default class AttackSrfcPage extends Component {
                                     return cs2;
                                 }
                             }),
+                            lastLoadedStartDate: prevState.cveStartDate,
+                            lastLoadedEndDate: prevState.cveEndDate,
                             _graphAction: GRAPH_ACTION_SUMMARIES_LOADED,
-                        });
+                        }));
                     }
                 );
             }
@@ -385,7 +409,7 @@ export default class AttackSrfcPage extends Component {
 
     formatDateTime(isoDate) {
         let mom = moment(isoDate, moment.ISO_8601, true);
-        return mom.format('YYYY-MM-DDTHH:mm') + ' UTC';
+        return mom.format('YYYY-MM-DD HH:mm (UTC Z)');
     }
 
     handleEditCpeClick = (editCpeId) => {
@@ -431,7 +455,7 @@ export default class AttackSrfcPage extends Component {
                              <i className="sign in icon" />
                              &nbsp;&nbsp;Login
                            </Link>
-                           <Link to="/settings" class="item">
+                           <Link to="/login" class="item" onClick={this.noop}>
                              <i className="disabled cog icon" />
                            </Link>
                          </div>
@@ -479,6 +503,12 @@ export default class AttackSrfcPage extends Component {
                 </div>
 
                 <div className='eleven wide column'>
+                   <div className='ui raised segment'>
+                    <TimerangeSelector 
+                        onRangeChange={this.handleDateRangeChanged}
+                    />
+                   </div>
+
                    <div className='ui raised segment'>
 
                         <div class="ui breadcrumb">

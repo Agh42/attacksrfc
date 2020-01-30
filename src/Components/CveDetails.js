@@ -142,7 +142,7 @@ export default class CveDetails extends Component {
                           <span>
                             <div>Confidentiality: {this.props.cve.impact.confidentiality}</div>
                             <div>Integrity: {this.props.cve.impact.integrity}</div>
-                            <div>Availability: {this.props.cve.impact.avaiability}</div>
+                            <div>Availability: {this.props.cve.impact.availability}</div>
                           </span>
                         ) : ""
                         }

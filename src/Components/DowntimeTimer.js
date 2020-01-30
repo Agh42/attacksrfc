@@ -54,10 +54,10 @@ export default class DowntimeTimer extends Component {
                 </div>
                 <div className="sub header">
                 If you cannot reach any of these sites, the world may be ending right now. Please check your surroundings for signs of 
-                ongoing Apocalypse such as lightning, earthquake and blackening of the sun. Or your wifi is down.
+                ongoing Apocalypse such as lightning, earthquake and blackening of the sun. Or see if just your wifi is down.
                 </div>
                 <div className="sub header">
-                Now gone since {this.renderDowntime()}. Retrying...
+                Now gone since {this.renderDowntime()}. I'll keep retrying...
                 </div>
 
                 
