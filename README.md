@@ -10,6 +10,7 @@ develop: ![Travis (.org) branch](https://img.shields.io/travis/Agh42/attacksrfc/
 
 Uses [cveservice](https://bitbucket.org/Agh42/cveservice) to query a database of CVE entries. 
 The database is kept by [cve-search](https://github.com/cve-search/cve-search).
+The favicon, site manifest, browserconfig and home screen icons were generated with [realfavicongenerator.net](https://realfavicongenerator.net/).
 
 ## Configuration
 
