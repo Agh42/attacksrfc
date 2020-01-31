@@ -489,6 +489,8 @@ export default class AttackSrfcPage extends Component {
                             : ""}
                         activeCpes={this.state.selectedCpes} // marked CPEs
                         cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
+                        onSelectCpe={this.handleAddCpeClick}
+                        onSelectCve={this.handleCveSelected}
                     />
                 </div>
             </div>

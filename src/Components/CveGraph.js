@@ -94,13 +94,26 @@ export default class CveGraph extends Component {
         allCves: PropTypes.object.isRequired,
         currentCpe: PropTypes.object.isRequired,
         activeCpes: PropTypes.object.isRequired,
-        cpeSummaries: PropTypes.object.isRequired
+        cpeSummaries: PropTypes.object.isRequired,
+        onSelectCpe: PropTypes.function.isRequired,
+        onSelectCve: PropTypes.function.isRequired,
     };
 
 
    data;
    nodes;
    edges;
+   
+    onCveNodeSelected = (cveId) => {
+        this.props.onSelectCve({
+        id 
+        });
+    }
+    
+    onCpeNodeSelected = (vendorProduct) => {
+        CpeClient.loadCpeforvendorproduct
+        this.props.onSelectCpe(cpe);
+    }
    
     convertCves= (props) => {
         this.nodes = new vis.DataSet();
@@ -305,8 +318,6 @@ export default class CveGraph extends Component {
         if (container !== null) {
             this.network = new vis.Network(container, {}, {});
         }
-        // todo show loading indicator
-    
     }
     
     componentDidMount() {
