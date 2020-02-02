@@ -51,6 +51,8 @@ function getHostname(url) {
 }
 
 function formatDate(aDate) {
+    if (!aDate)
+        return "";
     let isoDate = aDate['$date'];
     let mom = moment(isoDate, moment.ISO_8601, true);
     return mom.format('YYYY-MM-DD');

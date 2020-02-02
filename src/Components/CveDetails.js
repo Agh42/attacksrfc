@@ -105,14 +105,16 @@ export default class CveDetails extends Component {
                         <div class="header">References:</div>
                         <div class="description">
                         {
-                            this.props.cve.references.map( (reference, index) => {
+                            this.props.cve.references
+                            ? this.props.cve.references.map( (reference, index) => {
                                 return (
                                   <div key={index} >
                                   <a href={reference} target="_blank">{CVEs.getHostname(reference)}</a>
                                   <br/>
                                   </div>
                                   );
-                            })
+                              })
+                            : ""
                         }
                         </div>
                       </div>

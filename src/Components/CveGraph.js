@@ -95,8 +95,8 @@ export default class CveGraph extends Component {
         currentCpe: PropTypes.object.isRequired,
         activeCpes: PropTypes.object.isRequired,
         cpeSummaries: PropTypes.object.isRequired,
-        onSelectCpe: PropTypes.function.isRequired,
-        onSelectCve: PropTypes.function.isRequired,
+        onSelectCpe: PropTypes.func.isRequired,
+        onSelectCve: PropTypes.func.isRequired,
     };
 
 
@@ -106,14 +106,14 @@ export default class CveGraph extends Component {
    
     onCveNodeSelected = (cveId) => {
         this.props.onSelectCve({
-        id 
+            id: cveId,
         });
     }
     
-    onCpeNodeSelected = (vendorProduct) => {
+    /* xxx onCpeNodeSelected = (vendorProduct) => {
         CpeClient.loadCpeforvendorproduct
         this.props.onSelectCpe(cpe);
-    }
+    } */
    
     convertCves= (props) => {
         this.nodes = new vis.DataSet();
@@ -283,6 +283,16 @@ export default class CveGraph extends Component {
         this.convertCves(props);
         let container = document.getElementById('cvegraph');
         this.network = new vis.Network(container, this.data, options);
+        
+        this.network.on("click", (event) => {
+            if (event.nodes[0]) {
+                if (event.nodes[0].match("^CVE-.+")) {
+                    this.onCveNodeSelected(event.nodes[0]);
+                    console.log('click event: ' + JSON.stringify(event, null, 4));
+                }
+            }
+        });
+        
         this.network.on("stabilizationProgress", function(params) {
             var maxWidth = 496;
             var minWidth = 20;
