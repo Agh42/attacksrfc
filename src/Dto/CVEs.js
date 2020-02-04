@@ -1,6 +1,7 @@
 import moment from 'moment';
 
-export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate, getHostname};
+export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate,
+    getHostname, getCpeAsUriBinding};
 export default CVEs;
 
 const MEDIUM_THRESHOLD = 3.99; // medium severity lower bound exclusive
@@ -58,3 +59,18 @@ function formatDate(aDate) {
     return mom.format('YYYY-MM-DD');
 }
 
+/*
+ * (Previously the URI format of the CPE was used (see NISTIR 7695) because this was how CVEs
+ * stored references to CPEs in the database. Now changed to CPE v2.2/2.3 format.)
+ * This allows left aligned regex matching to use the database index
+ * which speeds up the search significantly.
+ *
+ */
+getCpeAsUriBinding = (cpe) => {
+    let cpe22 = cpe.id;
+    let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
+    let match = reCutOff.exec(cpe22);
+    let cutOffCpe = match ? match[1] : cpe22;
+    console.log("Converted CPE to query format: " + cutOffCpe);
+    return cutOffCpe;
+}

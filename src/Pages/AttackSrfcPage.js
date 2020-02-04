@@ -9,6 +9,7 @@ import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
+import CVEs from '../CVEs.js';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -234,6 +235,10 @@ export default class AttackSrfcPage extends Component {
             });
         }
     }
+    
+    handleGraphAddCpeClick = (vendorProduct) =>{
+    
+    } 
 
     // Load cves and switch to cve display
     handleCpeSummarySelected = (cpeSummary) => {
@@ -264,23 +269,6 @@ export default class AttackSrfcPage extends Component {
             _cveAction: CVE_ACTION_LOAD_DETAILS
         });
     }
-
-
-    /*
-     * (Previously the URI format of the CPE was used (see NISTIR 7695) because this was how CVEs
-     * stored references to CPEs in the database. Now changed to CPE v2.2/2.3 format.)
-     * This allows left aligned regex matching to use the database index
-     * which speeds up the search significantly.
-     *
-     */
-    getCpeAsUriBinding = (cpe) => {
-        let cpe22 = cpe.id;
-        let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
-        let match = reCutOff.exec(cpe22);
-        let cutOffCpe = match ? match[1] : cpe22;
-        console.log("Converted CPE to query format: " + cutOffCpe);
-        return cutOffCpe;
-    }
     
     loadCveDetails = () => {
         CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => (
@@ -293,7 +281,7 @@ export default class AttackSrfcPage extends Component {
     loadCvesPage = () => {
         let pageToGet = this.state.numCurrentPage;
         let cpesLeftAlignedURIBinding = 'cpe' in this.state.selectedCpeSummary
-            ? [this.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)]
+            ? [CVEs.getCpeAsUriBinding(this.state.selectedCpeSummary.cpe)]
             : [];
 
         if (cpesLeftAlignedURIBinding.length > 0) {
@@ -322,7 +310,7 @@ export default class AttackSrfcPage extends Component {
     
     loadGraphData = () => {
         let cpeLeftAlignedURIBinding = 'cpe' in this.state.selectedCpeSummaryForGraph
-            ? [this.getCpeAsUriBinding(this.state.selectedCpeSummaryForGraph.cpe)]
+            ? [CVEs.getCpeAsUriBinding(this.state.selectedCpeSummaryForGraph.cpe)]
             : [];
 
         if (cpeLeftAlignedURIBinding.length > 0) {
@@ -351,7 +339,7 @@ export default class AttackSrfcPage extends Component {
                 || this.state.lastLoadedEndDate !== this.state.cveEndDate
                 || this.state.lastLoadedStartDate !== this.state.cveStartDate) {
                 CpeClient.getCveSummaryForCpe(
-                    this.getCpeAsUriBinding(cs.cpe),
+                    CVEs.getCpeAsUriBinding(cs.cpe),
                     this.state.cveStartDate,
                     this.state.cveEndDate,
                     (response) => {
@@ -489,7 +477,7 @@ export default class AttackSrfcPage extends Component {
                             : ""}
                         activeCpes={this.state.selectedCpes} // marked CPEs
                         cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
-                        onSelectCpe={this.handleAddCpeClick}
+                        onSelectCpe={this.handleGraphAddCpeClick}
                         onSelectCve={this.handleCveSelected}
                     />
                 </div>
