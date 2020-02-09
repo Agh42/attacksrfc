@@ -5,6 +5,7 @@ import CVEs from '../Dto/CVEs';
 import {COLOR_AMBER, COLOR_GREEN, COLOR_ORANGE, COLOR_RED} from '../Dto/CVEs';
 
 
+
 function getCpesGenericForm(cpes) {
     let result = new Set();
     cpes.forEach( (cpe) => {
@@ -151,7 +152,7 @@ export default class CveGraph extends Component {
         allCves.forEach( (cve) => {
             //console.log("CVE for graph: ");
             //console.log(cve);
-            if (!cve.hasOwnProperty('vulnerable_product')) { // debug: reason for orphaned cpes?
+            if (!cve.hasOwnProperty('vulnerable_product')) {
                 return;
             }
 
@@ -169,7 +170,7 @@ export default class CveGraph extends Component {
             
             // add summary nodes with severity count for primary cpe:
              props.cpeSummaries.forEach( (cs) => {
-                if (vendorProduct(cs.cpe.id) === primaryCpe) { xxx change to id
+                if (CVEs.getCpeAsUriBinding(cs.cpe.id) === primaryCpe) {
                     if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "CRITICAL") ) {
                         summaryNodes.CRITICAL = createSummaryNode(primaryCpe, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
@@ -199,22 +200,22 @@ export default class CveGraph extends Component {
 
             // add vulnerable product CPEs:
             cve.vulnerable_product.forEach( (vulnerableCpe) => {
-                const vendor_product = vendorProduct(vulnerableCpe);
+                const cpeGenericId = CVEs.getCpeAsUriBinding(vulnerableCpe);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
-                if (!createdNodes.has(vendor_product)) {
+                if (!createdNodes.has(cpeGenericId)) {
                 
-                    let color = (primaryCpe === vendor_product) ? '#00b5ad' : '#e8e8e8'; // teal : grey
-                    let fontColor = (primaryCpe === vendor_product) ? '#ffffff' : '#7c7c7c'; // white : dark-grey
+                    let color = (primaryCpe === cpeGenericId) ? '#00b5ad' : '#e8e8e8'; // teal : grey
+                    let fontColor = (primaryCpe === cpeGenericId) ? '#ffffff' : '#7c7c7c'; // white : dark-grey
 
                     
                     this.nodes.add({
-                        id: vendor_product, 
+                        id: cpeGenericId, 
                         shape: 'box',
                         color: color,
                         font: {color: fontColor},
-                        label: vendor_product
+                        label: vendorProduct(vulnerableCpe)
                     });
-                    createdNodes.add(vendor_product);
+                    createdNodes.add(cpeGenericId);
                 }
             });
 
@@ -233,22 +234,21 @@ export default class CveGraph extends Component {
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
 
                 if (!createdNodes.has(cpeGenericId)) {
-                    let color = '#e8e8e8';
                     //console.log("adding vulnconf: " + vendor_product);
                     this.nodes.add( {
                         id: cpeGenericId, 
                         shape: 'box',
-                        color: color,
-                        font: {color: '#7c7c7c'},
+                        color: '#e8e8e8', // grey
+                        font: {color: '#7c7c7c'}, // dark-grey
                         label: vendor_product} );
-                    createdNodes.add(vendor_product);
+                    createdNodes.add(cpeGenericId);
                 }
                 // link them to the vulnconfig node for the primary cpe:
-                if (!createdEdges.has('vulnConfig'+vendor_product)
-                        && !(primaryCpe===vendor_product)) {
-                    this.edges.add( {from: 'vulnConfig', to: vendor_product} );
+                if (!createdEdges.has('vulnConfig'+cpeGenericId)
+                        && !(primaryCpe===cpeGenericId)) {
+                    this.edges.add( {from: 'vulnConfig', to: cpeGenericId} );
                     //console.log("add cpe edge: " + primaryCpe + "---" + vendor_product);
-                    createdEdges.add('vulnConfig' + vendor_product);
+                    createdEdges.add('vulnConfig' + cpeGenericId);
                 }
                 
             });
