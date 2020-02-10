@@ -236,8 +236,22 @@ export default class AttackSrfcPage extends Component {
         }
     }
     
-    handleGraphAddCpeClick = (vendorProduct) =>{
-    
+    /*
+     * Load CPE by id, then add it.
+     */
+    handleGraphAddCpeClick = (cpeGenericId) =>{
+        xxx
+        const escapedValue = escapeRegexCharacters(cpeGenericId.trim());
+              if (escapedValue === '') {
+                  return [];
+              }
+
+              // Make request (async)
+              const thisRequest = this.latestRequest =
+                  CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => {
+                  
+                  })
+
     } 
 
     // Load cves and switch to cve display
