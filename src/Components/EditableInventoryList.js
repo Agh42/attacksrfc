@@ -92,7 +92,7 @@ export default class EditableInventoryList extends Component {
     onChange = (event, { newValue, method }) => {
         this.setState({
           searchValue: newValue
-        });p
+        });
         if (method === "click") {
             this.setState({
               searchValue: this.state.searchValue

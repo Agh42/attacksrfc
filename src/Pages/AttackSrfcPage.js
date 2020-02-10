@@ -9,7 +9,7 @@ import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
-import CVEs from '../CVEs.js';
+import CVEs from '../Dto/CVEs.js';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -239,18 +239,16 @@ export default class AttackSrfcPage extends Component {
     /*
      * Load CPE by id, then add it.
      */
-    handleGraphAddCpeClick = (cpeGenericId) =>{
-        xxx
-        const escapedValue = escapeRegexCharacters(cpeGenericId.trim());
-              if (escapedValue === '') {
-                  return [];
-              }
+    handleGraphAddCpeClick = (cpeGenericId) => {
+        console.log(cpeGenericId);
+        // const escapedValue = escapeRegexCharacters(cpeGenericId.trim());
+        // if (escapedValue === '') {
+        //     return [];
+        // }
 
-              // Make request (async)
-              const thisRequest = this.latestRequest =
-                  CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => {
-                  
-                  })
+        // CpeClient.getAutoCompleteItems(escapedValue, (suggestions) => {
+
+        // })
 
     } 
 

@@ -66,7 +66,7 @@ function formatDate(aDate) {
  * which speeds up the search significantly.
  *
  */
-getCpeAsUriBinding = (cpe) => {
+function getCpeAsUriBinding(cpe) {
     let cpe22 = cpe.id;
     let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
     let match = reCutOff.exec(cpe22);

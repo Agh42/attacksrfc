@@ -36,11 +36,11 @@ function decodeCPE(cpeId) {
  * 
  * @param {Object} cpeSummary a cve summary entry to check for existence of a matching severity count
  * @param {Object[]} createdNodes all nodes created so far
- * @param {string} primaryCpe cpe id of the primary cpe (selected by the user)
+ * @param {string} primaryCpeId cpe id of the primary cpe (selected by the user)
  * @param {string} severity the severity level (CRITICAL, HIGH, ...)
  */
-function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpe, severity) {
-    if (createdNodes.has(primaryCpe+" "+severity))
+function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpeId, severity) {
+    if (createdNodes.has(primaryCpeId+" "+severity))
         return false;
     
     if ('summary' in cpeSummary && severity in cpeSummary.summary)
@@ -49,9 +49,9 @@ function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpe, severity)
     return false;
 }
 
-function createSummaryNode(primaryCpe, severity, count, scoreColor) {
+function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
     let node = {
-        id: primaryCpe+" "+severity, 
+        id: primaryCpeId+" "+severity, 
         label: count.toString(), 
         title: "Filter matches " + count + " " + severity + " CVEs. (Only the top 100 CVEs for each product are shown individually.)",
         color: scoreColor,
@@ -74,11 +74,11 @@ function createSummaryNode(primaryCpe, severity, count, scoreColor) {
  * Returns an id for the correct summary node for a CVE.
  * 
  * @param {Object} cve the source CVE
- * @param {string} primaryCpe the target product id
+ * @param {string} primaryCpeId the target product id
  * @returns {string} 
  */
-function determineCveTargetNodeId(cve, primaryCpe) {
-    return primaryCpe + " " + CVEs.severityForScore(cve.cvss);
+function determineCveTargetNodeId(cve, primaryCpeId) {
+    return primaryCpeId + " " + CVEs.severityForScore(cve.cvss);
 }
 
 
@@ -127,13 +127,13 @@ export default class CveGraph extends Component {
         // add node for primary cpe:
         let primaryCpeId = CVEs.getCpeAsUriBinding(props.currentCpe.id);
         this.nodes.add({
-            id: primaryCpe, 
+            id: primaryCpeId, 
             shape: 'box',
             color: '#00b5ad',
             font: {color: '#ffffff'},
             label: vendorProduct(props.currentCpe.id)
         });
-        createdNodes.add(primaryCpe);
+        createdNodes.add(primaryCpeId);
         
         // add group node for vulnerable configurations:
         this.nodes.add({
@@ -145,8 +145,8 @@ export default class CveGraph extends Component {
             label: 'Affected'
         });
         createdNodes.add('vulnConfig');
-        this.edges.add( {from: 'vulnConfig', to: primaryCpe} );
-        createdEdges.add('vulnConfig' + primaryCpe);
+        this.edges.add( {from: 'vulnConfig', to: primaryCpeId} );
+        createdEdges.add('vulnConfig' + primaryCpeId);
 
         // iterate over all CVEs:
         allCves.forEach( (cve) => {
@@ -170,30 +170,30 @@ export default class CveGraph extends Component {
             
             // add summary nodes with severity count for primary cpe:
              props.cpeSummaries.forEach( (cs) => {
-                if (CVEs.getCpeAsUriBinding(cs.cpe.id) === primaryCpe) {
-                    if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "CRITICAL") ) {
-                        summaryNodes.CRITICAL = createSummaryNode(primaryCpe, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
+                if (CVEs.getCpeAsUriBinding(cs.cpe.id) === primaryCpeId) {
+                    if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "CRITICAL") ) {
+                        summaryNodes.CRITICAL = createSummaryNode(primaryCpeId, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
-                        this.edges.add( {from: summaryNodes.CRITICAL.id, to: primaryCpe} );
-                        createdNodes.add(primaryCpe + " " + "CRITICAL");
+                        this.edges.add( {from: summaryNodes.CRITICAL.id, to: primaryCpeId} );
+                        createdNodes.add(primaryCpeId + " " + "CRITICAL");
                     }
-                    else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "HIGH") ) {
-                        summaryNodes.HIGH = createSummaryNode(primaryCpe, "HIGH", cs.summary.HIGH, COLOR_ORANGE);
+                    else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "HIGH") ) {
+                        summaryNodes.HIGH = createSummaryNode(primaryCpeId, "HIGH", cs.summary.HIGH, COLOR_ORANGE);
                         this.nodes.add(summaryNodes.HIGH);
-                        this.edges.add( {from: summaryNodes.HIGH.id, to: primaryCpe} );
-                        createdNodes.add(primaryCpe + " " + "HIGH");
+                        this.edges.add( {from: summaryNodes.HIGH.id, to: primaryCpeId} );
+                        createdNodes.add(primaryCpeId + " " + "HIGH");
                     }
-                    else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "MEDIUM") ) {
-                        summaryNodes.MEDIUM = createSummaryNode(primaryCpe, "MEDIUM", cs.summary.MEDIUM, COLOR_AMBER);
+                    else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "MEDIUM") ) {
+                        summaryNodes.MEDIUM = createSummaryNode(primaryCpeId, "MEDIUM", cs.summary.MEDIUM, COLOR_AMBER);
                         this.nodes.add(summaryNodes.MEDIUM);
-                        this.edges.add( {from: summaryNodes.MEDIUM.id, to: primaryCpe} );
-                        createdNodes.add(primaryCpe + " " + "MEDIUM");
+                        this.edges.add( {from: summaryNodes.MEDIUM.id, to: primaryCpeId} );
+                        createdNodes.add(primaryCpeId + " " + "MEDIUM");
                     }
-                    else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpe, "LOW") ) {
-                        summaryNodes.LOW = createSummaryNode(primaryCpe, "LOW", cs.summary.LOW, COLOR_GREEN);
+                    else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "LOW") ) {
+                        summaryNodes.LOW = createSummaryNode(primaryCpeId, "LOW", cs.summary.LOW, COLOR_GREEN);
                         this.nodes.add(summaryNodes.LOW);
-                        this.edges.add( {from: summaryNodes.LOW.id, to: primaryCpe} );
-                        createdNodes.add(primaryCpe + " " + "LOW");
+                        this.edges.add( {from: summaryNodes.LOW.id, to: primaryCpeId} );
+                        createdNodes.add(primaryCpeId + " " + "LOW");
                     }
                 }
              });
@@ -204,8 +204,8 @@ export default class CveGraph extends Component {
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(cpeGenericId)) {
                 
-                    let color = (primaryCpe === cpeGenericId) ? '#00b5ad' : '#e8e8e8'; // teal : grey
-                    let fontColor = (primaryCpe === cpeGenericId) ? '#ffffff' : '#7c7c7c'; // white : dark-grey
+                    let color = (primaryCpeId === cpeGenericId) ? '#00b5ad' : '#e8e8e8'; // teal : grey
+                    let fontColor = (primaryCpeId === cpeGenericId) ? '#ffffff' : '#7c7c7c'; // white : dark-grey
 
                     
                     this.nodes.add({
@@ -220,7 +220,7 @@ export default class CveGraph extends Component {
             });
 
              // link cve node to summary node with correct criticality:
-             let cveTargetNodeId = determineCveTargetNodeId(cve, primaryCpe);
+             let cveTargetNodeId = determineCveTargetNodeId(cve, primaryCpeId);
              if (!createdEdges.has(cve.id + cveTargetNodeId)) {
                  //targetNode = determineTargetNode(summaryNodes, cve);
                  this.edges.add( {from: cve.id, to: cveTargetNodeId} );
@@ -245,9 +245,9 @@ export default class CveGraph extends Component {
                 }
                 // link them to the vulnconfig node for the primary cpe:
                 if (!createdEdges.has('vulnConfig'+cpeGenericId)
-                        && !(primaryCpe===cpeGenericId)) {
+                        && !(primaryCpeId===cpeGenericId)) {
                     this.edges.add( {from: 'vulnConfig', to: cpeGenericId} );
-                    //console.log("add cpe edge: " + primaryCpe + "---" + vendor_product);
+                    //console.log("add cpe edge: " + primaryCpeId + "---" + vendor_product);
                     createdEdges.add('vulnConfig' + cpeGenericId);
                 }
                 
