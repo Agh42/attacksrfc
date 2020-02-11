@@ -242,20 +242,20 @@ export default class AttackSrfcPage extends Component {
      // TODO add REST resource for CPEs, query by id
     handleGraphAddCpeClick = (cpeGenericId) => {
         console.log(cpeGenericId);
-        let product = vendorproduct(cpeGeneridId)[0]; //xxx move method to cpes util class from cvegraph
+        // let product = vendorproduct(cpeGeneridId)[0]; //xxx move method to cpes util class from cvegraph
         
-        const escapedValue = escapeRegexCharacters(product.trim());
-        if (escapedValue === '') {
-            return;
-        }
+        // const escapedValue = escapeRegexCharacters(product.trim());
+        // if (escapedValue === '') {
+        //     return;
+        // }
         
-        CpeClient.getAutoCompleteItems(escapedValue, (cpes) => {
-            let fullCpes = cpes.filter(c => c.id.indexOf(cpeGenericId) !== -1 );
-            if (fullCpes.length) {
-                this.handleAddCpeClick(fullCpes[0]);
-            }
+        // CpeClient.getAutoCompleteItems(escapedValue, (cpes) => {
+        //     let fullCpes = cpes.filter(c => c.id.indexOf(cpeGenericId) !== -1 );
+        //     if (fullCpes.length) {
+        //         this.handleAddCpeClick(fullCpes[0]);
+        //     }
             
-        })
+        // })
 
     } 
 

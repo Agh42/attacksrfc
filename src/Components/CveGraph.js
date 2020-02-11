@@ -289,11 +289,11 @@ export default class CveGraph extends Component {
             if (event.nodes[0]) {
                 if (event.nodes[0].match("^CVE-.+")) {
                     this.onCveNodeSelected(event.nodes[0]);
-                    console.log('CVE click event: ' + JSON.stringify(event, null, 4));
+                    //console.log('CVE click event: ' + JSON.stringify(event, null, 4));
                 }
                 else if (event.nodes[0].match("^cpe:.+")) {
                     this.onCpeNodeSelected(event.nodes[0]);
-                    console.log('CPE click event: ' + JSON.stringify(event, null, 4));
+                    //console.log('CPE click event: ' + JSON.stringify(event, null, 4));
                 }
             }
         });
