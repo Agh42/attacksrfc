@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate,
-    getHostname, getCpeAsUriBinding};
+    getHostname, getCpeAsUriBinding, getCpeIdAsUriBinding};
 export default CVEs;
 
 const MEDIUM_THRESHOLD = 3.99; // medium severity lower bound exclusive
@@ -67,7 +67,13 @@ function formatDate(aDate) {
  *
  */
 function getCpeAsUriBinding(cpe) {
-    let cpe22 = cpe.id;
+    return getCpeIdAsUriBinding(cpe.id);   
+}
+
+/*
+ * Parses cpe id in v2 format.
+ */
+function getCpeIdAsUriBinding(cpe22) {
     let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
     let match = reCutOff.exec(cpe22);
     let cutOffCpe = match ? match[1] : cpe22;

@@ -6,7 +6,7 @@ import {COLOR_AMBER, COLOR_GREEN, COLOR_ORANGE, COLOR_RED} from '../Dto/CVEs';
 
 
 
-function getCpesGenericForm(cpes) {
+function getActiveCpesGenericForm(cpes) {
     let result = new Set();
     cpes.forEach( (cpe) => {
         if (cpe.isActive) {
@@ -119,13 +119,13 @@ export default class CveGraph extends Component {
         this.nodes = new vis.DataSet();
         this.edges = new vis.DataSet();
         const allCves = props.allCves || [];
-        const userSelectedCpes = getCpesGenericForm(props.activeCpes);
+        const userSelectedCpes = getActiveCpesGenericForm(props.activeCpes);
         //let group = -1;
         
         let createdEdges = new Set();
         let createdNodes = new Set();
         // add node for primary cpe:
-        let primaryCpeId = CVEs.getCpeAsUriBinding(props.currentCpe.id);
+        let primaryCpeId = CVEs.getCpeAsUriBinding(props.currentCpe);
         this.nodes.add({
             id: primaryCpeId, 
             shape: 'box',
@@ -170,7 +170,7 @@ export default class CveGraph extends Component {
             
             // add summary nodes with severity count for primary cpe:
              props.cpeSummaries.forEach( (cs) => {
-                if (CVEs.getCpeAsUriBinding(cs.cpe.id) === primaryCpeId) {
+                if (CVEs.getCpeAsUriBinding(cs.cpe) === primaryCpeId) {
                     if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "CRITICAL") ) {
                         summaryNodes.CRITICAL = createSummaryNode(primaryCpeId, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
@@ -199,8 +199,8 @@ export default class CveGraph extends Component {
              });
 
             // add vulnerable product CPEs:
-            cve.vulnerable_product.forEach( (vulnerableCpe) => {
-                const cpeGenericId = CVEs.getCpeAsUriBinding(vulnerableCpe);
+            cve.vulnerable_product.forEach( (vulnerableCpeId) => {
+                const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(cpeGenericId)) {
                 
@@ -213,7 +213,7 @@ export default class CveGraph extends Component {
                         shape: 'box',
                         color: color,
                         font: {color: fontColor},
-                        label: vendorProduct(vulnerableCpe)
+                        label: vendorProduct(vulnerableCpeId)
                     });
                     createdNodes.add(cpeGenericId);
                 }
@@ -228,9 +228,9 @@ export default class CveGraph extends Component {
              }
 
             // add all CPEs for vulnerable configurations:
-            cve.vulnerable_configuration.forEach( (cpe) => {
-                const vendor_product = vendorProduct(cpe);
-                const cpeGenericId = CVEs.getCpeAsUriBinding(cpe);
+            cve.vulnerable_configuration.forEach( (cpeId) => {
+                const vendor_product = vendorProduct(cpeId);
+                const cpeGenericId = CVEs.getCpeIdAsUriBinding(cpeId);
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
 
                 if (!createdNodes.has(cpeGenericId)) {
