@@ -78,8 +78,9 @@ function getCpeIdAsUriBinding(cpe22) {
     [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
             = this.props.cpe.id.split(":");
     */        
-    let head = [...this.props.cpe.id.split(":")]; // todo see if cpe verison needs to be unified
+    let head = [...this.props.cpe.id.split(":")]; // todo see if cpe version needs to be unified
     head.length = 5;
+    console.log("Converted CPE to query format: " + head.join(":"));
     return head.join(":");
     
     /*
