@@ -71,12 +71,23 @@ function getCpeAsUriBinding(cpe) {
 }
 
 /*
- * Parses cpe id in v2 format.
+ * Parses cpe id in v2 format. Cuts off version, update, editien etc.
  */
 function getCpeIdAsUriBinding(cpe22) {
+    /*let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
+    [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
+            = this.props.cpe.id.split(":");
+    */        
+    let head = [...this.props.cpe.id.split(":")]; // todo see if cpe verison needs to be unified
+    head.length = 5;
+    return head.join(":");
+    
+    /*
     let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
     let match = reCutOff.exec(cpe22);
     let cutOffCpe = match ? match[1] : cpe22;
     console.log("Converted CPE to query format: " + cutOffCpe);
     return cutOffCpe;
+    */
 }
+
