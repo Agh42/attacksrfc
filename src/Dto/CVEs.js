@@ -78,17 +78,14 @@ function getCpeIdAsUriBinding(cpe22) {
     [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
             = this.props.cpe.id.split(":");
     */        
-    let head = [...this.props.cpe.id.split(":")]; // todo see if cpe version needs to be unified
+    if (!cpe22) {
+        return "";
+    }
+    let cpeParts = cpe22.split(":");
+    let head = [...cpeParts]; // todo see if cpe version needs to be unified
     head.length = 5;
     console.log("Converted CPE to query format: " + head.join(":"));
     return head.join(":");
     
-    /*
-    let reCutOff = /(cpe:2.*?)[:-]*$/; //removes all trailing ":-"
-    let match = reCutOff.exec(cpe22);
-    let cutOffCpe = match ? match[1] : cpe22;
-    console.log("Converted CPE to query format: " + cutOffCpe);
-    return cutOffCpe;
-    */
 }
 
