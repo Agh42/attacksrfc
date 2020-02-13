@@ -46,11 +46,11 @@ export default class DowntimeTimer extends Component {
                 Uh oh - the website is down.
                 <div className="sub header">
                 I cannot reach the backend service. You can check 
-                <a target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw"> uptime robot </a> 
-                to see if the site is down or <a target="_blank" href="https://stats.uptimerobot.com/RMwRDtvPLw/783419130">under 
+                <a target="_blank" rel="noopener noreferrer"  href="https://stats.uptimerobot.com/RMwRDtvPLw"> uptime robot </a> 
+                to see if the site is down or <a target="_blank" rel="noopener noreferrer"  href="https://stats.uptimerobot.com/RMwRDtvPLw/783419130">under 
                  heavy load</a>. Go to 
-                <a target="_blank" href="https://www.reddit.com/r/CSTOOL_io"> the subreddit </a> to see
-                if anyone else has problems. Or go to <a target="_blank" href="https://discord.gg/5HWZufA">the chat</a> and tell Alex about it. 
+                <a target="_blank" rel="noopener noreferrer"  href="https://www.reddit.com/r/CSTOOL_io"> the subreddit </a> to see
+                if anyone else has problems. Or go to <a target="_blank" rel="noopener noreferrer"  href="https://discord.gg/5HWZufA">the chat</a> and tell Alex about it. 
                 </div>
                 <div className="sub header">
                 If you cannot reach any of these sites, the world may be ending right now. Please check your surroundings for signs of 

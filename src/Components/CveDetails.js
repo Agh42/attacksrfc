@@ -41,7 +41,7 @@ export default class CveDetails extends Component {
                 <div className='ui segment'>
                 <div class="ui large header">
                     <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} 
-                        target="_blank">
+                        target="_blank" rel="noopener noreferrer" >
                         {this.props.cve.id}
                     </a>
                 </div>
@@ -89,7 +89,7 @@ export default class CveDetails extends Component {
                         {('cwe' in this.props.cve 
                           && this.props.cve.cwe.match(/CWE-(\d+)/) )? (
                           <span>
-                          Weakness: <a target="_blank" href={"https://cwe.mitre.org/data/definitions/"
+                          Weakness: <a target="_blank" rel="noopener noreferrer"  href={"https://cwe.mitre.org/data/definitions/"
                             + this.props.cve.cwe.match(/CWE-(\d+)/)[1] + ".html"}>
                               {this.props.cve.cwe}
                             </a>
@@ -109,7 +109,7 @@ export default class CveDetails extends Component {
                             ? this.props.cve.references.map( (reference, index) => {
                                 return (
                                   <div key={index} >
-                                  <a href={reference} target="_blank">{CVEs.getHostname(reference)}</a>
+                                  <a href={reference} target="_blank" rel="noopener noreferrer" >{CVEs.getHostname(reference)}</a>
                                   <br/>
                                   </div>
                                   );
