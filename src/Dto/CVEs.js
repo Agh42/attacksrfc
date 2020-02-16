@@ -84,7 +84,7 @@ function getCpeIdAsUriBinding(cpe22) {
     let cpeParts = cpe22.split(":");
     let head = [...cpeParts]; // todo see if cpe version needs to be unified
     head.length = 5;
-    console.log("Converted CPE to query format: " + head.join(":"));
+    //console.log("Converted CPE to query format: " + head.join(":"));
     return head.join(":");
     
 }

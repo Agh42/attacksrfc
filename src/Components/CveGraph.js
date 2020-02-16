@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as vis from 'vis';
 import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
+import CPEs from '../Dto/CPEs';
 import {COLOR_AMBER, COLOR_GREEN, COLOR_ORANGE, COLOR_RED} from '../Dto/CVEs';
 
 
@@ -16,20 +17,7 @@ function getActiveCpesGenericForm(cpes) {
     return result;
 }
 
-/**
- * Return vendor and product depending on cpe format.
- * 
- * @param {string} cpeId 
- */
-function vendorProduct(cpeId) {
-    return (cpeId.split(":")[1].match(/\d.\d/))
-        ? decodeCPE(cpeId.split(":")[3] + " " + cpeId.split(":")[4])
-        : decodeCPE(cpeId.split(":")[2] + " " + cpeId.split(":")[3]);
-}
 
-function decodeCPE(cpeId) {
-    return decodeURIComponent(cpeId).replace(/\\!/g, "!");
-}
 
 /**
  * Test if a summary node exists for the given severity. If not, checks if one should exist.
@@ -131,7 +119,7 @@ export default class CveGraph extends Component {
             shape: 'box',
             color: '#00b5ad',
             font: {color: '#ffffff'},
-            label: vendorProduct(props.currentCpe.id)
+            label: CPEs.vendorProduct(props.currentCpe.id)
         });
         createdNodes.add(primaryCpeId);
         
@@ -213,7 +201,7 @@ export default class CveGraph extends Component {
                         shape: 'box',
                         color: color,
                         font: {color: fontColor},
-                        label: vendorProduct(vulnerableCpeId)
+                        label: CPEs.vendorProduct(vulnerableCpeId)
                     });
                     createdNodes.add(cpeGenericId);
                 }
@@ -229,7 +217,7 @@ export default class CveGraph extends Component {
 
             // add all CPEs for vulnerable configurations:
             cve.vulnerable_configuration.forEach( (cpeId) => {
-                const vendor_product = vendorProduct(cpeId);
+                const vendor_product = CPEs.vendorProduct(cpeId);
                 const cpeGenericId = CVEs.getCpeIdAsUriBinding(cpeId);
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
 

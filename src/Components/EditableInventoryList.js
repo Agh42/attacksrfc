@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
+import CPEs from '../Dto/CPEs';
 
 //###############################################################
 //### AutoSuggest functions:
 
-// Escape special characters.
-// Taken from https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-function escapeRegexCharacters(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+
 
 function getSuggestionValue(suggestion) {
     //return suggestion.title;
@@ -125,7 +122,7 @@ export default class EditableInventoryList extends Component {
               this.setState({
                   _isLoading: true
               });
-              const escapedValue = escapeRegexCharacters(value.trim());
+              const escapedValue = CPEs.escapeRegexCharacters(value.trim());
               if (escapedValue === '') {
                   return [];
               }

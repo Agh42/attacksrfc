@@ -139,8 +139,8 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, start, end, success)
  */
 export function getCveSummaryForCpe(cpe, start, end, success) {
   cpe = replaceSpecialChars(cpe);
-  console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_product/'
-        + cpe);
+  //console.log(CVESERVICE_URL+'/api/v1/cves/summary/vulnerable_product/'
+  //      + cpe);
   fetch(CVESERVICE_URL + '/api/v1/cves/summary/vulnerable_product/'
         + cpe + "?publishedFrom=" + start.toISOString() + "&publishedUntil=" + end.toISOString(), {
     headers: {

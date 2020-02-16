@@ -10,6 +10,7 @@ import CpeClient from '../Gateways/CpeClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
 import CVEs from '../Dto/CVEs.js';
+import CPEs from '../Dto/CPEs';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -242,9 +243,9 @@ export default class AttackSrfcPage extends Component {
      // TODO add REST resource for CPEs, query by id
     handleGraphAddCpeClick = (cpeGenericId) => {
         console.log(cpeGenericId);
-        let product = vendorproduct(cpeGeneridId)[0]; //xxx move method to cpes util class from cvegraph
+        let product = CPEs.vendorProduct(cpeGenericId)[0];
         
-        const escapedValue = escapeRegexCharacters(product.trim());
+        const escapedValue = CPEs.escapeRegexCharacters(product.trim());
         if (escapedValue === '') {
             return;
         }
