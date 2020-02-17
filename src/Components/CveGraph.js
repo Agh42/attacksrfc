@@ -6,6 +6,10 @@ import CPEs from '../Dto/CPEs';
 import {COLOR_AMBER, COLOR_GREEN, COLOR_ORANGE, COLOR_RED} from '../Dto/CVEs';
 
 
+const COLOR_TEAL = '#00b5ad';
+const COLOR_WHITE = '#ffffff';
+const COLOR_GREY = '#e8e8e8';
+const COLOR_DARK_GREY = '#7c7c7c';
 
 function getActiveCpesGenericForm(cpes) {
     let result = new Set();
@@ -69,9 +73,6 @@ function determineCveTargetNodeId(cve, primaryCpeId) {
     return primaryCpeId + " " + CVEs.severityForScore(cve.cvss);
 }
 
-
-
-
 export default class CveGraph extends Component {
 
     constructor() {
@@ -105,14 +106,14 @@ export default class CveGraph extends Component {
         this.props.onSelectCpe(genericCpeId);
     }
    
-    function cpeNodeColor = (cpeId) => {
+    cpeNodeColor = (cpeId) => {
         let cpePresent = this.props.activeCpes.filter(ac => ac.id.indexOf(cpeId) !== -1);    
-        return cpePresent.length ? '#00b5ad' : '#e8e8e8'; // teal : grey
+        return cpePresent.length ? COLOR_TEAL : COLOR_GREY;
     }
     
-       function cpeNodeColor = (cpeId) => {
+    cpeNodeFontColor = (cpeId) => {
         let cpePresent = this.props.activeCpes.filter(ac => ac.id.indexOf(cpeId) !== -1);
-        return cpePresent.length ? '#ffffff' : '#7c7c7c'; // white : dark-grey
+        return cpePresent.length ? COLOR_WHITE : COLOR_DARK_GREY;
     }
 
    
@@ -208,7 +209,7 @@ export default class CveGraph extends Component {
                     this.nodes.add({
                         id: cpeGenericId, 
                         shape: 'box',
-                        color: this.cpeNodecolor(cpeGenericId),
+                        color: this.cpeNodeColor(cpeGenericId),
                         font: {color: this.cpeNodeFontColor(cpeGenericId)},
                         label: CPEs.vendorProduct(vulnerableCpeId)
                     });
@@ -283,12 +284,18 @@ export default class CveGraph extends Component {
         this.network = new vis.Network(container, this.data, options);
         
         this.network.on("click", (event) => {
-            if (event.nodes[0]) {
-                if (event.nodes[0].match("^CVE-.+")) {
-                    this.onCveNodeSelected(event.nodes[0]);
+            let nodeId = event.nodes[0];
+            if (nodeId) {
+                if (nodeId.match("^CVE-.+")) {
+                    this.onCveNodeSelected(nodeId);
                     //console.log('CVE click event: ' + JSON.stringify(event, null, 4));
                 }
-                else if (event.nodes[0].match("^cpe:.+")) {
+                else if (nodeId.match("^cpe:.+")) {
+                    this.nodes.update({
+                        id: nodeId,
+                        color: COLOR_TEAL,
+                        font: {color: COLOR_WHITE}, 
+                    });
                     this.onCpeNodeSelected(event.nodes[0]);
                     //console.log('CPE click event: ' + JSON.stringify(event, null, 4));
                 }

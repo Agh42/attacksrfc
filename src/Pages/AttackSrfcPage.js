@@ -243,7 +243,7 @@ export default class AttackSrfcPage extends Component {
      // TODO add REST resource for CPEs, query by id
     handleGraphAddCpeClick = (cpeGenericId) => {
         //console.log(cpeGenericId);
-        let product = CPEs.vendorProduct(cpeGenericId)[1];
+        let product = CPEs.vendorProduct(cpeGenericId).split(" ")[1];
         
         const escapedValue = CPEs.escapeRegexCharacters(product.trim());
         if (escapedValue === '') {
