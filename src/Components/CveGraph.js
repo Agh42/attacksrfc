@@ -70,6 +70,8 @@ function determineCveTargetNodeId(cve, primaryCpeId) {
 }
 
 
+
+
 export default class CveGraph extends Component {
 
     constructor() {
@@ -102,6 +104,17 @@ export default class CveGraph extends Component {
     onCpeNodeSelected = (genericCpeId) => {
         this.props.onSelectCpe(genericCpeId);
     }
+   
+    function cpeNodeColor = (cpeId) => {
+        let cpePresent = this.props.activeCpes.filter(ac => ac.id.indexOf(cpeId) !== -1);    
+        return cpePresent.length ? '#00b5ad' : '#e8e8e8'; // teal : grey
+    }
+    
+       function cpeNodeColor = (cpeId) => {
+        let cpePresent = this.props.activeCpes.filter(ac => ac.id.indexOf(cpeId) !== -1);
+        return cpePresent.length ? '#ffffff' : '#7c7c7c'; // white : dark-grey
+    }
+
    
     convertCves= (props) => {
         this.nodes = new vis.DataSet();
@@ -191,16 +204,12 @@ export default class CveGraph extends Component {
                 const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(cpeGenericId)) {
-                
-                    let color = (primaryCpeId === cpeGenericId) ? '#00b5ad' : '#e8e8e8'; // teal : grey
-                    let fontColor = (primaryCpeId === cpeGenericId) ? '#ffffff' : '#7c7c7c'; // white : dark-grey
-
                     
                     this.nodes.add({
                         id: cpeGenericId, 
                         shape: 'box',
-                        color: color,
-                        font: {color: fontColor},
+                        color: this.cpeNodecolor(cpeGenericId),
+                        font: {color: this.cpeNodeFontColor(cpeGenericId)},
                         label: CPEs.vendorProduct(vulnerableCpeId)
                     });
                     createdNodes.add(cpeGenericId);
@@ -226,8 +235,8 @@ export default class CveGraph extends Component {
                     this.nodes.add( {
                         id: cpeGenericId, 
                         shape: 'box',
-                        color: '#e8e8e8', // grey
-                        font: {color: '#7c7c7c'}, // dark-grey
+                        color: this.cpeNodeColor(cpeGenericId),
+                        font: {color: this.cpeNodeFontColor(cpeGenericId)}, 
                         label: vendor_product} );
                     createdNodes.add(cpeGenericId);
                 }

@@ -242,8 +242,8 @@ export default class AttackSrfcPage extends Component {
      */
      // TODO add REST resource for CPEs, query by id
     handleGraphAddCpeClick = (cpeGenericId) => {
-        console.log(cpeGenericId);
-        let product = CPEs.vendorProduct(cpeGenericId)[0];
+        //console.log(cpeGenericId);
+        let product = CPEs.vendorProduct(cpeGenericId)[1];
         
         const escapedValue = CPEs.escapeRegexCharacters(product.trim());
         if (escapedValue === '') {
@@ -272,7 +272,7 @@ export default class AttackSrfcPage extends Component {
     }
     
     handleDateRangeChanged = (range) => {
-        console.log("Range changed: " + range);
+        //console.log("Range changed: " + range);
         this.setState({
             cveStartDate: range[0],
             cveEndDate: range[1],
