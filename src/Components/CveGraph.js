@@ -32,7 +32,7 @@ function getActiveCpesGenericForm(cpes) {
  * @param {string} severity the severity level (CRITICAL, HIGH, ...)
  */
 function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpeId, severity) {
-    if (createdNodes.has(primaryCpeId+" "+severity))
+    if (createdNodes.has(severity + "_" + primaryCpeId))
         return false;
     
     if ('summary' in cpeSummary && severity in cpeSummary.summary)
@@ -43,7 +43,7 @@ function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpeId, severit
 
 function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
     let node = {
-        id: primaryCpeId+" "+severity, 
+        id: severity + "_" + primaryCpeId, 
         label: count.toString(), 
         title: "Filter matches " + count + " " + severity + " CVEs. (Only the top 100 CVEs for each product are shown individually.)",
         color: scoreColor,
@@ -70,7 +70,7 @@ function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
  * @returns {string} 
  */
 function determineCveTargetNodeId(cve, primaryCpeId) {
-    return primaryCpeId + " " + CVEs.severityForScore(cve.cvss);
+    return CVEs.severityForScore(cve.cvss) + "_" + primaryCpeId;
 }
 
 export default class CveGraph extends Component {
@@ -95,6 +95,9 @@ export default class CveGraph extends Component {
    data;
    nodes;
    edges;
+   cpeCount;
+   
+   const MAX_CPES = 500;
    
     onCveNodeSelected = (cveId) => {
         this.props.onSelectCve({
@@ -201,21 +204,26 @@ export default class CveGraph extends Component {
              });
 
             // add vulnerable product CPEs:
-            cve.vulnerable_product.forEach( (vulnerableCpeId) => {
-                const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
-                //console.log("vend_prod from vulnprod: " + vendor_product);
-                if (!createdNodes.has(cpeGenericId)) {
-                    
-                    this.nodes.add({
-                        id: cpeGenericId, 
-                        shape: 'box',
-                        color: this.cpeNodeColor(cpeGenericId),
-                        font: {color: this.cpeNodeFontColor(cpeGenericId)},
-                        label: CPEs.vendorProduct(vulnerableCpeId)
-                    });
-                    createdNodes.add(cpeGenericId);
-                }
-            });
+            if (cpeCount > MAX_CPES) {
+                xxx
+            }
+            else {
+                cve.vulnerable_product.forEach( (vulnerableCpeId) => {
+                    const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
+                    //console.log("vend_prod from vulnprod: " + vendor_product);
+                    if (!createdNodes.has(cpeGenericId)) {
+                        
+                        this.nodes.add({
+                            id: cpeGenericId, 
+                            shape: 'box',
+                            color: this.cpeNodeColor(cpeGenericId),
+                            font: {color: this.cpeNodeFontColor(cpeGenericId)},
+                            label: CPEs.vendorProduct(vulnerableCpeId)
+                        });
+                        createdNodes.add(cpeGenericId);
+                    }
+                });
+            }
 
              // link cve node to summary node with correct criticality:
              let cveTargetNodeId = determineCveTargetNodeId(cve, primaryCpeId);
