@@ -10,6 +10,7 @@ const COLOR_TEAL = '#00b5ad';
 const COLOR_WHITE = '#ffffff';
 const COLOR_GREY = '#e8e8e8';
 const COLOR_DARK_GREY = '#7c7c7c';
+const MAX_CPES = 500;
 
 function getActiveCpesGenericForm(cpes) {
     let result = new Set();
@@ -62,6 +63,17 @@ function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
     return node;
 }
 
+function renderMaxCpeCountNode() {
+    let node = {
+        id: "maxCpeCountNode", 
+        label: "...", 
+        title: "Filter matches more than " + MAX_CPES + " products.",
+        color: COLOR_GREY,
+        shape: "circle"
+    };
+    return node;
+}
+
 /**
  * Returns an id for the correct summary node for a CVE.
  * 
@@ -97,7 +109,6 @@ export default class CveGraph extends Component {
    edges;
    cpeCount;
    
-   const MAX_CPES = 500;
    
     onCveNodeSelected = (cveId) => {
         this.props.onSelectCve({
@@ -204,11 +215,17 @@ export default class CveGraph extends Component {
              });
 
             // add vulnerable product CPEs:
-            if (cpeCount > MAX_CPES) {
-                xxx
-            }
-            else {
-                cve.vulnerable_product.forEach( (vulnerableCpeId) => {
+            cve.vulnerable_product.forEach( (vulnerableCpeId) => {
+                if (cpeCount > MAX_CPES) {
+                    if (!createdNodes.has("maxCpeCountNode")) {
+                        let maxCpeNode = renderMaxCpeCountNode();
+                        this.nodes.add(maxCpeNode);
+                        createdNodes.add(maxCpeNode);
+                        this.edges.add( {from: maxCpeNode.id, to: primaryCpeId} );
+                        
+                    } 
+                }
+                else {
                     const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
                     //console.log("vend_prod from vulnprod: " + vendor_product);
                     if (!createdNodes.has(cpeGenericId)) {
@@ -222,8 +239,8 @@ export default class CveGraph extends Component {
                         });
                         createdNodes.add(cpeGenericId);
                     }
-                });
-            }
+                }
+            });
 
              // link cve node to summary node with correct criticality:
              let cveTargetNodeId = determineCveTargetNodeId(cve, primaryCpeId);
@@ -235,28 +252,37 @@ export default class CveGraph extends Component {
 
             // add all CPEs for vulnerable configurations:
             cve.vulnerable_configuration.forEach( (cpeId) => {
-                const vendor_product = CPEs.vendorProduct(cpeId);
-                const cpeGenericId = CVEs.getCpeIdAsUriBinding(cpeId);
-                //console.log("Vend_prod from vulnConf: " +vendor_product);
-
-                if (!createdNodes.has(cpeGenericId)) {
-                    //console.log("adding vulnconf: " + vendor_product);
-                    this.nodes.add( {
-                        id: cpeGenericId, 
-                        shape: 'box',
-                        color: this.cpeNodeColor(cpeGenericId),
-                        font: {color: this.cpeNodeFontColor(cpeGenericId)}, 
-                        label: vendor_product} );
-                    createdNodes.add(cpeGenericId);
+                if (cpeCount > MAX_CPES) {
+                    if (!createdNodes.has("maxCpeCountNode")) {
+                        let maxCpeNode = renderMaxCpeCountNode();
+                        this.nodes.add(maxCpeNode);
+                        createdNodes.add(maxCpeNode);
+                        this.edges.add( {from: maxCpeNode.id, to: primaryCpeId} );
+                    } 
                 }
-                // link them to the vulnconfig node for the primary cpe:
-                if (!createdEdges.has('vulnConfig'+cpeGenericId)
-                        && !(primaryCpeId===cpeGenericId)) {
-                    this.edges.add( {from: 'vulnConfig', to: cpeGenericId} );
-                    //console.log("add cpe edge: " + primaryCpeId + "---" + vendor_product);
-                    createdEdges.add('vulnConfig' + cpeGenericId);
-                }
-                
+                else {       
+                    const vendor_product = CPEs.vendorProduct(cpeId);
+                    const cpeGenericId = CVEs.getCpeIdAsUriBinding(cpeId);
+                    //console.log("Vend_prod from vulnConf: " +vendor_product);
+    
+                    if (!createdNodes.has(cpeGenericId)) {
+                        //console.log("adding vulnconf: " + vendor_product);
+                        this.nodes.add( {
+                            id: cpeGenericId, 
+                            shape: 'box',
+                            color: this.cpeNodeColor(cpeGenericId),
+                            font: {color: this.cpeNodeFontColor(cpeGenericId)}, 
+                            label: vendor_product} );
+                        createdNodes.add(cpeGenericId);
+                    }
+                    // link them to the vulnconfig node for the primary cpe:
+                    if (!createdEdges.has('vulnConfig'+cpeGenericId)
+                            && !(primaryCpeId===cpeGenericId)) {
+                        this.edges.add( {from: 'vulnConfig', to: cpeGenericId} );
+                        //console.log("add cpe edge: " + primaryCpeId + "---" + vendor_product);
+                        createdEdges.add('vulnConfig' + cpeGenericId);
+                    }
+                }   
             });
         });
         //provide the data in the vis format

@@ -73,7 +73,7 @@ export default class TimerangeSelector extends Component {
             <div class="item">
             
             <div class="content">
-              <div class="header" data-tooltip="Adapt this to reflect your oldest unpatched software still in use.">
+              <div class="header" data-tooltip="Adapt this to reflect your oldest unpatched software still being used.">
                 <i class="calendar alternate outline icon" />Date range: (should reflect your patch cycle)
               </div>
               <div class="meta">
