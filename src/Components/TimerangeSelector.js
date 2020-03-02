@@ -74,7 +74,7 @@ export default class TimerangeSelector extends Component {
             
             <div class="content">
               <div class="header" data-tooltip="Adapt this to reflect your oldest unpatched software still being used.">
-                <i class="calendar alternate outline icon" />Date range: (should reflect your patch cycle)
+                <i class="calendar alternate outline icon" />Date range / patch cycle:
               </div>
               <div class="meta">
               <span>{moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}</span>
