@@ -10,7 +10,7 @@ const COLOR_TEAL = '#00b5ad';
 const COLOR_WHITE = '#ffffff';
 const COLOR_GREY = '#e8e8e8';
 const COLOR_DARK_GREY = '#7c7c7c';
-const MAX_CPES = 500;
+const MAX_CPES = 50;
 
 function getActiveCpesGenericForm(cpes) {
     let result = new Set();
@@ -51,8 +51,8 @@ function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
         shape: "circle",
         value: count,
         scaling: {
-            min: 10,
-            max: 50,
+            min: 20,
+            max: 80,
             label: {
                 enabled: true,
                 min: 20,
@@ -67,7 +67,7 @@ function renderMaxCpeCountNode() {
     let node = {
         id: "maxCpeCountNode", 
         label: "...", 
-        title: "Filter matches more than " + MAX_CPES + " products.",
+        title: "Product limit reached. Only the first " + MAX_CPES + " products are shown.",
         color: COLOR_GREY,
         shape: "circle"
     };
@@ -121,7 +121,7 @@ export default class CveGraph extends Component {
     }
    
     cpeNodeColor = (cpeId) => {
-        let cpePresent = this.props.activeCpes.filter(ac => ac.id.indexOf(cpeId) !== -1);    
+        let cpePresent = this.props.activeCpes.filter(ac => ac.id.indexOf(cpeId) !== -1);
         return cpePresent.length ? COLOR_TEAL : COLOR_GREY;
     }
     
@@ -132,6 +132,7 @@ export default class CveGraph extends Component {
 
    
     convertCves= (props) => {
+        this.cpeCount = 0;
         this.nodes = new vis.DataSet();
         this.edges = new vis.DataSet();
         const allCves = props.allCves || [];
@@ -176,9 +177,11 @@ export default class CveGraph extends Component {
             //group++;
             this.nodes.add({
                 id: cve.id, 
-                label: cve.cvss.toString(), 
+                label: cve.id + '\n' + cve.cvss.toString(), 
                 title: cve.id,
-                color: CVEs.colorValueForScore(cve.cvss) 
+                color: CVEs.colorValueForScore(cve.cvss),
+                shape: 'dot',
+                size: 10
             });
             
             let summaryNodes = {};

@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import CVEs from '../Dto/CVEs';
 import ClipboardJS from "clipboard";
 
+
+function noop() {
+  undefined;
+}
 const CveItems = (props) => (
   <tbody>
     {
