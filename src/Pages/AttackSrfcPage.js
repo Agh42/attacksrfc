@@ -83,7 +83,8 @@ export default class AttackSrfcPage extends Component {
             _redirect: "",
             _cveAction: CVE_ACTION_NONE,
             _graphAction: GRAPH_ACTION_NONE,
-            _cpeAction: CPE_ACTION_NONE
+            _cpeAction: CPE_ACTION_NONE,
+            _saveStatus: 'READY'
     };
 
     componentDidMount() {
@@ -431,6 +432,19 @@ export default class AttackSrfcPage extends Component {
             selectedCpeSummary: {},
         });
     }
+    
+    handleListSave = () => {
+        this.setState({
+            _saveStatus : 'SAVED',
+        });
+        
+        setTimeout(() => {
+            this.setState({
+                _saveStatus : 'READY',
+            });
+        }, 2000);
+        
+    }
 
     render() {
         if (this.state._redirect) {
@@ -563,6 +577,8 @@ export default class AttackSrfcPage extends Component {
                                 onPaginationChange={this.handlePaginationChange}
                                 numTotalCves={this.state.selectedCvesTotalCount}
                                 onSelect={this.handleCveSelected}
+                                _status={this.state._saveStatus}
+                                onSave={this.handleListSave}
                             />
                         }
                     </div>

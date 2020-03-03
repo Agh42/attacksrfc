@@ -48,7 +48,8 @@ export default class CveList extends Component {
         numCurrentPage: PropTypes.number.isRequired,
         onPaginationChange: PropTypes.func.isRequired,
         onSelect: PropTypes.func.isRequired,
-        numTotalCves: PropTypes.number.isRequired
+        numTotalCves: PropTypes.number.isRequired,
+        _status: PropTypes.string.isRequired
     };
 
     componentDidMount(){
@@ -103,6 +104,10 @@ export default class CveList extends Component {
     handleSelect = (cve) => {
       this.props.onSelect(cve);
     }
+    
+    handleSaveClick =() => {
+        this.props.onSave();
+    } 
 
 
 
@@ -110,12 +115,27 @@ export default class CveList extends Component {
         return(
           <React.Fragment>
                <div className='ui field'>
-                     <div className="ui positive button" id="export-cvepage-btn"
-                          data-clipboard-target="#cveListTable"
-                          data-tooltip="Copy to clipboard."
-                          data-position="bottom center"
-                          onClick={this.props.onSaveClick} >
-                         Copy to clipboard</div>
+               {
+                    {
+                        READY: (
+                            <div className="ui positive button" id="export-cvepage-btn"
+                              data-clipboard-target="#cveListTable"
+                              data-tooltip="Copy to clipboard."
+                              data-position="bottom center"
+                              onClick={this.handleSaveClick} >
+                              Copy to clipboard</div>
+                        ),
+                        SAVED: (
+                            <div className="ui disabled button" id="export-cvepage-btn"
+                              data-clipboard-target="#cveListTable"
+                              data-tooltip="Copy to clipboard."
+                              data-position="bottom center"
+                              onClick={noop} >
+                            Copied to clipboard!</div>
+                        ),
+                    }[this.props._status]
+               }
+                     
                 </div>
 
 
