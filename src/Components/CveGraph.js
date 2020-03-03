@@ -216,10 +216,10 @@ export default class CveGraph extends Component {
 
             // add vulnerable product CPEs:
             cve.vulnerable_product.forEach( (vulnerableCpeId) => {
-                this.cpeCount++;
                 const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(cpeGenericId)) {
+                    this.cpeCount++;
                     if (this.cpeCount > MAX_CPES) {
                         if (!createdNodes.has("maxCpeCountNode")) {
                             let maxCpeNode = renderMaxCpeCountNode();
@@ -238,6 +238,7 @@ export default class CveGraph extends Component {
                             label: CPEs.vendorProduct(vulnerableCpeId)
                         });
                         createdNodes.add(cpeGenericId);
+                        // TODO may need edge creation here
                     }
                 }
             });
@@ -252,12 +253,12 @@ export default class CveGraph extends Component {
 
             // add all CPEs for vulnerable configurations:
             cve.vulnerable_configuration.forEach( (cpeId) => {
-                this.cpeCount++;
                 const vendor_product = CPEs.vendorProduct(cpeId);
                 const cpeGenericId = CVEs.getCpeIdAsUriBinding(cpeId);
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
 
                 if (!createdNodes.has(cpeGenericId)) {
+                    this.cpeCount++;
                     if (this.cpeCount > MAX_CPES) {
                         if (!createdNodes.has("maxCpeCountNode")) {
                             let maxCpeNode = renderMaxCpeCountNode();
