@@ -117,6 +117,8 @@ export default class SelectableCpeDetailsTable extends Component {
     static propTypes = {
         cpesWithCveCounts: PropTypes.array.isRequired,
         onSelect: PropTypes.func.isRequired,
+        onSave: PropTypes.func.isRequired,
+        _status: PropTypes.string.isRequired
     };
 
     constructor() {
@@ -151,14 +153,28 @@ export default class SelectableCpeDetailsTable extends Component {
 
         return (
           <React.Fragment>
-            <div className='ui field'>
-                    <div className="ui positive button" id="export-summaries-btn"
-                        data-clipboard-target="#cpeSummaryTable"
-                        data-tooltip="Copy to clipboard."
-                        data-position="bottom center"
-                        onClick={this.props.onSaveClick} >
-                        Copy to clipboard</div>
-                </div>
+            <div className='ui field'>    
+                {
+                    {
+                        READY: (
+                            <div className="ui positive button" id="export-summaries-btn"
+                              data-clipboard-target="#cveSummaryTable"
+                              data-tooltip="Copy to clipboard."
+                              data-position="bottom center"
+                              onClick={this.props.onSave} >
+                              Copy to clipboard</div>
+                        ),
+                        SAVED: (
+                            <div className="ui disabled button" id="export-summaries-btn"
+                              data-clipboard-target="#cveSummaryTable"
+                              data-tooltip="Copy to clipboard."
+                              data-position="bottom center"
+                              onClick={noop} >
+                            Copied to clipboard!</div>
+                        ),
+                    }[this.props._status]
+               }
+            </div>
 
             <table className="ui selectable striped table" id="cpeSummaryTable" >
                     <thead>

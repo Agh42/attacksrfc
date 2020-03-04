@@ -568,6 +568,9 @@ export default class AttackSrfcPage extends Component {
                         ?   <SelectableCpeDetailsTable
                                 cpesWithCveCounts={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) }
                                 onSelect={this.handleCpeSummarySelected}
+                                _status={this.state._saveStatus}
+                                onSave={this.handleListSave}
+                            
                             />
                         :
                             <CveList
