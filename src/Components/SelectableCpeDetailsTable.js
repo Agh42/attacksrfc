@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ClipboardJS from "clipboard";
 
-
+function noop() {
+    undefined;
+  }
 
 /**
  * Single selectable CPE entry row.
@@ -176,9 +178,7 @@ export default class SelectableCpeDetailsTable extends Component {
                }
             </div>
 
-            <table className="ui selectable striped table" id="cpeSummaryTable" 
-                style={{overflow: 'auto', "height":"30em"}}
-            >
+            <table className="ui selectable striped table" id="cpeSummaryTable">
                     <thead>
                     <tr class="center aligned">
                     <th>Product</th>

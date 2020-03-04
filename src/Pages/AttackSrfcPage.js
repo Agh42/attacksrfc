@@ -462,7 +462,9 @@ export default class AttackSrfcPage extends Component {
                          <DowntimeTimer/>
                        </div>
                        
-                  :    <div class="ui top fixed inverted teal icon menu">
+                  :    <div class="ui top fixed inverted teal icon menu"
+                        style={{overflow: 'auto'}}
+                       >
                           <a className="item" href="/homepage.html"><i className="home icon" /></a>
                            <div className="ui item"><h4 className="ui left aligned inverted header">
                                AttackSrfc - CVE Search and Vulnerability Management
@@ -533,7 +535,9 @@ export default class AttackSrfcPage extends Component {
                     />
                    </div>
 
-                   <div className='ui raised segment'>
+                   <div className='ui raised segment'
+                    style={{overflow: 'auto', "height":"30em"}}
+                   >
 
                         <div class="ui breadcrumb">
                             <a class="section" onClick={this.handleHomeClick}>

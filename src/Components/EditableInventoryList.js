@@ -186,15 +186,14 @@ export default class EditableInventoryList extends Component {
                          data-tooltip="Save this asset list." 
                          data-position="bottom center"
                          onClick={this.props.onSaveClick} >
-                         <i class="lock icon"></i> 
-                          Save collection... 
+                         <i class="lock icon"></i>
+                          Save collection
                     </button>
-                     <button className="ui negative icon toggle button" 
+                     <button className="ui negative labeled icon button" 
                           data-tooltip="Get emails on new critical vulnerabilities!" 
                           data-position="bottom center"
                           onClick={this.props.onSaveClick}>
                           <i class="lock icon"></i>
- 
                           Notifications are off
                     </button>
                 </div>

@@ -8,6 +8,7 @@ import ClipboardJS from "clipboard";
 function noop() {
   undefined;
 }
+
 const CveItems = (props) => (
   <tbody>
     {
@@ -143,9 +144,7 @@ export default class CveList extends Component {
                 </div>
 
 
-                <table className="ui selectable celled table" id="cveListTable"
-                    style={{overflow: 'auto', "height":"30em"}}
-                >
+                <table className="ui selectable celled table" id="cveListTable">
                 <thead>
 
                 <tr><th colSpan="6">
