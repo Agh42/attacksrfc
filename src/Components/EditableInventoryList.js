@@ -182,17 +182,20 @@ export default class EditableInventoryList extends Component {
                 {this.state._isLoading ? (<i className="sync icon" />) : ''}   
                 <br/>
                 <div className="field">
-                     <button className="positive ui button" 
-                         data-tooltip="Remember this asset list." 
+                     <button className="ui positive labeled icon button" 
+                         data-tooltip="Save this asset list." 
                          data-position="bottom center"
                          onClick={this.props.onSaveClick} >
+                         <i class="lock icon"></i> 
                           Save collection... 
                     </button>
-                     <button className="ui negative toggle button" 
+                     <button className="ui negative icon toggle button" 
                           data-tooltip="Get emails on new critical vulnerabilities!" 
                           data-position="bottom center"
                           onClick={this.props.onSaveClick}>
-                          Notifcations are off
+                          <i class="lock icon"></i>
+ 
+                          Notifications are off
                     </button>
                 </div>
               
