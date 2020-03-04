@@ -37,7 +37,9 @@ export default class CveDetails extends Component {
         const modified = CVEs.formatDate(this.props.cve.Modified);
 
         return(
-            <div className='ui raised segments'>
+            <div className='ui raised segments'
+                style={{overflow: 'auto', "height":"30em"}}
+            >
                 <div className='ui segment'>
                 <div class="ui large header">
                     <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} 

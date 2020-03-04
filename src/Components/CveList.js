@@ -143,7 +143,9 @@ export default class CveList extends Component {
                 </div>
 
 
-                <table className="ui selectable celled table" id="cveListTable">
+                <table className="ui selectable celled table" id="cveListTable"
+                    style={{overflow: 'auto', "height":"30em"}}
+                >
                 <thead>
 
                 <tr><th colSpan="6">

@@ -176,7 +176,9 @@ export default class SelectableCpeDetailsTable extends Component {
                }
             </div>
 
-            <table className="ui selectable striped table" id="cpeSummaryTable" >
+            <table className="ui selectable striped table" id="cpeSummaryTable" 
+                style={{overflow: 'auto', "height":"30em"}}
+            >
                     <thead>
                     <tr class="center aligned">
                     <th>Product</th>
