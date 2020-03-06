@@ -160,7 +160,7 @@ export default class SelectableCpeDetailsTable extends Component {
                     {
                         READY: (
                             <div className="ui positive button" id="export-summaries-btn"
-                              data-clipboard-target="#cveSummaryTable"
+                              data-clipboard-target="#cpeSummaryTable"
                               data-tooltip="Copy to clipboard."
                               data-position="bottom center"
                               onClick={this.props.onSave} >
@@ -168,8 +168,7 @@ export default class SelectableCpeDetailsTable extends Component {
                         ),
                         SAVED: (
                             <div className="ui disabled button" id="export-summaries-btn"
-                              data-clipboard-target="#cveSummaryTable"
-                              data-tooltip="Copy to clipboard."
+                              data-clipboard-target="#cpeSummaryTable"
                               data-position="bottom center"
                               onClick={noop} >
                             Copied to clipboard!</div>
