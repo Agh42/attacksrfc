@@ -45,7 +45,7 @@ function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpeId, severit
 function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
     let node = {
         id: severity + "_" + primaryCpeId, 
-        label: count.toString(), 
+        label: severity + ": " + count.toString(), 
         title: "Filter matches " + count + " " + severity + " CVEs. (Only the top 100 CVEs for each product are shown individually.)",
         color: scoreColor,
         shape: "circle",
