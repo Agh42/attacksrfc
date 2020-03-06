@@ -10,7 +10,7 @@ const START_DATE = "2002-01-01";
 
 function allDays() {
     var start = moment(START_DATE);
-    var now = moment();
+    var now = moment().add(-15, "minutes"); // tolerance for clock difference
     return now.diff(start, "days");
 }
 
@@ -34,7 +34,7 @@ export default class TimerangeSelector extends Component {
         super();
         const days = allDays();
         this.state = {
-                daysRange: [days-183,days], 
+                daysRange: [days-183,days], // 6 months default
         }
     }
     
@@ -93,18 +93,7 @@ export default class TimerangeSelector extends Component {
               </div>
             </div>
           </div>
-        </div>
-
-/*
-                        <div  class="ui blue label" key="0">
-                            {moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}
-                        </div>
-                        <i class="resize horizontal icon" />
-                        <div  class="ui blue label" key="1">
-                            {moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}
-                        </div>
-  */                     
-
+        </div>                     
         );
     }
 }
