@@ -510,7 +510,7 @@ export default class AttackSrfcPage extends Component {
                         allCves={this.state.graphCves} // CVEs loaded for graph
                         currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
                             ? this.state.selectedCpeSummaryForGraph.cpe 
-                            : ""}
+                            : {}}
                         activeCpes={this.state.selectedCpes} // marked CPEs
                         cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
                         onSelectCpe={this.handleGraphAddCpeClick}

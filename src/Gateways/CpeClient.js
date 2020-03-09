@@ -18,7 +18,7 @@ function getProduct(cpe) {
 }
 
 function replaceSpecialChars(cpe) {
-  return cpe.replace(/\//g, "^^").replace(/:/g, "%3A");
+  return cpe.replace(/\//g, "^^");
 }
 
 //########
@@ -31,8 +31,8 @@ function replaceSpecialChars(cpe) {
 * @param {any} success function to call with sucessfull result
 */
 function getAutoCompleteItems(toComplete, success) {
-   console.log(CVESERVICE_URL+'/api/v1/cpes/prefix/'+toComplete);
-   return fetch(CVESERVICE_URL+'/api/v1/cpes/prefix/'+toComplete, {
+   console.log(CVESERVICE_URL+'/api/v1/cpes/prefix/'+encodeURI(toComplete));
+   return fetch(CVESERVICE_URL+'/api/v1/cpes/prefix/'+encodeURI(toComplete), {
      headers: {
        Accept: 'application/json',
      },

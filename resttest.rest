@@ -1,5 +1,5 @@
 
-GET http://localhost:8080/cve?vulnerable_cpe=avm:fritz&fields=id,cvss,summary HTTP/1.1
+GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/avm:%5C%5C!fritz&fields=id,cvss,summary HTTP/1.1
 
 ###
 

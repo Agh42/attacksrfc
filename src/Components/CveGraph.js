@@ -46,17 +46,18 @@ function createSummaryNode(primaryCpeId, severity, count, scoreColor) {
     let node = {
         id: severity + "_" + primaryCpeId, 
         label: severity + ": " + count.toString(), 
-        title: "Filter matches " + count + " " + severity + " CVEs. (Only the top 100 CVEs for each product are shown individually.)",
+        title: "Filter matches " + count + " " + severity 
+            + " CVEs. (Only the top 100 CVEs for each product are shown individually.)",
         color: scoreColor,
-        shape: "circle",
+        shape: "box",
         value: count,
         scaling: {
             min: 20,
-            max: 80,
+            max: 50,
             label: {
                 enabled: true,
-                min: 20,
-                max: 40
+                min: 14,
+                max: 23
             }
         } 
     };
@@ -95,10 +96,10 @@ export default class CveGraph extends Component {
     }
 
  static propTypes = {
-        allCves: PropTypes.object.isRequired,
+        allCves: PropTypes.array.isRequired,
         currentCpe: PropTypes.object.isRequired,
-        activeCpes: PropTypes.object.isRequired,
-        cpeSummaries: PropTypes.object.isRequired,
+        activeCpes: PropTypes.array.isRequired,
+        cpeSummaries: PropTypes.array.isRequired,
         onSelectCpe: PropTypes.func.isRequired,
         onSelectCve: PropTypes.func.isRequired,
     };

@@ -16,7 +16,6 @@ function noop() {
 class CpeSummaryItem extends React.Component {
 
     static propTypes = {
-        key: PropTypes.string.isRequired,
         cpeSummary: PropTypes.object.isRequired,
         onClick: PropTypes.func.isRequired,
     };
