@@ -18,8 +18,16 @@ function getProduct(cpe) {
 }
 
 function replaceSpecialChars(cpe) {
-  return cpe.replace(/\//g, "^^");
+  return cpe.replace(/\//g, "^^")
+    .replace(/\\!/g, "!");
 }
+
+function replaceSpecialCharsInRequestBody(cpes) {
+  return cpes.map((cpe) => {
+    return cpe.replace(/\\!/g, "!");
+  })
+}
+
 
 //########
 
@@ -114,7 +122,7 @@ export function getCvesForCpes(cpes, itemsPerPage, numPage, start, end, success)
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      "vulnerableCpes": cpes,
+      "vulnerableCpes": replaceSpecialCharsInRequestBody(cpes),
       "itemsPerPage": itemsPerPage,
       "requestedPage": numPage,
       "fields": fields,
@@ -168,7 +176,7 @@ export function getCvesByCpesForGraph(cpes, start, end, success) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      "vulnerableCpes": cpes,
+      "vulnerableCpes": replaceSpecialCharsInRequestBody(cpes),
       "itemsPerPage": 100,
       "requestedPage": 1,
       "fields": fields,

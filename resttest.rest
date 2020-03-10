@@ -1,5 +1,9 @@
 
-GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/avm:%5C%5C!fritz&fields=id,cvss,summary HTTP/1.1
+GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/avm:%21fritz&fields=id,cvss,summary HTTP/1.1
+
+###
+
+GET http://localhost:8080/api/v1/cves/summary/vulnerable_product/cpe%3A2.3%3Ao%3Aavm%3Afritz!_os HTTP/1.1
 
 ###
 
@@ -61,7 +65,7 @@ content-type: application/json
 }
 ###
 
-GET http://localhost:8080/api/v1/cpes/prefix/android HTTP/1.1
+GET http://localhost:8080/api/v1/cpes/prefix/fritz HTTP/1.1
 
 ###
 
