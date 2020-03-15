@@ -474,6 +474,9 @@ export default class AttackSrfcPage extends Component {
                                </div>
                                </h4>
                            </div>
+                    
+                            <CookieConsent/>       
+                           
                            <div class="right menu primary">
                            <Link to="/login" class="item">
                              <i className="sign in icon" />
