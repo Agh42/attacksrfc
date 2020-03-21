@@ -509,38 +509,7 @@ export default class AttackSrfcPage extends Component {
                     />
                 </div>
                 <div className='eleven wide column'>
-                    <div className='ui raised segment' style={{"height":"30em"}}>
-                        <CveGraph
-                            allCves={this.state.graphCves} // CVEs loaded for graph
-                            currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
-                                ? this.state.selectedCpeSummaryForGraph.cpe 
-                                : {}}
-                            activeCpes={this.state.selectedCpes} // marked CPEs
-                            cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
-                            onSelectCpe={this.handleGraphAddCpeClick}
-                            onSelectCve={this.handleCveSelected}
-                        />
-                    </div>
-                </div>
-            </div>
-
-            <div className='two column row'>
-                <div className='five wide column'>
-
-                    <CveDetails
-                        cve={this.state.selectedCve}
-                    />
-
-                </div>
-
-                <div className='eleven wide column'>
-                   <div className='ui raised segment'>
-                    <TimerangeSelector 
-                        onRangeChange={this.handleDateRangeChanged}
-                    />
-                   </div>
-
-                   <div className='ui raised segment'
+                <div className='ui raised segment'
                     style={{overflow: 'auto', "height":"30em"}}
                    >
 
@@ -593,6 +562,38 @@ export default class AttackSrfcPage extends Component {
                                 onSave={this.handleListSave}
                             />
                         }
+                    </div>
+                </div>
+            </div>
+
+            <div className='two column row'>
+                <div className='five wide column'>
+
+                    <CveDetails
+                        cve={this.state.selectedCve}
+                    />
+
+                </div>
+
+                <div className='eleven wide column'>
+                   <div className='ui raised segment'>
+                    <TimerangeSelector 
+                        onRangeChange={this.handleDateRangeChanged}
+                    />
+                   </div>
+
+                  
+                    <div className='ui raised segment' style={{"height":"30em"}}>
+                        <CveGraph
+                            allCves={this.state.graphCves} // CVEs loaded for graph
+                            currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
+                                ? this.state.selectedCpeSummaryForGraph.cpe 
+                                : {}}
+                            activeCpes={this.state.selectedCpes} // marked CPEs
+                            cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
+                            onSelectCpe={this.handleGraphAddCpeClick}
+                            onSelectCve={this.handleCveSelected}
+                        />
                     </div>
                 </div>
             </div>
