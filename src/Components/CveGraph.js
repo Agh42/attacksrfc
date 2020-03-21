@@ -405,7 +405,6 @@ export default class CveGraph extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className='ui raised segment' style={{"height":"30em"}}>
                     <div id="cvegraph" style={{"height":"100%"}}></div>
                     {this.state._loadingbar
                     ? <div id="loadingBar" >
@@ -417,8 +416,6 @@ export default class CveGraph extends Component {
                         </div>
                       </div>
                     : ""}
-
-                </div>
             </React.Fragment>
         );
     }

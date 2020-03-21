@@ -11,6 +11,7 @@ import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
 import CVEs from '../Dto/CVEs.js';
 import CPEs from '../Dto/CPEs';
+import CookieConsent from '../Components/CookieConsent';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -475,7 +476,7 @@ export default class AttackSrfcPage extends Component {
                                </h4>
                            </div>
                     
-                            <CookieConsent/>       
+                           <CookieConsent/>       
                            
                            <div class="right menu primary">
                            <Link to="/login" class="item">
@@ -487,7 +488,7 @@ export default class AttackSrfcPage extends Component {
                            </Link>
                          </div>
                       </div>
-                    } 
+                  } 
                       
                   </div>
               </div>
@@ -508,17 +509,18 @@ export default class AttackSrfcPage extends Component {
                     />
                 </div>
                 <div className='eleven wide column'>
-                
-                    <CveGraph
-                        allCves={this.state.graphCves} // CVEs loaded for graph
-                        currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
-                            ? this.state.selectedCpeSummaryForGraph.cpe 
-                            : {}}
-                        activeCpes={this.state.selectedCpes} // marked CPEs
-                        cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
-                        onSelectCpe={this.handleGraphAddCpeClick}
-                        onSelectCve={this.handleCveSelected}
-                    />
+                    <div className='ui raised segment' style={{"height":"30em"}}>
+                        <CveGraph
+                            allCves={this.state.graphCves} // CVEs loaded for graph
+                            currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
+                                ? this.state.selectedCpeSummaryForGraph.cpe 
+                                : {}}
+                            activeCpes={this.state.selectedCpes} // marked CPEs
+                            cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
+                            onSelectCpe={this.handleGraphAddCpeClick}
+                            onSelectCve={this.handleCveSelected}
+                        />
+                    </div>
                 </div>
             </div>
 
