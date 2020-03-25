@@ -45,6 +45,8 @@ const GRAPH_ACTION_SUMMARIES_LOADED = '_SUMMARIES_LOADED';
 // page load redirects:
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 
+const MAX_SELECTED_CPES = 10;
+
 export default class AttackSrfcPage extends Component {
 
     // used to explicitely disable default actions where needed:
@@ -228,7 +230,11 @@ export default class AttackSrfcPage extends Component {
      * status to active.
      */
     handleAddCpeClick = (newCpe) => {
-        let cpePresent= this.state.selectedCpes.filter(c => c.id === newCpe.id);
+        if (this.state.selectedCpes.length > MAX_SELECTED_CPES) {
+            return;
+        }
+
+        let cpePresent = this.state.selectedCpes.filter(c => c.id === newCpe.id);
         if ( !cpePresent.length ) {
             let activeCpe = {...newCpe, isActive: true};
             this.setState( {
@@ -500,6 +506,7 @@ export default class AttackSrfcPage extends Component {
                 <div className='five wide column'>
 
                     <EditableInventoryList
+                        maxCpes={MAX_SELECTED_CPES}
                         selectedCpes={this.state.selectedCpes}
                         onSelectCpeClick={this.handleAddCpeClick}
                         onSaveClick={this.handleSaveClick}

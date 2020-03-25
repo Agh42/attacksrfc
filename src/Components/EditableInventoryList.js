@@ -169,7 +169,15 @@ export default class EditableInventoryList extends Component {
         return (
                 <div className="ui raised segment" 
                      style={{overflow: 'auto', "height":"30em"}}>
-                    <Autosuggest 
+
+                    {(this.props.selectedCpes.length > this.props.maxCpes )
+                    ? <div className="ui negative icon message">
+                        <i className="warning circle icon"></i>
+                        <div class="content">
+                        This inventory is full. Log in to save and increase inventory size.
+                        </div>
+                      </div>
+                    : <Autosuggest 
                         suggestions={suggestions}
                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -178,7 +186,8 @@ export default class EditableInventoryList extends Component {
                         renderSuggestion={renderSuggestion}
                         focusInputOnSuggestionClick={false}
                         inputProps={inputProps} 
-                    />
+                      />
+                    }
                 {this.state._isLoading ? (<i className="sync icon" />) : ''}   
                 <br/>
                 <div className="field">
@@ -187,7 +196,7 @@ export default class EditableInventoryList extends Component {
                          data-position="bottom center"
                          onClick={this.props.onSaveClick} >
                          <i class="lock icon"></i>
-                          Save collection
+                          Save inventory
                     </button>
                      <button className="ui negative labeled icon button" 
                           data-tooltip="Get emails on new critical vulnerabilities!" 
