@@ -170,6 +170,30 @@ export default class EditableInventoryList extends Component {
                 <div className="ui raised segment" 
                      style={{overflow: 'auto', "height":"30em"}}>
 
+{/*
+                    <div class="ui dropdown labeled icon button">
+                    <i class="filter icon"></i>
+                    <span class="text">Filter Posts</span>
+                    <div class="menu">
+                        <div class="ui icon search input">
+                            <i class="search icon"></i>
+                            <input type="text" placeholder="Search tags..."></input>
+                        </div>
+                            <div class="divider"></div>
+                            <div class="header">
+                                <i class="tags icon"></i>
+                                Tag Label
+                        </div>
+                            <div class="scrolling menu">
+                                <div class="item">
+                                    <div class="ui red empty circular label"></div>
+                                    Important
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+*/}
+
                     {(this.props.selectedCpes.length > this.props.maxCpes )
                     ? <div className="ui negative icon message">
                         <i className="warning circle icon"></i>

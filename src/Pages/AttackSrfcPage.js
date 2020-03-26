@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import moment from 'moment';
+import store from 'store';
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
@@ -157,16 +158,17 @@ export default class AttackSrfcPage extends Component {
     // TODO add cookie consent
     // TODO add tutorial
     
-
-
     /*
      * Initializes the first CPE list. Triggers loading of CVE summaries for those CPEs. Sets 
      * the first of those CPEs as initial graph display and loads CVEs for graph.
      */
     initSelectedCpes = () => {
-        this.setState( {selectedCpes: CpeClient.getExampleCpes(),
-                        selectedCpeSummaryForGraph: CpeClient.getExampleCpes()[0],
-                        cpeSummaries: CpeClient.getExampleCpes().map( (c) => {
+        let initialCpes = store.get('selectedCpes')
+            || CpeClient.getExampleCpes();
+    
+        this.setState( {selectedCpes: initialCpes,
+                        selectedCpeSummaryForGraph: initialCpes[0],
+                        cpeSummaries: initialCpes.map( (c) => {
                             return {
                                 cpe: c,
                                 count: "",
@@ -222,7 +224,7 @@ export default class AttackSrfcPage extends Component {
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
-        });
+        }, this.storeCpes);
     }
 
     /**
@@ -241,8 +243,13 @@ export default class AttackSrfcPage extends Component {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
                 cpeSummaries: [...this.state.cpeSummaries, {cpe: activeCpe, count: ""}],
                 _cpeAction: CPE_ACTION_RELOAD,
-            });
+            }, this.storeCpes);
+            
         }
+    }
+
+    storeCpes = () => {
+        store.set('selectedCpes', this.state.selectedCpes);
     }
     
     /*
@@ -263,9 +270,7 @@ export default class AttackSrfcPage extends Component {
             if (fullCpes.length) {
                 this.handleAddCpeClick(fullCpes[0]);
             }
-            
         })
-
     } 
 
     // Load cves and switch to cve display
@@ -416,7 +421,7 @@ export default class AttackSrfcPage extends Component {
                }
             }),
             _cpeAction: CPE_ACTION_RELOAD,
-        });
+        }, this.storeCpes);
     }
 
     formatNumber(number) {
@@ -589,9 +594,9 @@ export default class AttackSrfcPage extends Component {
                     />
                    </div>
 
-                  
                     <div className='ui raised segment' style={{"height":"30em"}}>
                         <CveGraph
+                            maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
                             allCves={this.state.graphCves} // CVEs loaded for graph
                             currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
                                 ? this.state.selectedCpeSummaryForGraph.cpe 

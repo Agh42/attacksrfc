@@ -332,13 +332,15 @@ export default class CveGraph extends Component {
                     //console.log('CVE click event: ' + JSON.stringify(event, null, 4));
                 }
                 else if (nodeId.match("^cpe:.+")) {
-                    this.nodes.update({
-                        id: nodeId,
-                        color: COLOR_TEAL,
-                        font: {color: COLOR_WHITE}, 
-                    });
-                    this.onCpeNodeSelected(event.nodes[0]);
-                    //console.log('CPE click event: ' + JSON.stringify(event, null, 4));
+                    if (!this.props.maxCpesReached) {
+                        this.nodes.update({
+                            id: nodeId,
+                            color: COLOR_TEAL,
+                            font: {color: COLOR_WHITE}, 
+                        });
+                        this.onCpeNodeSelected(event.nodes[0]);
+                        //console.log('CPE click event: ' + JSON.stringify(event, null, 4));
+                    }
                 }
             }
         });
