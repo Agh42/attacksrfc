@@ -170,7 +170,7 @@ export default class CveGraph extends Component {
         allCves.forEach( (cve) => {
             //console.log("CVE for graph: ");
             //console.log(cve);
-            if (!cve.hasOwnProperty('vulnerable_product')) {
+            if (!cve.hasOwnProperty('vulnerable_product_stems')) {
                 return;
             }
 
@@ -219,7 +219,7 @@ export default class CveGraph extends Component {
              });
 
             // add vulnerable product CPEs:
-            cve.vulnerable_product.forEach( (vulnerableCpeId) => {
+            cve.vulnerable_product_stems.forEach( (vulnerableCpeId) => {
                 const cpeGenericId = CVEs.getCpeIdAsUriBinding(vulnerableCpeId);
                 //console.log("vend_prod from vulnprod: " + vendor_product);
                 if (!createdNodes.has(cpeGenericId)) {
