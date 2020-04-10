@@ -167,7 +167,7 @@ export function getCveSummaryForCpe(cpe, start, end, success) {
  * @callback {CpeClient~getCvesByCpesForGraph} success The function to call with positive result.
  */
 export function getCvesByCpesForGraph(cpes, start, end, success) {
-  const fields = ["id","cvss","vulnerable_product_stems","vulnerable_configuration"];
+  const fields = ["id","cvss","vulnerable_product_stems","vulnerable_configuration_stems"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
     method: 'post',

@@ -256,7 +256,7 @@ export default class CveGraph extends Component {
              }
 
             // add all CPEs for vulnerable configurations:
-            cve.vulnerable_configuration.forEach( (cpeId) => {
+            cve.vulnerable_configuration_stems.forEach( (cpeId) => {
                 const vendor_product = CPEs.vendorProduct(cpeId);
                 const cpeGenericId = CVEs.getCpeIdAsUriBinding(cpeId);
                 //console.log("Vend_prod from vulnConf: " +vendor_product);
