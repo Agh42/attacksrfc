@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
+import {Link, Redirect} from 'react-router-dom';
 
 //###############################################################
 //### AutoSuggest functions:
@@ -198,7 +199,8 @@ export default class EditableInventoryList extends Component {
                     ? <div className="ui negative icon message">
                         <i className="warning circle icon"></i>
                         <div class="content">
-                        This inventory is full. Log in to save and increase inventory size.
+                        This inventory is full. <Link to="/login" class="item">Log in</Link> to 
+                        increase inventory size and save multiple inventories.
                         </div>
                       </div>
                     : <Autosuggest 
