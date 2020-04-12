@@ -442,6 +442,7 @@ export default class AttackSrfcPage extends Component {
         this.setState({
             _summaryDisplay: SHOW_SUMMARY_CPE,
             selectedCpeSummary: {},
+            numCurrentPage: 1,
         });
     }
     
