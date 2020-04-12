@@ -10,6 +10,10 @@
   margin-bottom: 2em;
 }
 
+div.ui.grey.circular.label {
+  color: #c5c5c5;
+}
+
 i.icon {
   margin: 0;
 }
