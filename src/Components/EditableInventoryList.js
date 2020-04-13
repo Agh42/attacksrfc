@@ -14,7 +14,7 @@ function getSuggestionValue(suggestion) {
     let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
     [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
         = suggestion.id.split(":");
-    return vendor+":"+product+":"+version+":"+update+":"+edition;
+    return type+":"+vendor+":"+product+":"+version+":"+update+":"+edition;
 }
 
 function renderSuggestion(suggestion) {
@@ -64,7 +64,7 @@ class CpeItem extends React.Component {
                                 onClick={this.handleEditCpeClick}></i>
                             <a className="detail"
                                 onClick={this.handleCpeClick}>
-                                {vendor+":"+product+":"+version+":"+update+":"+edition}
+                                {type+":"+vendor+":"+product+":"+version+":"+update+":"+edition}
                             </a>
                         </div>
                     </div>

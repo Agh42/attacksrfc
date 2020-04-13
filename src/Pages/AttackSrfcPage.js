@@ -284,6 +284,7 @@ export default class AttackSrfcPage extends Component {
         });
     }
     
+    // change date range, reload affected components
     handleDateRangeChanged = (range) => {
         //console.log("Range changed: " + range);
         this.setState({

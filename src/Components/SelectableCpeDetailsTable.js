@@ -41,13 +41,25 @@ class CpeSummaryItem extends React.Component {
                 <td>
                     <div class="ui list">
                         <div class="ui item">
-                            <i class={ {
-                                    'o': "large server middle aligned icon",
-                                    'a': "large keyboard middle aligned icon",
-                                    'h': "large computer middle aligned icon",
-                                }[cpetype]
-                            }
-                            ></i>
+                            <div class="ui image" 
+                                data-tooltip={
+                                    {
+                                        "o": "OS",
+                                        "a": "App",
+                                        "h": "HW"
+
+                                    }[cpetype]
+                                }
+                            >
+                                <i class={ {
+                                        'o': "large server middle aligned icon",
+                                        'a': "large keyboard middle aligned icon",
+                                        'h': "large computer middle aligned icon",
+                                    }[cpetype]
+                                }
+                                ></i>
+                            </div>
+                            
                             <div class="content">
                                 <a class="header" onClick={this.handleCpeClick}>
                                     {this.props.cpeSummary.cpe.id}
