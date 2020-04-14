@@ -42,6 +42,8 @@ const GRAPH_ACTION_NONE = '_NONE';
 const GRAPH_ACTION_INIT = '_INIT';
 const GRAPH_ACTION_RELOAD = '_RELOAD';
 const GRAPH_ACTION_SUMMARIES_LOADED = '_SUMMARIES_LOADED';
+const GRAPH_TIMERANGE_CHANGED ='_TIMERANGE_CHANGED';
+const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 
 // page load redirects:
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
@@ -127,8 +129,7 @@ export default class AttackSrfcPage extends Component {
                     });
                 }                
                 else {
-                    // graph is already displaying a cpe.
-                    // ignore summary loading. just switch when another cpe is selected.
+                    // Graph is already displaying a cpe. 
                     this.setState({_graphAction: GRAPH_ACTION_NONE});
                 }
                 break;
@@ -290,7 +291,7 @@ export default class AttackSrfcPage extends Component {
         this.setState({
             cveStartDate: range[0],
             cveEndDate: range[1],
-            _graphAction: GRAPH_ACTION_RELOAD,
+            //_graphAction: GRAPH_ACTION_RELOAD, // triggered after summary reload
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
         });    
@@ -364,37 +365,55 @@ export default class AttackSrfcPage extends Component {
         }
     }
 
+    timeRangeHasChanged = (oldEnd, newEnd, oldStart, newStart) => {
+        return oldEnd !== newEnd || oldStart !== newStart;
+    }
 
     // load cve summary counts for cpe, only where missing or if date changed
     loadCpeSummaries = () => {
+        var timeChanged = this.timeRangeHasChanged(
+            this.state.lastLoadedEndDate, this.state.cveEndDate,
+            this.state.lastLoadedStartDate, this.state.cveStartDate);
+
         this.state.cpeSummaries.forEach( (cs) => {
             if ( !Array.isArray(cs.summary) 
                 || !cs.summary.length 
-                || this.state.lastLoadedEndDate !== this.state.cveEndDate
-                || this.state.lastLoadedStartDate !== this.state.cveStartDate) {
+                || timeChanged) {
                 CpeClient.getCveSummaryForCpe(
                     CVEs.getCpeAsUriBinding(cs.cpe),
                     this.state.cveStartDate,
                     this.state.cveEndDate,
-                    (response) => {
-                        this.setState((prevState, props) => ({
-                            cpeSummaries: prevState.cpeSummaries.map((cs2) => {
-                                if (cs2.cpe.id === cs.cpe.id) {
-                                    return Object.assign({}, cs2, {
-                                        summary: response,
-                                    });
-                                } else {
-                                    return cs2;
-                                }
-                            }),
-                            lastLoadedStartDate: prevState.cveStartDate,
-                            lastLoadedEndDate: prevState.cveEndDate,
-                            _graphAction: GRAPH_ACTION_SUMMARIES_LOADED,
-                        }));
-                    }
+                    (response) => {this.handleSummariesLoaded(response, cs, timeChanged)}
                 );
             }
         });
+    }
+
+    handleSummariesLoaded = (response, cpeSummary, timeChanged) => {
+        // merge loaded summaries into state and trigger graph reload:
+        this.setState((prevState, props) => ({
+            cpeSummaries: prevState.cpeSummaries.map((cs2) => {
+                if (cs2.cpe.id === cpeSummary.cpe.id) {
+                    return Object.assign({}, cs2, {
+                        summary: response,
+                    });
+                } else {
+                    return cs2;
+                }
+            }),
+            lastLoadedStartDate: prevState.cveStartDate,
+            lastLoadedEndDate: prevState.cveEndDate,
+            _graphAction: GRAPH_ACTION_SUMMARIES_LOADED,
+        })); 
+
+        if (timeChanged
+            && cpeSummary.cpe.id === this.state.selectedCpeSummaryForGraph.cpe.id) {
+            // Reload graph if event is for current cpe and timerange changed:
+            // FIXME put in redux event handling and use event source for this
+            this.setState({
+                _graphAction: GRAPH_ACTION_RELOAD,
+            });
+        }
     }
 
     handleCpeToggleClick = (toggleCpeId) => {

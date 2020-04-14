@@ -43,7 +43,7 @@ class CpeSummaryItem extends React.Component {
                         <div class="ui item">
                             <div class="ui image" 
                                 data-tooltip={
-                                    {
+                                    { // NISTIR 7695 part type:
                                         "o": "OS",
                                         "a": "App",
                                         "h": "HW"
