@@ -11,12 +11,23 @@ import CVEs from '../Dto/CVEs';
  * @extends {Component}
  */
  
+
+
 export default class CveDetails extends Component {
 
     static propTypes = {
         cve: PropTypes.object.isRequired,
     };
 
+    hasExploit = () => {
+      if (!this.props.cve.references_tags) {
+        return false;
+      }
+    
+      return this.props.cve.references_tags
+        .filter(tags => tags.some(tag => tag === 'Exploit'))
+        .length > 0;
+    }
 
     render () {
         if (! ('id' in this.props.cve)) {
@@ -45,7 +56,22 @@ export default class CveDetails extends Component {
                         {this.props.cve.id}
                     </a>
                 </div>
+
+                
+xxx
                 <div class="ui small list">
+                  { (this.hasExploit()||true) ? (
+                    <div class="item"><i class="huge warning sign red link icon"></i>
+                          <div class="content">
+                            <div class="large middle aligned header">
+                              Exploit warning!
+                            </div>
+                          </div>
+                    </div>
+                    
+                  ) : ""
+                  }
+
                   <div class="item">
                       <div class="content">
                       <div class="header">
