@@ -11,8 +11,6 @@ import CVEs from '../Dto/CVEs';
  * @extends {Component}
  */
  
- // TODO check exploitb and display warning icon and link if exploits published
- 
 export default class CveDetails extends Component {
 
     static propTypes = {
@@ -47,15 +45,39 @@ export default class CveDetails extends Component {
                         {this.props.cve.id}
                     </a>
                 </div>
+                <div class="ui small list">
                   <div class="item">
+                      <div class="content">
+                      <div class="header">
+                      CVSSv2&nbsp;
                       <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
                         {this.props.cve.cvss}
                       </div>&nbsp;
                       <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
                         {CVEs.severityForScore(this.props.cve.cvss)}
                       </div>
+                      </div>
+                      </div>
+                   </div>
+
+                  {('cvssv3_score' in this.props.cve) ? (
+                   <div class="item">
+                      <div class="content">
+                      <div class="header">
+                      CVSSv3&nbsp;
+                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
+                        {this.props.cve.cvssv3_score}
+                      </div>&nbsp;
+                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
+                        {CVEs.severityForScore(this.props.cve.cvss3_score)}
+                      </div>
                    </div>
                  </div>
+                 </div>
+                  ) : ""}
+                 </div>
+                 </div>
+                 
 
                    <div class="ui segment">
                    <div class="ui small list">
