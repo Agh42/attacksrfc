@@ -11,7 +11,7 @@ import CVEs from '../Dto/CVEs';
  * @extends {Component}
  */
  
-
+const CVSS_CALCULATOR_URL = "https://cvssjs.github.io/#";
 
 export default class CveDetails extends Component {
 
@@ -27,6 +27,18 @@ export default class CveDetails extends Component {
       return this.props.cve.references_tags
         .filter(tags => tags.some(tag => tag === 'Exploit'))
         .length > 0;
+    }
+
+    /**
+     * Returns index of tag list (outer array) containing 'exploit' tag:
+     */
+    indexOfExploitRef = () => {
+      if (!this.props.cve.references_tags) {
+        return -1;
+      }
+
+      return this.props.cve.references_tags
+        .findIndex(tags => tags.some(tag => tag === 'Exploit'))
     }
 
     render () {
@@ -57,49 +69,58 @@ export default class CveDetails extends Component {
                     </a>
                 </div>
 
-                
-xxx
-                <div class="ui small list">
-                  { (this.hasExploit()||true) ? (
-                    <div class="item"><i class="huge warning sign red link icon"></i>
-                          <div class="content">
-                            <div class="large middle aligned header">
-                              Exploit warning!
-                            </div>
-                          </div>
-                    </div>
-                    
+                <div class="ui link items">
+
+                  { (this.hasExploit()) ? (
+                    <a class="link item"
+                      target="_blank" rel="noopener noreferrer"  
+                      href={this.props.cve.references[this.indexOfExploitRef()]} >
+                      <div class="middle aligned content">
+                        <i class="huge warning sign red link icon"></i>
+                        <div class="ui red header">
+                          Exploit warning!
+                        </div>
+                      </div>
+                    </a>
                   ) : ""
                   }
 
-                  <div class="item">
-                      <div class="content">
-                      <div class="header">
-                      CVSSv2&nbsp;
-                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
-                        {this.props.cve.cvss}
-                      </div>&nbsp;
-                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
-                        {CVEs.severityForScore(this.props.cve.cvss)}
-                      </div>
-                      </div>
-                      </div>
-                   </div>
+                    <a class="link item"
+                      target="_blank" rel="noopener noreferrer"  
+                      href={CVSS_CALCULATOR_URL + this.props.cve["cvss-vector"]} >
+                        <div class="content">
+                          <div class="header">
+                            CVSSv2&nbsp;
+                            <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
+                              {this.props.cve.cvss}
+                            </div>&nbsp;
+                            <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvss) + " circular label"}>
+                              {CVEs.severityForScore(this.props.cve.cvss)}
+                            </div>
+                          </div>
+                        </div>
+                    </a>
 
                   {('cvssv3_score' in this.props.cve) ? (
-                   <div class="item">
+                    <a class="link item"
+                      target="_blank" rel="noopener noreferrer"  
+                      href={
+                        ('vectorString' in this.props.cve.cvssv3) 
+                        ? CVSS_CALCULATOR_URL + this.props.cve.cvssv3.vectorString
+                        : ""
+                      } >
                       <div class="content">
-                      <div class="header">
-                      CVSSv3&nbsp;
-                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
-                        {this.props.cve.cvssv3_score}
-                      </div>&nbsp;
-                      <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
-                        {CVEs.severityForScore(this.props.cve.cvss3_score)}
+                        <div class="header">
+                          CVSSv3&nbsp;
+                          <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
+                            {this.props.cve.cvssv3_score}
+                          </div>&nbsp;
+                          <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
+                            {CVEs.severityForScore(this.props.cve.cvss3_score)}
+                          </div>
+                        </div>
                       </div>
-                   </div>
-                 </div>
-                 </div>
+                    </a>
                   ) : ""}
                  </div>
                  </div>
