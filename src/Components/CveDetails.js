@@ -101,7 +101,9 @@ export default class CveDetails extends Component {
                         </div>
                     </a>
 
-                  {('cvssv3_score' in this.props.cve) ? (
+                  {('cvssv3_score' in this.props.cve
+                    && this.props.cve.cvssv3_score > 0 ) 
+                    ? (
                     <a class="link item"
                       target="_blank" rel="noopener noreferrer"  
                       href={

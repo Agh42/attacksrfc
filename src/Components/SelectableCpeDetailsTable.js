@@ -225,7 +225,7 @@ export default class SelectableCpeDetailsTable extends Component {
                     <thead>
                     <tr class="center aligned">
                     <th>Product</th>
-                    <th>!</th>
+                    <th>&nbsp;</th>
                     <th>Vulns.</th>
                     <th>Critical</th>
                     <th>High</th>
