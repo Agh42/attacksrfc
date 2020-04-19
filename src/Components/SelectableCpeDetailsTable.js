@@ -21,8 +21,27 @@ class CpeSummaryItem extends React.Component {
     };
 
     sumCounts = (cpeSummary) => {
-        let counts = Object.values(cpeSummary);
-        return counts.reduce((a,b) => a+b, 0);
+        return ('CRITICAL' in cpeSummary ? cpeSummary.CRITICAL : 0)
+            + ('HIGH' in cpeSummary ? cpeSummary.HIGH : 0)
+            + ('MEDIUM' in cpeSummary ? cpeSummary.MEDIUM : 0)
+            + ('LOW' in cpeSummary ? cpeSummary.LOW : 0); 
+        // let counts = Object.values(cpeSummary);
+        // return counts.reduce((a,b) => a+b, 0);
+    }
+
+    sumExploitCounts = (cpeSummary) => {
+        return ('CRITICAL_EXPLOITS' in cpeSummary ? cpeSummary.CRITICAL_EXPLOITS : 0)
+        + ('HIGH_EXPLOITS' in cpeSummary ? cpeSummary.HIGH_EXPLOITS : 0)
+        + ('MEDIUM_EXPLOITS' in cpeSummary ? cpeSummary.MEDIUM_EXPLOITS : 0)
+        + ('LOW_EXPLOITS' in cpeSummary ? cpeSummary.LOW_EXPLOITS : 0); 
+    }
+
+    exploitWarningCounts = (cpeSummary) => {
+        return "Critical: " + ('CRITICAL_EXPLOITS' in cpeSummary ? cpeSummary.CRITICAL_EXPLOITS : 0) + " / "
+        + "High: " + ('HIGH_EXPLOITS' in cpeSummary ? cpeSummary.HIGH_EXPLOITS : 0) + " / "
+        + "Medium: " + ('MEDIUM_EXPLOITS' in cpeSummary ? cpeSummary.MEDIUM_EXPLOITS : 0) + " / "
+        + "Low: " + ('LOW_EXPLOITS' in cpeSummary ? cpeSummary.LOW_EXPLOITS : 0); 
+    
     }
 
     handleCpeClick = () => {
@@ -74,6 +93,20 @@ class CpeSummaryItem extends React.Component {
                             </div>
                         </div>
                     </div>
+                </td>
+
+                <td class="center aligned">
+                    { 'summary' in this.props.cpeSummary 
+                        && this.sumExploitCounts(this.props.cpeSummary.summary) > 0
+                    ?   <div class="ui basic compact tiny red icon button"
+                            data-tooltip={
+                                "Exploit warning: " 
+                                + this.exploitWarningCounts(this.props.cpeSummary.summary)
+                        }>
+                            <i class="warning sign icon"></i>
+                        </div>
+                    : ""    
+                    }
                 </td>
 
                 <td class="center aligned">
@@ -192,6 +225,7 @@ export default class SelectableCpeDetailsTable extends Component {
                     <thead>
                     <tr class="center aligned">
                     <th>Product</th>
+                    <th>!</th>
                     <th>Vulns.</th>
                     <th>Critical</th>
                     <th>High</th>

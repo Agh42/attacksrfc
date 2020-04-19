@@ -21,6 +21,11 @@ const CveItems = (props) => (
           </a></div></div>
           </td>
           <td class="single line">
+            {
+              cve.has_exploit
+              ? <i class="red warning sign icon"></i>
+              : ""
+            }
             {cve.cvss}
           </td>
           <td class="single line">

@@ -70,18 +70,20 @@ function checkStatus(response) {
   * from the format returned by the service:
       [
         {
-          "_id": {
-            "severity": "LOW"
+          "_id" : {
+            "severity" : "CRITICAL"
           },
-          "count": 151
+          "count" : 135,
+          "exploitCount" : 9
         },
-        {
-          "_id": {
-            "severity": "CRITICAL"
-          },
-          "count": 262
-        },
-        ...
+
+        { "_id" : {
+           "severity" : "LOW" 
+        }, 
+        "count" : 493, 
+        "exploitCount" : 97 
+        }
+        [...]
       ]
 
   * @param {*} json 
@@ -91,6 +93,7 @@ function checkStatus(response) {
     let flattened = json.map( (elmt) => {
       return {
         [elmt._id.severity] : elmt.count, 
+        [elmt._id.severity + "_EXPLOITS"] : elmt.exploitCount,
       };
     }); 
     // merge to new {HIGH:1, MEDIUM: 2} object with spread operator:
@@ -113,7 +116,7 @@ function checkStatus(response) {
  * @returns
  */
 export function getCvesForCpes(cpes, itemsPerPage, numPage, start, end, success) {
-  let fields = ["id", "cvss", "references", "Modified", "Published", "summary"];
+  let fields = ["id", "cvss", "references", "Modified", "Published", "summary", "has_exploit"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
     method: 'post',
