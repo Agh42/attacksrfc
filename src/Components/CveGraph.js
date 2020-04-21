@@ -181,7 +181,7 @@ export default class CveGraph extends Component {
                 label: cve.id + '\n' + cve.cvss.toString(), 
                 title: cve.id,
                 color: CVEs.colorValueForScore(cve.cvss),
-                shape: 'dot',
+                shape: cve.has_exploit ? 'triangle' : 'dot',
                 size: 10
             });
             
