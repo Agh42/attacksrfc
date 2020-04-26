@@ -387,7 +387,8 @@ export default class CveGraph extends Component {
     }
     
     // update only when allCves changes and all other properties are present as well:
-    componentWillReceiveProps(nextProps) {
+    // FIXME replace old 'willreceiveprops' method with 'willMount'
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.allCves.length === 0){
                this.showPlaceholder();
                return;

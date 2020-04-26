@@ -175,16 +175,19 @@ export default class SelectableCpeDetailsTable extends Component {
      }
      
     componentDidMount(){
+        console.log("mounted: " + this.props.cpesWithCveCounts);
         var btn = document.getElementById('export-summaries-btn');
         this.clipboard = new ClipboardJS(btn);
         this.clipboard.on('success', function(e) {
             console.log(e);
-            // todo show copied tooltip
         });
         this.clipboard.on('error', function(e) {
             console.log(e);
-            // show error tooltip
         });
+    }
+
+    componentDidUpdate () {
+        console.log("updated: " + this.props.cpesWithCveCounts);
     }
 
     render() {
