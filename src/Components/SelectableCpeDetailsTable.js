@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ClipboardJS from "clipboard";
 
 function noop() {
-    undefined;
+    return undefined;
   }
 
 /**

@@ -4,18 +4,19 @@
   "private": true,
   "dependencies": {
     "clipboard": "^2.0.4",
+    "fomantic-ui": "^2.8.4",
     "moment": "^2.22.2",
     "path-to-regexp": "^1.7.0",
     "proptypes": "^1.1.0",
     "rc-slider": "^9.1.0",
-    "react": "^16.13.1",
+    "react": "^16.8.3",
     "react-autosuggest": "^10.0.1",
-    "react-dom": "^16.13.1",
+    "react-dom": "^16.8.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.4.1",
-    "semantic-ui": "^2.4.0",
     "semantic-ui-react": "^0.88.2",
     "store": "^2.0.12",
+    "typescript": "^3.8.3",
     "vis": "^4.21.0"
   },
   "scripts": {
@@ -26,5 +27,17 @@
   },
   "devDependencies": {
     "dotenv": "^6.1.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

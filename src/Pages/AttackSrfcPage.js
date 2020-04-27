@@ -56,8 +56,8 @@ const MAX_SELECTED_CPES = 10;
 export default class AttackSrfcPage extends Component {
 
     // used to explicitely disable default actions where needed:
-    noop = () => {
-        undefined;
+    noop() {
+        return undefined;
     }
 
     /*
@@ -486,81 +486,7 @@ export default class AttackSrfcPage extends Component {
         
     }
 
-    tabPanes = [
-        {   menuItem: 'Summary', 
-            render: props => 
-                    <span>
-                    <div class="ui breadcrumb">
-                    <a class="section" onClick={props.onClick}>
-                        Home
-                    </a>
-
-                    { 'cpe' in props.selectedCpeSummary ? (
-                        <span>
-                                <i class="right arrow icon divider"></i>
-                                <a class="section"
-                                    onClick={()=>undefined}> 
-                                    {props.selectedCpeSummary.cpe.id}
-                                </a>
-                            </span>
-                    ) : ""
-                    }
-
-                    { props.selectedCve.length ?
-                            (
-                                <span>
-                                    <i class="right arrow icon divider"></i>
-                                    <div class="active section">
-                                        {props.selectedCve.id}
-                                    </div>
-                                </span>
-                            ) : ""
-                    }
-                    </div>
-                    <br/><br/>
-
-                    {props._summaryDisplay === SHOW_SUMMARY_CPE 
-                    ?   <SelectableCpeDetailsTable
-                            cpesWithCveCounts={props.cpesWithCveCounts}
-                            onSelect={props.onSelect}
-                            _status={props._status}
-                            onSave={props.onSave}
-                        
-                        />
-                    :
-                        <CveList
-                            selectedCvesPage={props.selectedCvesPage}
-                            numTotalPages={props.numTotalPages}
-                            numCurrentPage={props.numCurrentPage}
-                            onPaginationChange={props.onPaginationChange}
-                            numTotalCves={props.numTotalCves}
-                            onSelect={props.onCveSelect}
-                            _status={props._status}
-                            onSave={props.onSave}
-                        />
-                    }
-                    </span>
-                    
-            
-        },
-        {   menuItem: 'Graph', 
-            render : props => 
-            <Tab.Pane {...props}>
-                <pre>Hello.</pre>
-            </Tab.Pane>
-                   /* <CveGraph
-                        maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
-                        allCves={this.state.graphCves} // CVEs loaded for graph
-                        currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
-                            ? this.state.selectedCpeSummaryForGraph.cpe 
-                            : {}}
-                        activeCpes={this.state.selectedCpes} // marked CPEs
-                        cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
-                        onSelectCpe={this.handleGraphAddCpeClick}
-                        onSelectCve={this.handleCveSelected}
-                   />*/
-        }, 
-    ]
+   
 
     render() {
         if (this.state._redirect) {
@@ -568,6 +494,96 @@ export default class AttackSrfcPage extends Component {
                 REDIRECT_REGISTER: <Redirect to='/register' />
             }[this.state._redirect];
         }
+
+        const tabPanes = [
+            {   menuItem: 'Summary', 
+                render: () => 
+                <Tab.Pane>
+                    Hello1.
+                </Tab.Pane>
+                      /*  <span>
+                        <div class="ui breadcrumb">
+                        <a class="section" onClick={props.onClick}>
+                            Home
+                        </a>
+    
+                        { 'cpe' in props.selectedCpeSummary ? (
+                            <span>
+                                    <i class="right arrow icon divider"></i>
+                                    <a class="section"
+                                        onClick={()=>undefined}> 
+                                        {props.selectedCpeSummary.cpe.id}
+                                    </a>
+                                </span>
+                        ) : ""
+                        }
+    
+                        { props.selectedCve.length ?
+                                (
+                                    <span>
+                                        <i class="right arrow icon divider"></i>
+                                        <div class="active section">
+                                            {props.selectedCve.id}
+                                        </div>
+                                    </span>
+                                ) : ""
+                        }
+                        </div>
+                        <br/><br/>
+    
+                        {props._summaryDisplay === SHOW_SUMMARY_CPE 
+                        ?   <SelectableCpeDetailsTable
+                                cpesWithCveCounts={props.cpesWithCveCounts}
+                                onSelect={props.onSelect}
+                                _status={props._status}
+                                onSave={props.onSave}
+                            
+                            />
+                        :
+                            <CveList
+                                selectedCvesPage={props.selectedCvesPage}
+                                numTotalPages={props.numTotalPages}
+                                numCurrentPage={props.numCurrentPage}
+                                onPaginationChange={props.onPaginationChange}
+                                numTotalCves={props.numTotalCves}
+                                onSelect={props.onCveSelect}
+                                _status={props._status}
+                                onSave={props.onSave}
+                            />
+                        }
+                        </span>*/
+                        
+                
+            },
+            {   menuItem: 'Graph', 
+                render: () => 
+                <Tab.Pane>
+                    Hello2.
+                </Tab.Pane>
+                       /* <CveGraph
+                            maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
+                            allCves={this.state.graphCves} // CVEs loaded for graph
+                            currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
+                                ? this.state.selectedCpeSummaryForGraph.cpe 
+                                : {}}
+                            activeCpes={this.state.selectedCpes} // marked CPEs
+                            cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
+                            onSelectCpe={this.handleGraphAddCpeClick}
+                            onSelectCve={this.handleCveSelected}
+                       />*/
+            }, 
+        ]
+
+        const panes = [
+            {
+                menuItem: "One",
+                render: props => <Tab.Pane>One</Tab.Pane>
+            },{
+                menuItem: "Two",
+                render: props => <Tab.Pane>Two</Tab.Pane>
+            }
+        ]
+
         return (
          <React.Fragment>
           <div class="ui grid ">
@@ -642,8 +658,7 @@ export default class AttackSrfcPage extends Component {
                                 style={{overflow: 'auto', "height":"60em"}}
                             >
 
-                                <Tab 
-                                    onClick={this.handleHomeClick}
+                                   {/* onClick={this.handleHomeClick}
                                     selectedCpeSummary={this.state.selectedCpeSummary}
                                     selectedCve={this.state.selectedCve}
 
@@ -660,8 +675,9 @@ export default class AttackSrfcPage extends Component {
                                     onPaginationChange={this.handlePaginationChange}
                                     numTotalCves={this.state.selectedCvesTotalCount}
                                     onCveSelect={this.handleCveSelected}
-
-                                    panes={this.tabPanes} 
+                                    */}
+                                <Tab 
+                                    panes={panes} 
                                     renderActiveOnly={false} />
 
                             </div>
