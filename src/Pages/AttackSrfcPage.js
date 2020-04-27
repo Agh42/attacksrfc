@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Button, Icon } from 'semantic-ui-react';
 
 import moment from 'moment';
 import store from 'store';
@@ -93,7 +93,9 @@ export default class AttackSrfcPage extends Component {
             _cveAction: CVE_ACTION_NONE,
             _graphAction: GRAPH_ACTION_NONE,
             _cpeAction: CPE_ACTION_NONE,
-            _saveStatus: 'READY'
+            _saveStatus: 'READY',
+
+            activeIndex: 1
     };
 
 
@@ -486,7 +488,8 @@ export default class AttackSrfcPage extends Component {
         
     }
 
-   
+    handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex });
+
 
     render() {
         if (this.state._redirect) {
@@ -495,13 +498,10 @@ export default class AttackSrfcPage extends Component {
             }[this.state._redirect];
         }
 
-        const tabPanes = [
+        const panes = [
             {   menuItem: 'Summary', 
-                render: () => 
+                pane: 
                 <Tab.Pane>
-                    Hello1.
-                </Tab.Pane>
-                      /*  <span>
                         <div class="ui breadcrumb">
                         <a class="section" onClick={props.onClick}>
                             Home
@@ -551,38 +551,44 @@ export default class AttackSrfcPage extends Component {
                                 onSave={props.onSave}
                             />
                         }
-                        </span>*/
+                </Tab.Pane>
                         
                 
             },
             {   menuItem: 'Graph', 
-                render: () => 
+                pane:
                 <Tab.Pane>
-                    Hello2.
+                    <CveGraph
+                        maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
+                        allCves={this.state.graphCves} // CVEs loaded for graph
+                        currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
+                            ? this.state.selectedCpeSummaryForGraph.cpe 
+                            : {}}
+                        activeCpes={this.state.selectedCpes} // marked CPEs
+                        cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
+                        onSelectCpe={this.handleGraphAddCpeClick}
+                        onSelectCve={this.handleCveSelected}
+                    />
                 </Tab.Pane>
-                       /* <CveGraph
-                            maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
-                            allCves={this.state.graphCves} // CVEs loaded for graph
-                            currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
-                                ? this.state.selectedCpeSummaryForGraph.cpe 
-                                : {}}
-                            activeCpes={this.state.selectedCpes} // marked CPEs
-                            cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
-                            onSelectCpe={this.handleGraphAddCpeClick}
-                            onSelectCve={this.handleCveSelected}
-                       />*/
             }, 
         ]
 
-        const panes = [
+        /*const panes = [
             {
                 menuItem: "One",
-                render: props => <Tab.Pane>One</Tab.Pane>
+                pane: <Tab.Pane>
+                    <Button animated='vertical'>
+                    <Button.Content hidden>Shop</Button.Content>
+                    <Button.Content visible>
+                    <Icon name='shop' />
+                    </Button.Content>
+                    </Button>
+                </Tab.Pane> 
             },{
                 menuItem: "Two",
-                render: props => <Tab.Pane>Two</Tab.Pane>
+                render: () => <Tab.Pane loading='true'>Two</Tab.Pane>
             }
-        ]
+        ]*/
 
         return (
          <React.Fragment>
@@ -657,8 +663,8 @@ export default class AttackSrfcPage extends Component {
                             <div className='ui raised segment'
                                 style={{overflow: 'auto', "height":"60em"}}
                             >
-
-                                   {/* onClick={this.handleHomeClick}
+                                    {/*
+                                    onClick={this.handleHomeClick}
                                     selectedCpeSummary={this.state.selectedCpeSummary}
                                     selectedCve={this.state.selectedCve}
 
@@ -678,7 +684,10 @@ export default class AttackSrfcPage extends Component {
                                     */}
                                 <Tab 
                                     panes={panes} 
-                                    renderActiveOnly={false} />
+                                    renderActiveOnly={false} 
+                                    activeIndex={this.state.activeIndex}
+                                    onTabChange={this.handleTabChange}
+                                    />
 
                             </div>
                         </div> {/*end row */}
