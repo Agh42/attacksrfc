@@ -169,7 +169,7 @@ export default class EditableInventoryList extends Component {
         
         return (
                 <div className="ui raised segment" 
-                     style={{overflow: 'auto', "height":"60em"}}>
+                     style={{overflow: 'auto', "height":"52em"}}>
 
 {/*
                     <div class="ui dropdown labeled icon button">

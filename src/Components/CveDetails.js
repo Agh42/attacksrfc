@@ -59,7 +59,7 @@ export default class CveDetails extends Component {
 
         return(
             <div className='ui raised segments'
-                style={{overflow: 'auto', "height":"60em"}}
+                style={{overflow: 'auto', "height":"52em"}}
             >
                 <div className='ui segment'>
                 <div class="ui large header">
