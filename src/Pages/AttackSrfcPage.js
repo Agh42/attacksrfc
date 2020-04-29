@@ -571,6 +571,7 @@ export default class AttackSrfcPage extends Component {
                         cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
                         onSelectCpe={this.handleGraphAddCpeClick}
                         onSelectCve={this.handleCveSelected}
+                        isVisible={this.state.activeTabIndex===1}
                     />
                 </Tab.Pane>
             }, 
