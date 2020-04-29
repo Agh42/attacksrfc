@@ -95,7 +95,7 @@ export default class AttackSrfcPage extends Component {
             _cpeAction: CPE_ACTION_NONE,
             _saveStatus: 'READY',
 
-            activeTabIndex: 0
+            activeTabIndex: 1
     };
 
 
@@ -488,7 +488,10 @@ export default class AttackSrfcPage extends Component {
         
     }
 
-    handleTabChange = (e, { activeTabIndex }) => this.setState({ activeTabIndex });
+    handleTabChange = (e, { activeIndex }) => {
+        console.log("tabchange:" + activeIndex);
+        this.setState({ activeTabIndex: activeIndex });
+    }
 
 
     render() {
@@ -501,7 +504,7 @@ export default class AttackSrfcPage extends Component {
         const panes = [
             {   menuItem: 'Summary', 
                 pane: 
-                <Tab.Pane>
+                <Tab.Pane >
                     <div class="ui breadcrumb">
                     <a class="section" onClick={this.handleHomeClick}>
                         Home
@@ -649,7 +652,7 @@ export default class AttackSrfcPage extends Component {
                                 <Tab 
                                     panes={panes} 
                                     renderActiveOnly={false} 
-                                    activeIndex={this.state.activeIndex}
+                                    activeIndex={this.state.activeTabIndex}
                                     onTabChange={this.handleTabChange}
                                     />
 

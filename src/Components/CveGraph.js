@@ -300,6 +300,7 @@ export default class CveGraph extends Component {
     }
     
     initGraph= (props) => {
+        console.log("graph: init graph");
         var options = {
                 autoResize: true,
                 height: '100%',
@@ -383,12 +384,14 @@ export default class CveGraph extends Component {
     }
     
     componentDidMount() {
+        console.log("graph mounted");
         this.showPlaceholder();
     }
     
     // update only when allCves changes and all other properties are present as well:
     // FIXME replace old 'willreceiveprops' method with 'willMount'
     UNSAFE_componentWillReceiveProps(nextProps) {
+        console.log("graph: will receive props");
         if (nextProps.allCves.length === 0){
                this.showPlaceholder();
                return;
@@ -406,9 +409,10 @@ export default class CveGraph extends Component {
     }
             
     render() {
+        console.log("graph: render");
         return (
             <React.Fragment>
-                    <div id="cvegraph" style={{"height":"100%"}}></div>
+                    <div id="cvegraph" style={{"height":"35em"}}></div>
                     {this.state._loadingbar
                     ? <div id="loadingBar" >
                         <div class="outerBorder" >
