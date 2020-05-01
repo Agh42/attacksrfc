@@ -222,14 +222,14 @@ export default class EditableInventoryList extends Component {
                          data-position="bottom center"
                          onClick={this.props.onSaveClick} >
                          <i class="lock icon"></i>
-                          Save inventory
+                          Save
                     </button>
                      <button className="ui negative labeled icon button" 
                           data-tooltip="Get emails on new critical vulnerabilities!" 
                           data-position="bottom center"
                           onClick={this.props.onSaveClick}>
                           <i class="lock icon"></i>
-                          Notifications are off
+                          Notify
                     </button>
                 </div>
               

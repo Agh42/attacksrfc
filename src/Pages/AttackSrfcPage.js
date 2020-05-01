@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tab, Button, Icon } from 'semantic-ui-react';
+import { Tab, Button, Icon, Header, Modal } from 'semantic-ui-react';
 
 import moment from 'moment';
 import store from 'store';
@@ -94,8 +94,10 @@ export default class AttackSrfcPage extends Component {
             _graphAction: GRAPH_ACTION_NONE,
             _cpeAction: CPE_ACTION_NONE,
             _saveStatus: 'READY',
+            _dialogMessage: "",
 
-            activeTabIndex: 1
+            activeTabIndex: 1,
+            leftActiveTabIndex: 0,
     };
 
 
@@ -242,10 +244,17 @@ export default class AttackSrfcPage extends Component {
      * status to active.
      */
     handleAddCpeClick = (newCpe) => {
+        if (this.state.selectedCpes.length+1 > MAX_SELECTED_CPES) {
+            this.setState({
+                _dialogMessage: "This inventory is full. Log in to increase "
+                                + "inventory size and to save multiple inventories.",
+            });
+        }
+
         if (this.state.selectedCpes.length > MAX_SELECTED_CPES) {
             return;
         }
-
+        
         let cpePresent = this.state.selectedCpes.filter(c => c.id === newCpe.id);
         if ( !cpePresent.length ) {
             let activeCpe = {...newCpe, isActive: true};
@@ -310,6 +319,7 @@ export default class AttackSrfcPage extends Component {
     handleCveSelected = (cve) => {
         this.setState({
             selectedCve : cve,
+            leftActiveTabIndex : 1,
             _cveAction: CVE_ACTION_LOAD_DETAILS
         });
     }
@@ -493,6 +503,11 @@ export default class AttackSrfcPage extends Component {
         this.setState({ activeTabIndex: activeIndex });
     }
 
+    handleLeftTabChange = (e, { leftTabActiveIndex }) => {
+        console.log("lefttabchange:" + leftTabActiveIndex);
+        this.setState({ leftActiveTabIndex: leftTabActiveIndex });
+    }
+
 
     render() {
         if (this.state._redirect) {
@@ -500,6 +515,31 @@ export default class AttackSrfcPage extends Component {
                 REDIRECT_REGISTER: <Redirect to='/register' />
             }[this.state._redirect];
         }
+
+        const leftTabPanes = [
+            {   menuItem: 'Inventory', 
+                pane:
+                <Tab.Pane >
+                    <EditableInventoryList
+                        maxCpes={MAX_SELECTED_CPES}
+                        selectedCpes={this.state.selectedCpes}
+                        onSelectCpeClick={this.handleAddCpeClick}
+                        onSaveClick={this.handleSaveClick}
+                        onDeleteClick={this.handleDeleteCpeClick}
+                        onCpeToggleClick={this.handleCpeToggleClick}
+                        onEditCpeClick={this.handleEditCpeClick}
+                    />
+                </Tab.Pane>
+            }, {
+                menuItem: 'Details', 
+                pane:
+                <Tab.Pane >
+                    <CveDetails
+                        cve={this.state.selectedCve}
+                    />
+                </Tab.Pane>
+            }
+        ];
 
         const panes = [
             {   menuItem: 'Summary', 
@@ -617,24 +657,36 @@ export default class AttackSrfcPage extends Component {
                   </div>
               </div>
           </div>
+            <Modal basic size='small'
+                open={this.state._dialogMessage !== ""}>
+            <Header icon='archive' content='Inventory full' />
+            <Modal.Content>
+                <p>
+                {this.state._dialogMessage}
+                </p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button color='green' inverted 
+                    onClick={() => this.setState({_dialogMessage: ""})}>
+                <Icon name='checkmark' /> Got it
+                </Button>
+            </Modal.Actions>
+            </Modal>
           &nbsp;
           &nbsp;
         <div className='ui stackable grid'>
-            <div className='three column row'>
-                <div className='four wide column'>
-
-                    <EditableInventoryList
-                        maxCpes={MAX_SELECTED_CPES}
-                        selectedCpes={this.state.selectedCpes}
-                        onSelectCpeClick={this.handleAddCpeClick}
-                        onSaveClick={this.handleSaveClick}
-                        onDeleteClick={this.handleDeleteCpeClick}
-                        onCpeToggleClick={this.handleCpeToggleClick}
-                        onEditCpeClick={this.handleEditCpeClick}
-                    />
+            <div className='two column row'>
+                <div className='five wide column'>
+                    <Tab 
+                        panes={leftTabPanes} 
+                        renderActiveOnly={false} 
+                        activeIndex={this.state.leftActiveTabIndex}
+                        onTabChange={this.handleLeftTabChange}
+                        />
+                   
                 </div>
 
-                <div className='nine wide column'>
+                <div className='eleven wide column'>
                   <div className='ui grid'>
                     <div className='ui column'>
                     
@@ -662,12 +714,6 @@ export default class AttackSrfcPage extends Component {
                     </div> {/* end nested grid single column*/}
                   </div> {/*end nested grid*/}
                 </div> {/* end outer grid middle column*/}
-
-                <div className='three wide column'>
-                    <CveDetails
-                        cve={this.state.selectedCve}
-                    />
-                </div>
             </div> {/* end outer grid row*/}
         </div> {/* end outer grid*/}
 
