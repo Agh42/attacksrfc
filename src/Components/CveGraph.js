@@ -443,7 +443,7 @@ export default class CveGraph extends Component {
         console.log("graph: render");
         return (
             <React.Fragment>
-                    <div id="cvegraph" style={{"height":"35em"}}></div>
+                    <div id="cvegraph" style={{"height":"40em"}}></div>
                     {this.state._loadingbar
                     ? <div id="loadingBar" >
                         <div class="outerBorder" >

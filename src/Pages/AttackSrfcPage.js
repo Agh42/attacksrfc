@@ -49,6 +49,7 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 
 // page load redirects:
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
+const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
 const MAX_SELECTED_CPES = 10;
 
@@ -96,7 +97,7 @@ export default class AttackSrfcPage extends Component {
             _saveStatus: 'READY',
             _dialogMessage: "",
 
-            activeTabIndex: 1,
+            activeTabIndex: 0,
             leftActiveTabIndex: 0,
     };
 
@@ -221,7 +222,7 @@ export default class AttackSrfcPage extends Component {
     }
 
     handleSaveClick = () => {
-          this.setState({_redirect: REDIRECT_REGISTER});
+          this.setState({_redirect: REDIRECT_LOGIN});
     }
 
     handlePaginationChange = (newPage) => {
@@ -482,6 +483,7 @@ export default class AttackSrfcPage extends Component {
             _summaryDisplay: SHOW_SUMMARY_CPE,
             selectedCpeSummary: {},
             numCurrentPage: 1,
+            leftActiveTabIndex: 0,
         });
     }
     
@@ -503,16 +505,17 @@ export default class AttackSrfcPage extends Component {
         this.setState({ activeTabIndex: activeIndex });
     }
 
-    handleLeftTabChange = (e, { leftTabActiveIndex }) => {
-        console.log("lefttabchange:" + leftTabActiveIndex);
-        this.setState({ leftActiveTabIndex: leftTabActiveIndex });
+    handleLeftTabChange = (e, { activeIndex }) => {
+        console.log("lefttabchange:" + activeIndex);
+        this.setState({ leftActiveTabIndex: activeIndex });
     }
 
 
     render() {
         if (this.state._redirect) {
             return {
-                REDIRECT_REGISTER: <Redirect to='/register' />
+                REDIRECT_REGISTER: <Redirect to='/register' />,
+                REDIRECT_LOGIN: <Redirect to='/login' />
             }[this.state._redirect];
         }
 
@@ -531,7 +534,7 @@ export default class AttackSrfcPage extends Component {
                     />
                 </Tab.Pane>
             }, {
-                menuItem: 'Details', 
+                menuItem: 'Vulnerability', 
                 pane:
                 <Tab.Pane >
                     <CveDetails
@@ -700,7 +703,7 @@ export default class AttackSrfcPage extends Component {
 
                         <div className='ui row'>
                             <div className='ui raised segment'
-                                style={{overflow: 'auto', "height":"45em"}}
+                                style={{overflow: 'auto', "height":"50em"}}
                             >
                                 <Tab 
                                     panes={panes} 
