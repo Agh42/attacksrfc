@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button, Icon } from 'semantic-ui-react'
 import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
@@ -8,6 +9,14 @@ import {Link, Redirect} from 'react-router-dom';
 //### AutoSuggest functions:
 
 
+const renderAutoSuggestInputComponent = inputProps => (
+    <div className="inputContainer">
+        <div class="ui fluid left icon input">
+            <input {...inputProps} />
+            <i class="search icon"></i>
+        </div>
+    </div>
+)
 
 function getSuggestionValue(suggestion) {
     //return suggestion.title;
@@ -49,6 +58,8 @@ class CpeItem extends React.Component {
     handleCpeClick = () => {
         this.props.onCpeClick(this.props.cpe.id);
     }
+
+    
     
     render() {
         let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
@@ -203,34 +214,39 @@ export default class EditableInventoryList extends Component {
                         increase inventory size and save multiple inventories.
                         </div>
                       </div>
-                    : <Autosuggest 
-                        suggestions={suggestions}
-                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                        getSuggestionValue={getSuggestionValue}
-                        onSuggestionSelected={this.onSuggestionSelected}
-                        renderSuggestion={renderSuggestion}
-                        focusInputOnSuggestionClick={false}
-                        inputProps={inputProps} 
-                      />
+                    : 
+                                <Autosuggest 
+                                suggestions={suggestions}
+                                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                getSuggestionValue={getSuggestionValue}
+                                onSuggestionSelected={this.onSuggestionSelected}
+                                renderSuggestion={renderSuggestion}
+                                focusInputOnSuggestionClick={false}
+                                inputProps={inputProps} 
+                                renderInputComponent={renderAutoSuggestInputComponent}
+                                />
                     }
-                {this.state._isLoading ? (<i className="sync icon" />) : ''}   
+                {this.state._isLoading 
+                ? <Icon loading name='spinner' />
+                : ''
+                }   
                 <br/>
                 <div className="field">
-                     <button className="ui positive labeled icon button" 
-                         data-tooltip="Save this asset list." 
-                         data-position="bottom center"
-                         onClick={this.props.onSaveClick} >
-                         <i class="lock icon"></i>
-                          Save
-                    </button>
-                     <button className="ui negative labeled icon button" 
-                          data-tooltip="Get emails on new critical vulnerabilities!" 
-                          data-position="bottom center"
-                          onClick={this.props.onSaveClick}>
-                          <i class="lock icon"></i>
-                          Notify
-                    </button>
+                    <Button positive animated='fade'
+                        onClick={this.props.onSaveClick}>
+                        <Button.Content hidden>Save</Button.Content>
+                        <Button.Content visible>
+                            <Icon name='save' />
+                        </Button.Content>
+                    </Button>
+                    <Button negative animated='fade'
+                        onClick={this.props.onSaveClick}>
+                        <Button.Content hidden>Alert</Button.Content>
+                        <Button.Content visible>
+                            <Icon name='bell slash' />
+                        </Button.Content>
+                    </Button>
                 </div>
               
                 <div className="ui list">

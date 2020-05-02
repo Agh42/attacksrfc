@@ -71,9 +71,9 @@ class CpeSummaryItem extends React.Component {
                                 }
                             >
                                 <i class={ {
-                                        'o': "large server middle aligned icon",
-                                        'a': "large keyboard middle aligned icon",
-                                        'h': "large computer middle aligned icon",
+                                        'o': "large terminal middle aligned icon",
+                                        'a': "large desktop middle aligned icon",
+                                        'h': "large microchip middle aligned icon",
                                     }[cpetype]
                                 }
                                 ></i>
