@@ -26,16 +26,28 @@ function allDays() {
  */
 export default class TimerangeSelector extends Component {
 
+    allDays;
+
     static propTypes = {
        onRangeChange: PropTypes.func.isRequired,
     };
 
     constructor() {
         super();
-        const days = allDays();
+        this.alldays = allDays();
         this.state = {
-                daysRange: [days-183,days], // 6 months default
+                daysRange: [this.alldays-183,this.alldays], // 6 months default
         }
+    }
+
+    setMonthRange = (months) => {
+        const days = this.alldays-(months * 30);
+        this.setState({
+            daysRange: [
+                this.alldays-days,
+                this.alldays
+            ]
+        });
     }
     
     sliderChange = (newRange) => {
@@ -82,6 +94,7 @@ export default class TimerangeSelector extends Component {
                             <span>{moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}</span>
                             <span><i class="resize horizontal icon" /></span>
                             <span>{moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}</span>
+                            <a class="meta" onClick={() => this.setMonthRange(-6)}>6M</a>
                         </div>
                         <div class="description">
                             <Range
