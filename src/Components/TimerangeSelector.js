@@ -66,34 +66,36 @@ export default class TimerangeSelector extends Component {
         });
     }
   
-    render () {
-        return(   
+    render() {
+        return (
             <div class="ui items">
 
-            <div class="item">
-            
-            <div class="content">
-              <div class="header" data-tooltip="Adapt this to reflect your oldest unpatched software still being used.">
-                <i class="calendar alternate outline icon" />Date range / patch cycle:
-              </div>
-              <div class="meta">
-              <span>{moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}</span>
-              <span><i class="resize horizontal icon" /></span>
-              <span>{moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}</span>
-              </div>
-              <div class="description">
-              <Range 
-                            min={0}
-                            max={allDays()}
-                            allowCross={false} 
-                            defaultValue={this.state.daysRange} 
-                            onChange={this.sliderChange} 
-                            pushable={30}
-                        />
-              </div>
+                <div class="item">
+
+                    <div class="content">
+                        <div class="header"
+                            data-tooltip="Adapt this to your patch management cycle."
+                            data-position="bottom center" >
+                            <i class="calendar alternate outline icon" />Date range:
+                        </div>
+                        <div class="meta">
+                            <span>{moment(START_DATE).add(this.state.daysRange[0], "days").format('YYYY-MM-DD')}</span>
+                            <span><i class="resize horizontal icon" /></span>
+                            <span>{moment(START_DATE).add(this.state.daysRange[1], "days").format('YYYY-MM-DD')}</span>
+                        </div>
+                        <div class="description">
+                            <Range
+                                min={0}
+                                max={allDays()}
+                                allowCross={false}
+                                defaultValue={this.state.daysRange}
+                                onChange={this.sliderChange}
+                                pushable={30}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>                     
         );
     }
 }

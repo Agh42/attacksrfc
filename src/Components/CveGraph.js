@@ -102,6 +102,7 @@ export default class CveGraph extends Component {
         cpeSummaries: PropTypes.array.isRequired,
         onSelectCpe: PropTypes.func.isRequired,
         onSelectCve: PropTypes.func.isRequired,
+        isVisible: PropTypes.bool.isRequired
     };
 
 
@@ -109,6 +110,7 @@ export default class CveGraph extends Component {
    nodes;
    edges;
    cpeCount = 0;
+   primaryCpeNode;
    
    
     onCveNodeSelected = (cveId) => {
@@ -144,14 +146,15 @@ export default class CveGraph extends Component {
         let createdNodes = new Set();
         // add node for primary cpe:
         let primaryCpeId = CVEs.getCpeAsUriBinding(props.currentCpe);
-        this.nodes.add({
+        this.primaryCpeNode = {
             id: primaryCpeId, 
             shape: 'box',
             color: '#00b5ad',
             font: {color: '#ffffff'},
             label: CPEs.vendorProduct(props.currentCpe.id)
-        });
+        };
         createdNodes.add(primaryCpeId);
+        this.nodes.add(this.primaryCpeNode);
         
         // add group node for vulnerable configurations:
         this.nodes.add({
@@ -300,6 +303,7 @@ export default class CveGraph extends Component {
     }
     
     initGraph= (props) => {
+        console.log("graph: init graph");
         var options = {
                 autoResize: true,
                 height: '100%',
@@ -308,6 +312,14 @@ export default class CveGraph extends Component {
                 edges: {width: 2, 
                     shadow: true},
                 interaction: {hover: false},
+                clickToUse: false,
+                layout: {improvedLayout: true},
+                physics: {
+                    stabilization: {
+                        enabled: true,
+                        fit: true,
+                    },
+                }
                 //layout: {randomSeed:44},
                 //smoothCurves: {dynamic:false, type: "continuous"},
                /*  stabilization: false,
@@ -383,11 +395,14 @@ export default class CveGraph extends Component {
     }
     
     componentDidMount() {
+        console.log("graph mounted");
         this.showPlaceholder();
     }
     
     // update only when allCves changes and all other properties are present as well:
-    componentWillReceiveProps(nextProps) {
+    // FIXME replace old 'willreceiveprops' method with 'willMount'
+    UNSAFE_componentWillReceiveProps(nextProps) {
+        console.log("graph: will receive props");
         if (nextProps.allCves.length === 0){
                this.showPlaceholder();
                return;
@@ -397,17 +412,38 @@ export default class CveGraph extends Component {
             && nextProps.activeCpes.length > 0
             && nextProps.cpeSummaries.length > 0
         ) {
-            console.log("graph will receive props: ");
+            console.log("graph has new props: ");
             console.log(nextProps);
             //this.showPlaceholder = false;
             this.initGraph(nextProps);
         }
+        if (!this.props.isVisible && nextProps.isVisible) {
+            console.log("graph: fitting afer visible");
+            if (!'focus' in this.network)
+                return;
+            
+            // this.network.moveTo({ position: {
+            //     x: this.network.getPosition(this.primaryCpeNode.id).x, 
+            //     y: this.network.getPosition(this.primaryCpeNode.id).y} 
+            // });
+            var focusOptions = {
+                scale: 0.5,
+                offset: {x:0,y:0},
+                animation: {
+                  duration: 500,
+                  easingFunction: 'easeInOutQuad'
+                }
+              };
+            //this.network.focus(this.primaryCpeNode.id, focusOptions);
+            //this.network.fit();
+        }
     }
             
     render() {
+        console.log("graph: render");
         return (
             <React.Fragment>
-                    <div id="cvegraph" style={{"height":"100%"}}></div>
+                    <div id="cvegraph" style={{"height":"40em"}}></div>
                     {this.state._loadingbar
                     ? <div id="loadingBar" >
                         <div class="outerBorder" >

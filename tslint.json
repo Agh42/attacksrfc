@@ -1,0 +1,12 @@
+{
+  "extends": "tslint:recommended",
+  "defaultSeverity": "warn",
+  "rules": {
+      "max-line-length": {
+          "options": [120]
+      },
+      "no-unused-expression": {
+          "severity": "warn"
+      }
+  }
+}

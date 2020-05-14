@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Tab, Button, Icon, Header, Modal } from 'semantic-ui-react';
 
 import moment from 'moment';
 import store from 'store';
+
 import CveGraph from '../Components/CveGraph';
 import EditableInventoryList from '../Components/EditableInventoryList';
 import CveList from '../Components/CveList';
@@ -47,14 +49,16 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 
 // page load redirects:
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
+const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
 const MAX_SELECTED_CPES = 10;
+
 
 export default class AttackSrfcPage extends Component {
 
     // used to explicitely disable default actions where needed:
-    noop = () => {
-        undefined;
+    noop() {
+        return undefined;
     }
 
     /*
@@ -90,8 +94,16 @@ export default class AttackSrfcPage extends Component {
             _cveAction: CVE_ACTION_NONE,
             _graphAction: GRAPH_ACTION_NONE,
             _cpeAction: CPE_ACTION_NONE,
-            _saveStatus: 'READY'
+            _saveStatus: 'READY',
+            _dialogMessage: "",
+
+            activeTabIndex: 0,
+            leftActiveTabIndex: 0,
     };
+
+
+   
+  
 
     componentDidMount() {
         this.initHealthCheck();
@@ -214,7 +226,7 @@ export default class AttackSrfcPage extends Component {
     }
 
     handleSaveClick = () => {
-          this.setState({_redirect: REDIRECT_REGISTER});
+          this.setState({_redirect: REDIRECT_LOGIN});
     }
 
     handlePaginationChange = (newPage) => {
@@ -237,10 +249,17 @@ export default class AttackSrfcPage extends Component {
      * status to active.
      */
     handleAddCpeClick = (newCpe) => {
+        if (this.state.selectedCpes.length+1 > MAX_SELECTED_CPES) {
+            this.setState({
+                _dialogMessage: "This inventory is full. Log in to increase "
+                                + "inventory size and to save multiple inventories.",
+            });
+        }
+
         if (this.state.selectedCpes.length > MAX_SELECTED_CPES) {
             return;
         }
-
+        
         let cpePresent = this.state.selectedCpes.filter(c => c.id === newCpe.id);
         if ( !cpePresent.length ) {
             let activeCpe = {...newCpe, isActive: true};
@@ -305,6 +324,7 @@ export default class AttackSrfcPage extends Component {
     handleCveSelected = (cve) => {
         this.setState({
             selectedCve : cve,
+            leftActiveTabIndex : 1,
             _cveAction: CVE_ACTION_LOAD_DETAILS
         });
     }
@@ -467,6 +487,7 @@ export default class AttackSrfcPage extends Component {
             _summaryDisplay: SHOW_SUMMARY_CPE,
             selectedCpeSummary: {},
             numCurrentPage: 1,
+            leftActiveTabIndex: 0,
         });
     }
     
@@ -483,15 +504,129 @@ export default class AttackSrfcPage extends Component {
         
     }
 
+    handleTabChange = (e, { activeIndex }) => {
+        console.log("tabchange:" + activeIndex);
+        this.setState({ activeTabIndex: activeIndex });
+    }
+
+    handleLeftTabChange = (e, { activeIndex }) => {
+        console.log("lefttabchange:" + activeIndex);
+        this.setState({ leftActiveTabIndex: activeIndex });
+    }
+
+
     render() {
         if (this.state._redirect) {
             return {
-                REDIRECT_REGISTER: <Redirect to='/register' />
+                REDIRECT_REGISTER: <Redirect to='/register' />,
+                REDIRECT_LOGIN: <Redirect to='/login' />
             }[this.state._redirect];
         }
+
+        const leftTabPanes = [
+            {   menuItem: 'Inventory', 
+                pane:
+                <Tab.Pane >
+                    <EditableInventoryList
+                        maxCpes={MAX_SELECTED_CPES}
+                        selectedCpes={this.state.selectedCpes}
+                        onSelectCpeClick={this.handleAddCpeClick}
+                        onSaveClick={this.handleSaveClick}
+                        onDeleteClick={this.handleDeleteCpeClick}
+                        onCpeToggleClick={this.handleCpeToggleClick}
+                        onEditCpeClick={this.handleEditCpeClick}
+                    />
+                </Tab.Pane>
+            }, {
+                menuItem: 'Vulnerability', 
+                pane:
+                <Tab.Pane >
+                    <CveDetails
+                        cve={this.state.selectedCve}
+                    />
+                </Tab.Pane>
+            }
+        ];
+
+        const panes = [
+            {   menuItem: 'Summary', 
+                pane: 
+                <Tab.Pane >
+                    <div class="ui breadcrumb">
+                    <a class="section" onClick={this.handleHomeClick}>
+                        Home
+                    </a>
+
+                    { 'cpe' in this.state.selectedCpeSummary ? (
+                        <span>
+                                <i class="right arrow icon divider"></i>
+                                <a class="section"
+                                    onClick={this.noop}> 
+                                    {this.state.selectedCpeSummary.cpe.id}
+                                </a>
+                            </span>
+                    ) : ""
+                    }
+
+                    { this.state.selectedCve.length ?
+                            (
+                                <span>
+                                    <i class="right arrow icon divider"></i>
+                                    <div class="active section">
+                                        {this.state.selectedCve.id}
+                                    </div>
+                                </span>
+                            ) : ""
+                    }
+                    </div>
+                    <br/><br/>
+
+                    {this.state._summaryDisplay === SHOW_SUMMARY_CPE 
+                    ?   <SelectableCpeDetailsTable
+                            cpesWithCveCounts={this.state.cpeSummaries.filter( cs => cs.cpe.isActive)}
+                            onSelect={this.handleCpeSummarySelected}
+                            _status={this.state._saveStatus}
+                            onSave={this.handleListSave}
+                        
+                        />
+                    :
+                        <CveList
+                            selectedCvesPage={this.state.selectedCvesPage}
+                            numTotalPages={this.state.numTotalPages}
+                            numCurrentPage={this.state.numCurrentPage}
+                            onPaginationChange={this.handlePaginationChange}
+                            numTotalCves={this.state.selectedCvesTotalCount}
+                            onSelect={this.handleCveSelected}
+                            _status={this.state._saveStatus}
+                            onSave={this.handleListSave}
+                        />
+                    }
+                </Tab.Pane>
+                        
+                
+            },
+            {   menuItem: 'Graph', 
+                pane:
+                <Tab.Pane>
+                    <CveGraph
+                        maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
+                        allCves={this.state.graphCves} // CVEs loaded for graph
+                        currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
+                            ? this.state.selectedCpeSummaryForGraph.cpe 
+                            : {}}
+                        activeCpes={this.state.selectedCpes} // marked CPEs
+                        cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
+                        onSelectCpe={this.handleGraphAddCpeClick}
+                        onSelectCve={this.handleCveSelected}
+                        isVisible={this.state.activeTabIndex===1}
+                    />
+                </Tab.Pane>
+            }, 
+        ]
+
         return (
          <React.Fragment>
-          <div class="ui grid">
+          <div class="ui grid ">
               <div class="row">
                   <div class="column">
                   {this.state._uhoh
@@ -529,132 +664,86 @@ export default class AttackSrfcPage extends Component {
                   </div>
               </div>
           </div>
+            <Modal basic size='small'
+                open={this.state._dialogMessage !== ""}>
+            <Header icon='archive' content='Inventory full' />
+            <Modal.Content>
+                <p>
+                {this.state._dialogMessage}
+                </p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button color='green' inverted 
+                    onClick={() => this.setState({_dialogMessage: ""})}>
+                <Icon name='checkmark' /> Got it
+                </Button>
+            </Modal.Actions>
+            </Modal>
           &nbsp;
           &nbsp;
-        <div className='ui stackable padded grid'>
+        <div className='ui stackable grid'>
             <div className='two column row'>
                 <div className='five wide column'>
-
-                    <EditableInventoryList
-                        maxCpes={MAX_SELECTED_CPES}
-                        selectedCpes={this.state.selectedCpes}
-                        onSelectCpeClick={this.handleAddCpeClick}
-                        onSaveClick={this.handleSaveClick}
-                        onDeleteClick={this.handleDeleteCpeClick}
-                        onCpeToggleClick={this.handleCpeToggleClick}
-                        onEditCpeClick={this.handleEditCpeClick}
-                    />
-                </div>
-                <div className='eleven wide column'>
-                <div className='ui raised segment'
-                    style={{overflow: 'auto', "height":"30em"}}
-                   >
-
-                        <div class="ui breadcrumb">
-                            <a class="section" onClick={this.handleHomeClick}>
-                                Home
-                            </a>
-
-                           { 'cpe' in this.state.selectedCpeSummary ? (
-                               <span>
-                                    <i class="right arrow icon divider"></i>
-                                    <a class="section"
-                                        onClick={this.noop}> 
-                                        {this.state.selectedCpeSummary.cpe.id}
-                                    </a>
-                                </span>
-                           ) : ""
-                           }
-
-                        { this.state.selectedCve.length ?
-                                (
-                                    <span>
-                                        <i class="right arrow icon divider"></i>
-                                        <div class="active section">
-                                            {this.state.selectedCve.id}
-                                        </div>
-                                    </span>
-                                ) : ""
-                        }
-                        </div>
-                        <br/><br/>
-
-                        {this.state._summaryDisplay === SHOW_SUMMARY_CPE
-                        ?   <SelectableCpeDetailsTable
-                                cpesWithCveCounts={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) }
-                                onSelect={this.handleCpeSummarySelected}
-                                _status={this.state._saveStatus}
-                                onSave={this.handleListSave}
-                            
-                            />
-                        :
-                            <CveList
-                                selectedCvesPage={this.state.selectedCvesPage}
-                                numTotalPages={this.state.numTotalPages}
-                                numCurrentPage={this.state.numCurrentPage}
-                                onPaginationChange={this.handlePaginationChange}
-                                numTotalCves={this.state.selectedCvesTotalCount}
-                                onSelect={this.handleCveSelected}
-                                _status={this.state._saveStatus}
-                                onSave={this.handleListSave}
-                            />
-                        }
-                    </div>
-                </div>
-            </div>
-
-            <div className='two column row'>
-                <div className='five wide column'>
-
-                    <CveDetails
-                        cve={this.state.selectedCve}
-                    />
-
-                </div>
-
-                <div className='eleven wide column'>
-                   <div className='ui raised segment'>
-                    <TimerangeSelector 
-                        onRangeChange={this.handleDateRangeChanged}
-                    />
-                   </div>
-
-                    <div className='ui raised segment' style={{"height":"30em"}}>
-                        <CveGraph
-                            maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
-                            allCves={this.state.graphCves} // CVEs loaded for graph
-                            currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
-                                ? this.state.selectedCpeSummaryForGraph.cpe 
-                                : {}}
-                            activeCpes={this.state.selectedCpes} // marked CPEs
-                            cpeSummaries={this.state.cpeSummaries.filter( cs => cs.cpe.isActive) } // all summaries for active CPEs
-                            onSelectCpe={this.handleGraphAddCpeClick}
-                            onSelectCve={this.handleCveSelected}
+                    <Tab 
+                        panes={leftTabPanes} 
+                        renderActiveOnly={false} 
+                        activeIndex={this.state.leftActiveTabIndex}
+                        onTabChange={this.handleLeftTabChange}
                         />
-                    </div>
+                   
+                </div>
+
+                <div className='eleven wide column'>
+                  <div className='ui grid'>
+                    <div className='ui column'>
+                    
+                        <div className='ui row'>
+                            <div className='ui raised segment'>
+                                <TimerangeSelector 
+                                    onRangeChange={this.handleDateRangeChanged}
+                                />
+                            </div>
+                        </div>
+
+                        <div className='ui row'>
+                            <div className='ui raised segment'
+                                style={{overflow: 'auto', "height":"50em"}}
+                            >
+                                <Tab 
+                                    panes={panes} 
+                                    renderActiveOnly={false} 
+                                    activeIndex={this.state.activeTabIndex}
+                                    onTabChange={this.handleTabChange}
+                                    />
+
+                            </div>
+                        </div> {/*end row */}
+                    </div> {/* end nested grid single column*/}
+                  </div> {/*end nested grid*/}
+                </div> {/* end outer grid middle column*/}
+            </div> {/* end outer grid row*/}
+        </div> {/* end outer grid*/}
+
+            <div class="ui  vertical footer segment">
+            <div class="ui center aligned container">
+
+
+                <div class="ui  section divider"></div>
+                <a className="item" href="/homepage.html">
+                <img class="ui centered image" src="images/logos/cstoolio_60.png" />
+                </a>
+                <div class="ui horizontal  small divided link list">
+                <a class="item" href="homepage.html">Home</a>
+                <a class="item" href="legal.html">Legal Notice and Contact</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/attacksrfc/issues">Report issues</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/r/CSTOOL_io/">Discuss on Reddit</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">Join chat</a>
+                
                 </div>
             </div>
-        </div>
-                    <div class="ui  vertical footer segment">
-                    <div class="ui center aligned container">
-
-
-                      <div class="ui  section divider"></div>
-                      <a className="item" href="/homepage.html">
-                      <img class="ui centered image" src="images/logos/cstoolio_60.png" />
-                      </a>
-                      <div class="ui horizontal  small divided link list">
-                        <a class="item" href="homepage.html">Home</a>
-                        <a class="item" href="legal.html">Legal Notice and Contact</a>
-                        <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
-                        <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/attacksrfc/issues">Report issues</a>
-                        <a class="item" target="_blank" rel="noopener noreferrer" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
-                        <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/r/CSTOOL_io/">Discuss on Reddit</a>
-                        <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">Join chat</a>
-                        
-                      </div>
-                    </div>
-                  </div>
+            </div>
         </React.Fragment>
         );
         }

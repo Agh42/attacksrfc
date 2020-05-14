@@ -60,7 +60,7 @@ export default class LoginPage extends Component {
                     </form>
                 
                     <div class="ui message">
-                      New to us? <Link to="/register">Sign Up</Link>
+                      New here? <Link to="/register">Sign Up</Link> or <Link to="/">go back</Link>.
                     </div>
                   </div>
                 </div>

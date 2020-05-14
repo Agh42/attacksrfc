@@ -82,8 +82,8 @@ export default class RegisterPage extends Component {
                                           <div class="item">
                                               <i class="check circle icon"></i>
                                               <div class="content">
-                                                All data is stored in secure, redundant cloud locations
-                                           in the European Union (Germany, Belgium and Ireland).
+                                                All data is stored in secure and redundant cloud locations
+                                           in the European Union.
                                               </div>
                                           </div>
                                           

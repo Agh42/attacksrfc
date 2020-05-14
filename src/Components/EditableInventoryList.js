@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button, Icon, Dropdown } from 'semantic-ui-react'
 import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
@@ -8,6 +9,14 @@ import {Link, Redirect} from 'react-router-dom';
 //### AutoSuggest functions:
 
 
+const renderAutoSuggestInputComponent = inputProps => (
+    <div className="inputContainer">
+        <div class="ui fluid left icon input">
+            <input {...inputProps} />
+            <i class="search icon"></i>
+        </div>
+    </div>
+)
 
 function getSuggestionValue(suggestion) {
     //return suggestion.title;
@@ -49,6 +58,8 @@ class CpeItem extends React.Component {
     handleCpeClick = () => {
         this.props.onCpeClick(this.props.cpe.id);
     }
+
+    
     
     render() {
         let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
@@ -56,18 +67,30 @@ class CpeItem extends React.Component {
             = this.props.cpe.id.split(":");
         
             return (
-                    <div className="item">
-                        <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
-                            <i className="delete icon"
-                                onClick={this.handleDeleteClick}></i>&nbsp;&nbsp;
-                            <i className="tags icon"
+                <div class="item">
+                    <div class="right floated content">
+                        <i className="delete link icon"
+                                onClick={this.handleDeleteClick}></i>&nbsp;
+                        <i className="tags link icon"
                                 onClick={this.handleEditCpeClick}></i>
-                            <a className="detail"
-                                onClick={this.handleCpeClick}>
-                                {type+":"+vendor+":"+product+":"+version+":"+update+":"+edition}
-                            </a>
-                        </div>
                     </div>
+                   
+                    <div class="content">
+                        <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
+                            <i className={ {
+                                        'o': "terminal icon",
+                                        'a': "desktop icon",
+                                        'h': "microchip icon",
+                                    }[type]
+                                }
+                                ></i>
+                           <a className="detail"
+                               onClick={this.handleCpeClick}>
+                               {type+":"+vendor+":"+product+":"+version+":"+update+":"+edition}
+                           </a>
+                       </div>
+                    </div>
+                </div>
             )};
 }
 
@@ -166,34 +189,16 @@ export default class EditableInventoryList extends Component {
                 value: searchValue,
                 onChange: this.onChange
         };
+
+        const inventories = [
+            { key: 'i1', value: 'i1', text: '<Unsaved inventory>' },
+            { key: 'inew', value: 'inew', text: '<Add new...>' },
+        ]
         
         return (
                 <div className="ui raised segment" 
-                     style={{overflow: 'auto', "height":"30em"}}>
+                     style={{overflow: 'auto', "height":"52em"}}>
 
-{/*
-                    <div class="ui dropdown labeled icon button">
-                    <i class="filter icon"></i>
-                    <span class="text">Filter Posts</span>
-                    <div class="menu">
-                        <div class="ui icon search input">
-                            <i class="search icon"></i>
-                            <input type="text" placeholder="Search tags..."></input>
-                        </div>
-                            <div class="divider"></div>
-                            <div class="header">
-                                <i class="tags icon"></i>
-                                Tag Label
-                        </div>
-                            <div class="scrolling menu">
-                                <div class="item">
-                                    <div class="ui red empty circular label"></div>
-                                    Important
-                        </div>
-                            </div>
-                        </div>
-                    </div>
-*/}
 
                     {(this.props.selectedCpes.length > this.props.maxCpes )
                     ? <div className="ui negative icon message">
@@ -203,7 +208,63 @@ export default class EditableInventoryList extends Component {
                         increase inventory size and save multiple inventories.
                         </div>
                       </div>
-                    : <Autosuggest 
+                    : <span>
+                        <h3 class="ui header">
+                            <i class="archive icon"></i>
+                            <div class="content">
+                                Inventory
+                                <div class="ui teal sub header">Unsaved inventory</div>
+                            </div>
+                        </h3>
+                        <form class="ui form">
+                            <div class="field">
+                                <Dropdown
+                                    placeholder='<Unsaved inventory...>'
+                                    fluid
+                                    search
+                                    selection
+                                    disabled
+                                    options={inventories}
+                                />
+                            </div>
+                         
+                            <Button.Group attached="top">
+                                <Button positive animated='fade'
+                                    onClick={this.props.onSaveClick}>
+                                    <Button.Content hidden>Save</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='save' />
+                                    </Button.Content>
+                                </Button>
+                                <Button animated='fade'
+                                    onClick={this.props.onSaveClick}>
+                                    <Button.Content hidden>Add</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='plus' />
+                                    </Button.Content>
+                                </Button>
+                                <Button disabled animated='fade'
+                                    onClick={this.props.onSaveClick}>
+                                    <Button.Content hidden>Del</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='trash' />
+                                    </Button.Content>
+                                </Button>
+                                <Button negative animated='fade'
+                                    onClick={this.props.onSaveClick}>
+                                    <Button.Content hidden>Alerts</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='bell slash' />
+                                    </Button.Content>
+                                </Button>
+                            </Button.Group>
+                        </form>
+                      
+                        
+                        <h4 class="ui horizontal divider header">
+                            Product selection
+                        </h4>
+                        <Autosuggest 
                         suggestions={suggestions}
                         onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
@@ -212,28 +273,16 @@ export default class EditableInventoryList extends Component {
                         renderSuggestion={renderSuggestion}
                         focusInputOnSuggestionClick={false}
                         inputProps={inputProps} 
-                      />
+                        renderInputComponent={renderAutoSuggestInputComponent}
+                        />
+                    </span>
                     }
-                {this.state._isLoading ? (<i className="sync icon" />) : ''}   
+                {this.state._isLoading 
+                ? <Icon loading name='spinner' />
+                : ''
+                }   
                 <br/>
-                <div className="field">
-                     <button className="ui positive labeled icon button" 
-                         data-tooltip="Save this asset list." 
-                         data-position="bottom center"
-                         onClick={this.props.onSaveClick} >
-                         <i class="lock icon"></i>
-                          Save inventory
-                    </button>
-                     <button className="ui negative labeled icon button" 
-                          data-tooltip="Get emails on new critical vulnerabilities!" 
-                          data-position="bottom center"
-                          onClick={this.props.onSaveClick}>
-                          <i class="lock icon"></i>
-                          Notifications are off
-                    </button>
-                </div>
-              
-                <div className="ui list">
+                <div className="ui celled list">
                       {cpeItems}
                 </div>
             </div>

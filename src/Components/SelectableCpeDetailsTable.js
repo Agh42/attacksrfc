@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import ClipboardJS from "clipboard";
 
 function noop() {
-    undefined;
+    return undefined;
   }
 
 /**
@@ -71,9 +71,9 @@ class CpeSummaryItem extends React.Component {
                                 }
                             >
                                 <i class={ {
-                                        'o': "large server middle aligned icon",
-                                        'a': "large keyboard middle aligned icon",
-                                        'h': "large computer middle aligned icon",
+                                        'o': "large terminal middle aligned icon",
+                                        'a': "large desktop middle aligned icon",
+                                        'h': "large microchip middle aligned icon",
                                     }[cpetype]
                                 }
                                 ></i>
@@ -175,16 +175,19 @@ export default class SelectableCpeDetailsTable extends Component {
      }
      
     componentDidMount(){
+        console.log("mounted: " + this.props.cpesWithCveCounts);
         var btn = document.getElementById('export-summaries-btn');
         this.clipboard = new ClipboardJS(btn);
         this.clipboard.on('success', function(e) {
             console.log(e);
-            // todo show copied tooltip
         });
         this.clipboard.on('error', function(e) {
             console.log(e);
-            // show error tooltip
         });
+    }
+
+    componentDidUpdate () {
+        console.log("updated: " + this.props.cpesWithCveCounts);
     }
 
     render() {

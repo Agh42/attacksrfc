@@ -6,7 +6,7 @@ import ClipboardJS from "clipboard";
 
 
 function noop() {
-  undefined;
+  return undefined;
 }
 
 const CveItems = (props) => (
