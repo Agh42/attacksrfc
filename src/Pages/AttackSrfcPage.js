@@ -164,8 +164,12 @@ export default class AttackSrfcPage extends Component {
      * the first of those CPEs as initial graph display and loads CVEs for graph.
      */
     initSelectedCpes = () => {
-        let initialCpes = store.get('selectedCpes')
-            || CpeClient.getExampleCpes();
+        if (store.get('selectedCpes') && store.get('selectedCpes').length > 0) {
+            var initialCpes = store.get('selectedCpes');
+        }
+        else {
+            var initialCpes = CpeClient.getExampleCpes();
+        }
     
         this.setState( {selectedCpes: initialCpes,
                         selectedCpeSummaryForGraph: initialCpes[0],
