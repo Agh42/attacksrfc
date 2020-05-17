@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 
-const newsitems = (props) => (
+const Articles = (props) => (
     props.articles.map((article) =>
         <div class="item">
             <i class="check circle teal icon"></i>
@@ -24,7 +24,9 @@ export default class NewsList extends Component {
 
     render () {
         <div class="ui small list">
-
+            <Articles
+                articles={}
+            />
         </div>
     }
 }
