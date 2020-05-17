@@ -116,7 +116,7 @@ function checkStatus(response) {
  * @returns
  */
 export function getCvesForCpes(cpes, itemsPerPage, numPage, start, end, success) {
-  let fields = ["id", "cvss", "references", "Modified", "Published", "summary", "has_exploit"];
+  let fields = ["id", "cvss", "references", "Modified", "Published", "summary", "has_exploit", "latestNews"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
     method: 'post',
@@ -170,7 +170,7 @@ export function getCveSummaryForCpe(cpe, start, end, success) {
  * @callback {CpeClient~getCvesByCpesForGraph} success The function to call with positive result.
  */
 export function getCvesByCpesForGraph(cpes, start, end, success) {
-  const fields = ["id","cvss","vulnerable_product_stems","vulnerable_configuration_stems","has_exploit"];
+  const fields = ["id","cvss","vulnerable_product_stems","vulnerable_configuration_stems","has_exploit", "latestNews"];
 
   fetch(CVESERVICE_URL + '/api/v1/cves/search', {
     method: 'post',

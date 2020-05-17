@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import CVEs from '../Dto/CVEs';
+import {CVEs, NEWSWORTHY, HOTTOPIC} from '../Dto/CVEs';
 import ClipboardJS from "clipboard";
 
 
@@ -24,6 +24,16 @@ const CveItems = (props) => (
             {
               cve.has_exploit
               ? <i class="red warning sign icon"></i>
+              : ""
+            }
+            {
+              CVEs.hasNews(cve)
+              ? <i class="orange comments icon"></i>
+              : ""
+            }
+            {
+              CVEs.hasNews(cve) === HOTTOPIC
+              ? <i class="red fire icon"></i>
               : ""
             }
             {cve.cvss}

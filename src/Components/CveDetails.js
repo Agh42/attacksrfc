@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CVEs from '../Dto/CVEs';
+import {CVEs, NEWSWORTHY, HOTTOPIC} from '../Dto/CVEs';
+import {Accordion, Icon} from 'semantic-ui-react';
+import moment from 'moment';
+import { deflateSync } from 'zlib';
+import NewsList from '../Components/NewsList';
+
+
 
 /*
  * Displays details of one CVE.
@@ -14,6 +20,8 @@ import CVEs from '../Dto/CVEs';
 const CVSS_CALCULATOR_URL = "https://cvssjs.github.io/#";
 
 export default class CveDetails extends Component {
+  
+    state = { activeIndex: 0 }
 
     static propTypes = {
         cve: PropTypes.object.isRequired,
@@ -29,6 +37,18 @@ export default class CveDetails extends Component {
         .length > 0;
     }
 
+    handleNewsClick = () => {
+      console.log("Handle news click");
+    }
+
+    handleAccordionClick = (e, titleProps) => {
+      const { index } = titleProps
+      const { activeIndex } = this.state
+      const newIndex = activeIndex === index ? -1 : index
+  
+      this.setState({ activeIndex: newIndex })
+    }
+
     /**
      * Returns index of tag list (outer array) containing 'exploit' tag:
      */
@@ -42,6 +62,8 @@ export default class CveDetails extends Component {
     }
 
     render () {
+      const { activeIndex } = this.state
+
         if (! ('id' in this.props.cve)) {
           return (
              <div className='ui raised segment'>
@@ -56,6 +78,7 @@ export default class CveDetails extends Component {
         }
 
         const modified = CVEs.formatDate(this.props.cve.Modified);
+      
 
         return(
             <div className='ui raised segments'
@@ -78,11 +101,44 @@ export default class CveDetails extends Component {
                       <div class="middle aligned content">
                         <i class="huge warning sign red link icon"></i>
                         <div class="ui red header">
-                          Exploit warning!
+                          Exploit warning
                         </div>
                       </div>
                     </a>
                   ) : ""
+                  }
+
+                  {
+                    (() => {
+                        if (CVEs.hasNews(this.props.cve)) {
+                          return  <a class="link item"
+                            target="_blank" rel="noopener noreferrer"  
+                            onClick={this.handleNewsClick} >
+                            <div class="middle aligned content">
+                              <i class="huge comments orange link icon"></i>
+                              <div class="ui orange header">
+                                Newsworthy
+                              </div>
+                            </div>
+                          </a>
+                        }
+                    })()
+                  }
+
+                  { (() => {
+                      if (CVEs.hasNews(this.props.cve) === HOTTOPIC) {
+                            return  <a class="link item"
+                              target="_blank" rel="noopener noreferrer"  
+                              onClick={this.handleNewsClick} >
+                              <div class="middle aligned content">
+                                <i class="huge fire red link icon"></i>
+                                <div class="ui red header">
+                                  Hot Topic
+                                </div>
+                              </div>
+                            </a>
+                      }
+                    })()
                   }
 
                     <a class="link item"
@@ -129,8 +185,17 @@ export default class CveDetails extends Component {
                  
 
                    <div class="ui segment">
-                   <div class="ui small list">
-                      
+                   <Accordion>
+                      <Accordion.Title
+                        active={activeIndex === 0}
+                        index={0}
+                        onClick={this.handleAccordionClick}
+                      >
+                        <Icon name='dropdown' />
+                        Vulnerability Database
+                      </Accordion.Title>
+                      <Accordion.Content active={activeIndex === 0}>
+                      <div class="ui small list">
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
                           <div class="header">
@@ -265,6 +330,24 @@ export default class CveDetails extends Component {
                       
                     
                 </div>
+                      </Accordion.Content>
+
+                      <Accordion.Title
+                        active={activeIndex === 1}
+                        index={1}
+                        onClick={this.handleAccordionClick}
+                      >
+                        <Icon name='dropdown' />
+                        News Items
+                      </Accordion.Title>
+                      <Accordion.Content active={activeIndex === 1}>
+                       <NewsList
+                         cve={this.props.cve}
+                       />
+                      </Accordion.Content>
+                   </Accordion>
+
+                 
             </div>
           </div>
         );

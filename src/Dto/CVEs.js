@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 export const CVEs = {colorValueForScore, colorNameForScore, severityForScore, formatDate,
-    getHostname, getCpeAsUriBinding, getCpeIdAsUriBinding};
+    getHostname, getCpeAsUriBinding, getCpeIdAsUriBinding, hasNews};
 export default CVEs;
 
 const MEDIUM_THRESHOLD = 3.99; // medium severity lower bound exclusive
@@ -17,6 +17,10 @@ export const COLOR_RED = "#db2828";
 export const COLOR_ORANGE = "#f2711c";
 export const COLOR_AMBER = "#fbbd08";
 export const COLOR_GREEN = "#21ba45";
+
+export const NEWSWORTHY = "NEWSWORTHY";
+export const HOTTOPIC = "HOTTOPIC";
+const HOTTOPIC_DAYS = 56;
 
 function colorValueForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return COLOR_GREEN;
@@ -70,6 +74,8 @@ function getCpeAsUriBinding(cpe) {
     return getCpeIdAsUriBinding(cpe.id);   
 }
 
+
+
 /*
  * Parses cpe id in v2 format. Cuts off version, update, editien etc.
  */
@@ -90,3 +96,14 @@ function getCpeIdAsUriBinding(cpe22) {
     
 }
 
+function hasNews(cve) {
+    if (!cve.latestNews)
+      return "";
+
+    const latestNews = CVEs.formatDate(cve.latestNews);
+    let days = moment().diff(
+        moment(latestNews),'days') ;
+    return days > HOTTOPIC_DAYS
+        ? NEWSWORTHY
+        : HOTTOPIC;
+  }
