@@ -10,6 +10,7 @@ import CveList from '../Components/CveList';
 import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
+import NewsClient from '../Gateways/NewsClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
 import CVEs from '../Dto/CVEs.js';
@@ -75,6 +76,7 @@ export default class AttackSrfcPage extends Component {
     state = {
             selectedCpes: [],
             selectedCve: {},
+            articles: [],
             selectedCvesPage: [],
             selectedCvesTotalCount: 0,
             stats: [],
@@ -335,6 +337,10 @@ export default class AttackSrfcPage extends Component {
                 selectedCve: fullCve,
             })
         ));
+        NewsClient.getArticles(this.state.selectedCve.id, (response) => {
+            let articles = ('_embedded' in response) ? response._embedded.articles : [];
+            this.setState({ articles: articles })
+        });
     }
 
     loadCvesPage = () => {
@@ -543,6 +549,7 @@ export default class AttackSrfcPage extends Component {
                 <Tab.Pane >
                     <CveDetails
                         cve={this.state.selectedCve}
+                        articles={this.state.articles}
                     />
                 </Tab.Pane>
             }

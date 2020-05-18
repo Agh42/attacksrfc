@@ -25,6 +25,7 @@ export default class CveDetails extends Component {
 
     static propTypes = {
         cve: PropTypes.object.isRequired,
+        articles: PropTypes.array.isRequired,
     };
 
     hasExploit = () => {
@@ -38,14 +39,15 @@ export default class CveDetails extends Component {
     }
 
     handleNewsClick = () => {
-      console.log("Handle news click");
+      this.setState({
+        activeIndex: 1,
+      });
     }
 
     handleAccordionClick = (e, titleProps) => {
       const { index } = titleProps
       const { activeIndex } = this.state
       const newIndex = activeIndex === index ? -1 : index
-  
       this.setState({ activeIndex: newIndex })
     }
 
@@ -342,7 +344,7 @@ export default class CveDetails extends Component {
                       </Accordion.Title>
                       <Accordion.Content active={activeIndex === 1}>
                        <NewsList
-                         cve={this.props.cve}
+                         articles={this.props.articles}
                        />
                       </Accordion.Content>
                    </Accordion>

@@ -20,7 +20,7 @@ export const COLOR_GREEN = "#21ba45";
 
 export const NEWSWORTHY = "NEWSWORTHY";
 export const HOTTOPIC = "HOTTOPIC";
-const HOTTOPIC_DAYS = 56;
+const HOTTOPIC_DAYS = 30;
 
 function colorValueForScore(score) {
     if (score <= MEDIUM_THRESHOLD) return COLOR_GREEN;

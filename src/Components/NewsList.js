@@ -1,32 +1,64 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
+import moment from 'moment';
 
 const Articles = (props) => (
     props.articles.map((article) =>
         <div class="item">
-            <i class="check circle teal icon"></i>
             <div class="content">
-            <div class="header">Summary:</div>
-            <div class="description">
-                {this.props.cve.summary}
-            </div>
+                <div class="header">
+                    <i class={article.region + " flag"}></i>
+                    <a target="_blank" rel="noopener noreferrer"  
+                        href={article.url}>{article.name}
+                    </a>
+                </div>
+                <div class="meta">
+                    <a target="_blank" rel="noopener noreferrer"  
+                        href={"https://translate.google.com/translate?js=n&sl=auto&tl=en&u="
+                        + article.url}>
+                        [Translate]
+                    </a>
+                </div>
+                <div class="description">
+                    {article.description}...
+                </div>
+                <div class="extra">Published: {formatDateTime(article.datePublished)}</div>
             </div>
         </div>
     )
 )
 
+function formatDateTime(isoDate) {
+    let mom = moment(isoDate, moment.ISO_8601, true);
+    return mom.format('YYYY-MM-DD HH:mm (UTC Z)');
+}
 
 export default class NewsList extends Component {
     static propTypes = {
-        cve: PropTypes.object.isRequired,
+        articles: PropTypes.array.isRequired,
     }
 
     render () {
-        <div class="ui small list">
-            <Articles
-                articles={}
-            />
-        </div>
+        if (! ('articles' in this.props) 
+            || (!this.props.articles) 
+            || (this.props.articles.length < 1)
+            ) {
+            return( 
+                <div className='ui center aligned grey icon header'>
+                    <i class="grey pencil circle icon"></i>
+                    <div className='content'>
+                        No news is good news.
+                    </div>
+                </div>
+            );
+        }
+
+        return (
+            <div class="ui divided items">
+                <Articles
+                    articles={this.props.articles}
+                />
+            </div>
+        )
     }
 }
