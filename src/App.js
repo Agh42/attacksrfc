@@ -11,7 +11,7 @@ import {
 import AttackSrfcPage from './Pages/AttackSrfcPage';
 import RegisterPage from './Pages/RegisterPage';
 import LoginPage from './Pages/LoginPage';
-
+import './fomantic/dist/semantic.min.css';
 
 export default class App extends Component {
     
