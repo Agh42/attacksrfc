@@ -6,9 +6,9 @@
        Fonts
 --------------------*/
 
-@fontName          : 'Roboto Condensed';
+@fontName          : 'Lato';
 
 @headerFont        : 'Roboto Condensed', Arial, Helvetica, sans-serif;
-@pageFont          : 'Roboto Condensed', Arial, Helvetica, sans-serif;
+@pageFont          : 'Lato', Arial, Helvetica, sans-serif;
 
 
