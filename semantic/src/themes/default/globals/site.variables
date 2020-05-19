@@ -7,11 +7,17 @@
 /*-------------------
        Fonts
 --------------------*/
+@fontName          : 'Roboto Condensed';
 
+@headerFont        : 'Roboto Condensed', Arial, Helvetica, sans-serif;
+@pageFont          : 'Roboto Condensed', Arial, Helvetica, sans-serif;
+
+/*
 @fontName          : 'Lato';
 
 @headerFont        : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
 @pageFont          : @fontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+*/
 
 @googleFontName    : @fontName;
 @importGoogleFonts : true;

@@ -2,5 +2,15 @@
      User Global Variables
 *******************************/
 
+/*-------------------
+       Fonts
+--------------------*/
+
+@fontName          : 'Roboto Condensed';
+
+@headerFont        : 'Roboto Condensed', Arial, Helvetica, sans-serif;
+@pageFont          : 'Roboto Condensed', Arial, Helvetica, sans-serif;
+
+
 
 
