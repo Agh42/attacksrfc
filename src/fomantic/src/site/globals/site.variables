@@ -8,7 +8,13 @@
 
 @fontName          : 'Lato';
 
-@headerFont        : 'Roboto Condensed', Arial, Helvetica, sans-serif;
-@pageFont          : 'Lato', Arial, Helvetica, sans-serif;
+@headerFont        : 'Roboto Condensed', Arial, Helvetica, "Microsoft YaHei New", 'Noto Sans TC', sans-serif;
+@pageFont          : 'Lato', Arial, Helvetica, "Microsoft YaHei New", "Microsoft Yahei", 'Noto Sans TC', sans-serif;
 
+@importGoogleFonts : true;
+@googleFontSizes   : '400,700,400italic,700italic';
+@googleSubset      : 'latin';
+@googleFontDisplay : 'swap';
 
+@googleProtocol    : 'https://';
+@googleFontRequest : 'Roboto+Condensed:400,700|Lato:400,700|Noto+Sans+TC:400,700';

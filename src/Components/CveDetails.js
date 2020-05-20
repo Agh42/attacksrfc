@@ -194,7 +194,7 @@ export default class CveDetails extends Component {
                         onClick={this.handleAccordionClick}
                       >
                         <Icon name='dropdown' />
-                        Vulnerability Database
+                        Vulnerability Details
                       </Accordion.Title>
                       <Accordion.Content active={activeIndex === 0}>
                       <div class="ui small list">

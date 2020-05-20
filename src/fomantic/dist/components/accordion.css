@@ -31,7 +31,7 @@
 /* Default Styling */
 .ui.accordion .title:not(.ui) {
   padding: 0.5em 0;
-  font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Condensed', Arial, Helvetica, "Microsoft YaHei New", 'Noto Sans TC', sans-serif;
   font-size: 1em;
   color: rgba(0, 0, 0, 0.87);
 }

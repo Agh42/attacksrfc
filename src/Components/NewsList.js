@@ -7,7 +7,10 @@ const Articles = (props) => (
         <div class="item">
             <div class="content">
                 <div class="header">
-                    <i class={article.region + " flag"}></i>
+                    {(article.region)
+                    ? <i class={article.region + " flag"}></i>
+                    : <i class="newspaper icon"></i>
+                    }
                     <a target="_blank" rel="noopener noreferrer"  
                         href={article.url}>{article.name}
                     </a>
@@ -16,7 +19,7 @@ const Articles = (props) => (
                     <a target="_blank" rel="noopener noreferrer"  
                         href={"https://translate.google.com/translate?js=n&sl=auto&tl=en&u="
                         + article.url}>
-                        [Translate]
+                        [View Translation...]
                     </a>
                 </div>
                 <div class="description">

@@ -79,7 +79,7 @@
 
 .ui.modal > .header {
   display: block;
-  font-family: 'Roboto Condensed', Arial, Helvetica, sans-serif;
+  font-family: 'Roboto Condensed', Arial, Helvetica, "Microsoft YaHei New", 'Noto Sans TC', sans-serif;
   background: #FFFFFF;
   margin: 0;
   padding: 1.25rem 1.5rem;

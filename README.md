@@ -22,6 +22,13 @@ Set environment variables in production to the correct values.
 
 
 
+# Fomantic-UI Theming
+
+Changing the fomantic-ui theme is possible by editing
+settings in _src/fomantic/src/site/globals/site.variables_ etc.
+
+Don't forget to rebuild fomantic-ui by running _gulp build_ in the fomantic
+folder.
 
 
 # Create-React-App Primer:

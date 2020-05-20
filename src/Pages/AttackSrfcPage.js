@@ -634,43 +634,43 @@ export default class AttackSrfcPage extends Component {
         return (
          <React.Fragment>
           <div class="ui grid ">
-              <div class="row">
-                  <div class="column">
-                  {this.state._uhoh
-                  ?    <div class="ui red message">
-                         <DowntimeTimer/>
-                       </div>
-                       
-                  :    <div class="ui top fixed inverted teal icon menu"
-                        style={{overflow: 'auto'}}
-                       >
-                          <a className="item" href="/homepage.html"><i className="home icon" /></a>
-                           <div className="ui item"><h4 className="ui left aligned inverted header">
-                               AttackSrfc - CVE Search and Vulnerability Management
-                               <div className="sub header">
-                               Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
-                               - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
-                               </div>
-                               </h4>
-                           </div>
-                    
-                           <CookieConsent/>       
-                           
-                           <div class="right menu primary">
-                           <Link to="/login" class="item">
-                             <i className="sign in icon" />
-                             &nbsp;&nbsp;Login
-                           </Link>
-                           <Link to="/login" class="item" onClick={this.noop}>
-                             <i className="disabled cog icon" />
-                           </Link>
-                         </div>
-                      </div>
-                  } 
-                      
-                  </div>
-              </div>
-          </div>
+                <div class="row">
+                    <div class="column">
+                        {this.state._uhoh
+                        ?    <div class="ui red message">
+                                <DowntimeTimer/>
+                            </div>
+                            
+                        :    <div class="ui top fixed inverted teal icon menu"
+                                style={{overflow: 'auto'}}
+                            >
+                                <a className="item" href="/homepage.html"><i className="home icon" /></a>
+                                <div className="ui item"><h4 className="ui left aligned inverted header">
+                                    AttackSrfc - CVE Search and Vulnerability Management
+                                    <div className="sub header">
+                                    Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
+                                    - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
+                                    </div>
+                                    </h4>
+                                </div>
+                            
+                                <CookieConsent/>       
+                                
+                                <div class="right menu primary">
+                                <Link to="/login" class="item">
+                                    <i className="sign in icon" />
+                                    &nbsp;&nbsp;Login
+                                </Link>
+                                <Link to="/login" class="item" onClick={this.noop}>
+                                    <i className="disabled cog icon" />
+                                </Link>
+                                </div>
+                            </div>
+                        } 
+                    </div> {/* end col */}
+                </div> {/* end row */}
+          </div> {/* end grid */}
+
             <Modal basic size='small'
                 open={this.state._dialogMessage !== ""}>
             <Header icon='archive' content='Inventory full' />
@@ -688,6 +688,7 @@ export default class AttackSrfcPage extends Component {
             </Modal>
           &nbsp;
           &nbsp;
+          
         <div className='ui stackable grid'>
             <div className='two column row'>
                 <div className='five wide column'>
