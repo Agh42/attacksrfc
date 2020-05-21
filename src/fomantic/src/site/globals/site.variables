@@ -18,3 +18,14 @@
 
 @googleProtocol    : 'https://';
 @googleFontRequest : 'Roboto+Condensed:400,700|Lato:400,700|Noto+Sans+TC:400,700';
+
+
+/*-------------------
+     Breakpoints
+--------------------*/
+
+@mobileBreakpoint            : 320px;
+@tabletBreakpoint            : 768px;
+@computerBreakpoint          : 1000px;
+@largeMonitorBreakpoint      : 1200px;
+@widescreenMonitorBreakpoint : 1600px;

@@ -186,13 +186,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.modal:not(.fullscreen) {
     width: 850px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.modal:not(.fullscreen) {
     width: 900px;
     margin: 0 0 0 0;
@@ -206,7 +206,7 @@
 }
 
 /* Tablet and Mobile */
-@media only screen and (max-width: 991.98px) {
+@media only screen and (max-width: 1199.98px) {
   .ui.modal > .header {
     padding-right: 2.25rem;
   }
@@ -475,13 +475,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.mini.modal {
     width: 340px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.mini.modal {
     width: 360px;
     margin: 0 0 0 0;
@@ -508,13 +508,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.tiny.modal {
     width: 510px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.tiny.modal {
     width: 540px;
     margin: 0 0 0 0;
@@ -541,13 +541,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.small.modal {
     width: 680px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.small.modal {
     width: 720px;
     margin: 0 0 0 0;
@@ -574,13 +574,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.large.modal {
     width: 1020px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.large.modal {
     width: 1080px;
     margin: 0 0 0 0;
@@ -607,13 +607,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.big.modal {
     width: 1190px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.big.modal {
     width: 1260px;
     margin: 0 0 0 0;
@@ -640,13 +640,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.huge.modal {
     width: 1360px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.huge.modal {
     width: 1440px;
     margin: 0 0 0 0;
@@ -673,13 +673,13 @@
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.massive.modal {
     width: 1530px;
     margin: 0 0 0 0;
   }
 }
-@media only screen and (min-width: 1200px) {
+@media only screen and (min-width: 1600px) {
   .ui.massive.modal {
     width: 1620px;
     margin: 0 0 0 0;
@@ -713,7 +713,7 @@
 .ui.inverted.dimmer > .modal > .close {
   color: rgba(0, 0, 0, 0.85);
 }
-@media only screen and (max-width: 991.98px) {
+@media only screen and (max-width: 1199.98px) {
   .ui.dimmer .inverted.modal > .close {
     color: #FFFFFF;
   }

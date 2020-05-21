@@ -633,45 +633,98 @@ export default class AttackSrfcPage extends Component {
 
         return (
          <React.Fragment>
-          <div class="ui grid ">
-                <div class="row">
-                    <div class="column">
-                        {this.state._uhoh
-                        ?    <div class="ui red message">
-                                <DowntimeTimer/>
-                            </div>
-                            
-                        :    <div class="ui top fixed inverted teal icon menu"
-                                style={{overflow: 'auto'}}
-                            >
-                                <a className="item" href="/homepage.html"><i className="home icon" /></a>
-                                <div className="ui item"><h4 className="ui left aligned inverted header">
-                                    AttackSrfc - CVE Search and Vulnerability Management
-                                    <div className="sub header">
-                                    Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
-                                    - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
-                                    </div>
-                                    </h4>
-                                </div>
-                            
-                                <CookieConsent/>       
-                                
-                                <div class="right menu primary">
-                                <Link to="/login" class="item">
-                                    <i className="sign in icon" />
-                                    &nbsp;&nbsp;Login
-                                </Link>
-                                <Link to="/login" class="item" onClick={this.noop}>
-                                    <i className="disabled cog icon" />
-                                </Link>
-                                </div>
-                            </div>
-                        } 
-                    </div> {/* end col */}
-                </div> {/* end row */}
-          </div> {/* end grid */}
 
-            <Modal basic size='small'
+         <div clas="ui fluid container">
+
+         
+            <div class="ui padded grid">
+                    <div class="one column row">
+                        <div class="sixteen wide column">
+                            {this.state._uhoh
+                            ?    <div class="ui red message">
+                                    <DowntimeTimer/>
+                                </div>
+                                
+                            :    <div class="ui top fixed inverted teal icon menu"
+                                    style={{overflow: 'auto'}}
+                                >
+                                    <a className="item" href="/homepage.html"><i className="home icon" /></a>
+                                    <div className="ui item"><h4 className="ui left aligned inverted header">
+                                        AttackSrfc - CVE Search and Vulnerability Management
+                                        <div className="sub header">
+                                        Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
+                                        - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
+                                        </div>
+                                        </h4>
+                                    </div>
+                                
+                                    <CookieConsent/>       
+                                    
+                                    <div class="right menu primary">
+                                    <Link to="/login" class="item">
+                                        <i className="sign in icon" />
+                                        &nbsp;&nbsp;Login
+                                    </Link>
+                                    <Link to="/login" class="item" onClick={this.noop}>
+                                        <i className="disabled cog icon" />
+                                    </Link>
+                                    </div>
+                                </div>
+                            } 
+                        </div> {/* end col */}
+                    </div> {/* end row */}
+                    <div class="row">
+                        <div class="sixteen wide column">
+                        <div className='ui stackable grid'>
+                            <div className='two column row'>
+                                <div className='five wide column'>
+                                    <Tab 
+                                        panes={leftTabPanes} 
+                                        renderActiveOnly={false} 
+                                        activeIndex={this.state.leftActiveTabIndex}
+                                        onTabChange={this.handleLeftTabChange}
+                                        />
+                                
+                                </div>
+
+                                <div className='eleven wide column'>
+                                    <div className='ui grid'>
+                                        <div className='ui column'>
+                                        
+                                            <div className='ui row'>
+                                                <div className='ui raised segment'>
+                                                    <TimerangeSelector 
+                                                        onRangeChange={this.handleDateRangeChanged}
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className='ui row'>
+                                                <div className='ui raised segment'
+                                                    style={{overflow: 'auto', "height":"49em"}}
+                                                >
+                                                    <Tab 
+                                                        panes={panes} 
+                                                        renderActiveOnly={false} 
+                                                        activeIndex={this.state.activeTabIndex}
+                                                        onTabChange={this.handleTabChange}
+                                                        />
+
+                                                </div>
+                                            </div> {/*end row */}
+                                        </div> {/* end nested grid single column*/}
+                                    </div> {/*end nested grid*/}
+                                </div> {/* end stackable grid middle column*/}
+                            </div> {/* end stackable grid row*/}
+                        </div> {/* end stackable grid*/}
+                        </div> {/* end col */}
+                    </div> {/* end row */}
+            </div> {/* end grid */}
+            </div>
+
+            
+
+        <Modal basic size='small'
                 open={this.state._dialogMessage !== ""}>
             <Header icon='archive' content='Inventory full' />
             <Modal.Content>
@@ -686,51 +739,6 @@ export default class AttackSrfcPage extends Component {
                 </Button>
             </Modal.Actions>
             </Modal>
-          &nbsp;
-          &nbsp;
-          
-        <div className='ui stackable grid'>
-            <div className='two column row'>
-                <div className='five wide column'>
-                    <Tab 
-                        panes={leftTabPanes} 
-                        renderActiveOnly={false} 
-                        activeIndex={this.state.leftActiveTabIndex}
-                        onTabChange={this.handleLeftTabChange}
-                        />
-                   
-                </div>
-
-                <div className='eleven wide column'>
-                  <div className='ui grid'>
-                    <div className='ui column'>
-                    
-                        <div className='ui row'>
-                            <div className='ui raised segment'>
-                                <TimerangeSelector 
-                                    onRangeChange={this.handleDateRangeChanged}
-                                />
-                            </div>
-                        </div>
-
-                        <div className='ui row'>
-                            <div className='ui raised segment'
-                                style={{overflow: 'auto', "height":"50em"}}
-                            >
-                                <Tab 
-                                    panes={panes} 
-                                    renderActiveOnly={false} 
-                                    activeIndex={this.state.activeTabIndex}
-                                    onTabChange={this.handleTabChange}
-                                    />
-
-                            </div>
-                        </div> {/*end row */}
-                    </div> {/* end nested grid single column*/}
-                  </div> {/*end nested grid*/}
-                </div> {/* end outer grid middle column*/}
-            </div> {/* end outer grid row*/}
-        </div> {/* end outer grid*/}
 
             <div class="ui  vertical footer segment">
             <div class="ui center aligned container">

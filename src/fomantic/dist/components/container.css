@@ -39,7 +39,7 @@
 }
 
 /* Tablet */
-@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+@media only screen and (min-width: 768px) and (max-width: 999.98px) {
   .ui.ui.ui.container:not(.fluid) {
     width: 723px;
     margin-left: auto;
@@ -57,20 +57,20 @@
 }
 
 /* Small Monitor */
-@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+@media only screen and (min-width: 1000px) and (max-width: 1199.98px) {
   .ui.ui.ui.container:not(.fluid) {
-    width: 933px;
+    width: 941px;
     margin-left: auto;
     margin-right: auto;
   }
   .ui.ui.ui.grid.container {
-    width: calc(933px + 2rem);
+    width: calc(941px + 2rem);
   }
   .ui.ui.ui.relaxed.grid.container {
-    width: calc(933px + 3rem);
+    width: calc(941px + 3rem);
   }
   .ui.ui.ui.very.relaxed.grid.container {
-    width: calc(933px + 5rem);
+    width: calc(941px + 5rem);
   }
 }
 

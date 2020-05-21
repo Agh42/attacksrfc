@@ -461,7 +461,7 @@ select.ui.dropdown {
     max-height: 32.05714286rem;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.selection.dropdown[class*="very short"] .menu {
     max-height: 8.01428571rem;
   }
@@ -661,7 +661,7 @@ select.ui.dropdown {
     max-height: 10.68571429rem;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.search.dropdown .menu {
     max-height: 16.02857143rem;
   }
@@ -1268,7 +1268,7 @@ select.ui.dropdown {
     max-height: 15.42857143rem;
   }
 }
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width: 1200px) {
   .ui.scrolling.dropdown .menu,
   .ui.dropdown .scrolling.menu {
     max-height: 20.57142857rem;

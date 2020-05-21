@@ -18,6 +18,10 @@ i.icon {
   margin: 0;
 }
 
+.ui.grid {
+  margin-top:8px!important;
+}
+
 #cvegraph {
     background-color: #ffffff
 }
