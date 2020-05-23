@@ -90,15 +90,20 @@ function checkStatus(response) {
   */
  function convertSummary(json) {
     // flatten to [{HIGH:1}, {MEDIUM:2}, ...]
-    let flattened = json.map( (elmt) => {
+    let flattened = json.summary.map( (elmt) => {
       return {
         [elmt._id.severity] : elmt.count, 
         [elmt._id.severity + "_EXPLOITS"] : elmt.exploitCount,
       };
     }); 
     // merge to new {HIGH:1, MEDIUM: 2} object with spread operator:
-    if (flattened.length)
-      return Object.assign(...flattened);
+    if (flattened.length) {
+      let convertedSummary = Object.assign(...flattened);
+      return {
+        ...json,
+        summary: convertedSummary,
+      };
+    }
     else
       return {};
  }

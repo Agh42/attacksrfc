@@ -97,22 +97,46 @@ class CpeSummaryItem extends React.Component {
 
                 <td class="center aligned">
                     { 'summary' in this.props.cpeSummary 
-                        && this.sumExploitCounts(this.props.cpeSummary.summary) > 0
+                        && 'summary' in this.props.cpeSummary.summary
+                        && this.sumExploitCounts(this.props.cpeSummary.summary.summary) > 0
                     ?   <div class="ui basic compact tiny red icon button"
                             data-tooltip={
                                 "Exploit warning: " 
-                                + this.exploitWarningCounts(this.props.cpeSummary.summary)
+                                + this.exploitWarningCounts(this.props.cpeSummary.summary.summary)
                         }>
                             <i class="warning sign icon"></i>
                         </div>
                     : ""    
                     }
+                    { 'summary' in this.props.cpeSummary
+                        && 'hasNews' in this.props.cpeSummary.summary
+                        && this.props.cpeSummary.summary.hasNews
+                        ? <div class="ui basic compact tiny orange icon button"
+                            data-tooltip={
+                                "Newsworthy items" 
+                        }>
+                            <i class="comments icon"></i>
+                        </div>
+                        : ""
+                    }
+                    { 'summary' in this.props.cpeSummary
+                        && 'hasNewsLast30Days' in this.props.cpeSummary.summary
+                        && this.props.cpeSummary.summary.hasNewsLast30Days
+                        ? <div class="ui basic compact tiny red icon button"
+                            data-tooltip={
+                                "Hot Topics" 
+                        }>
+                            <i class="fire icon"></i>
+                        </div>
+                        : ""
+                    }
                 </td>
 
                 <td class="center aligned">
                     { 'summary' in this.props.cpeSummary 
+                        && 'summary' in this.props.cpeSummary.summary
                     ? <div class="ui grey circular label">
-                        {this.sumCounts(this.props.cpeSummary.summary)}
+                        {this.sumCounts(this.props.cpeSummary.summary.summary)}
                         </div>
                     : ""    
                     }
@@ -120,31 +144,35 @@ class CpeSummaryItem extends React.Component {
 
                 <td class="center aligned">
                     { 'summary' in this.props.cpeSummary
-                       && 'CRITICAL' in this.props.cpeSummary.summary
-                        ? <div  class="ui red circular label">{this.props.cpeSummary.summary.CRITICAL}
+                        && 'summary' in this.props.cpeSummary.summary
+                       && 'CRITICAL' in this.props.cpeSummary.summary.summary
+                        ? <div  class="ui red circular label">{this.props.cpeSummary.summary.summary.CRITICAL}
                           </div>
                         : "" }
                 </td>
 
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
-                      && 'HIGH' in this.props.cpeSummary.summary
-                        ? <div class="ui orange circular label">{this.props.cpeSummary.summary.HIGH}</div>
+                    && 'summary' in this.props.cpeSummary.summary
+                      && 'HIGH' in this.props.cpeSummary.summary.summary
+                        ? <div class="ui orange circular label">{this.props.cpeSummary.summary.summary.HIGH}</div>
                         : "" }
                 </td>
 
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
-                   && 'MEDIUM' in this.props.cpeSummary.summary
-                        ? <div class="ui yellow circular label">{this.props.cpeSummary.summary.MEDIUM}
+                    && 'summary' in this.props.cpeSummary.summary
+                   && 'MEDIUM' in this.props.cpeSummary.summary.summary
+                        ? <div class="ui yellow circular label">{this.props.cpeSummary.summary.summary.MEDIUM}
                           </div> 
                         : "" }
                 </td>
 
                  <td class="center aligned">
                   {'summary' in this.props.cpeSummary
-                   && 'LOW' in this.props.cpeSummary.summary
-                        ? <div class="ui green circular label">{this.props.cpeSummary.summary.LOW}
+                    && 'summary' in this.props.cpeSummary.summary
+                   && 'LOW' in this.props.cpeSummary.summary.summary
+                        ? <div class="ui green circular label">{this.props.cpeSummary.summary.summary.LOW}
                           </div> 
                         : "" }
                 </td>
