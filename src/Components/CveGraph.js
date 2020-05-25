@@ -36,7 +36,7 @@ function needToCreateSummaryNode(cpeSummary, createdNodes, primaryCpeId, severit
     if (createdNodes.has(severity + "_" + primaryCpeId))
         return false;
     
-    if ('summary' in cpeSummary && severity in cpeSummary.summary)
+    if ('summary' in cpeSummary && severity in cpeSummary.summary.summary)
         return true;
     
     return false;
@@ -195,25 +195,25 @@ export default class CveGraph extends Component {
              props.cpeSummaries.forEach( (cs) => {
                 if (CVEs.getCpeAsUriBinding(cs.cpe) === primaryCpeId) {
                     if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "CRITICAL") ) {
-                        summaryNodes.CRITICAL = createSummaryNode(primaryCpeId, "CRITICAL", cs.summary.CRITICAL, COLOR_RED);
+                        summaryNodes.CRITICAL = createSummaryNode(primaryCpeId, "CRITICAL", cs.summary.summary.CRITICAL, COLOR_RED);
                         this.nodes.add(summaryNodes.CRITICAL);
                         this.edges.add( {from: summaryNodes.CRITICAL.id, to: primaryCpeId} );
                         createdNodes.add("CRITICAL" + "_" + primaryCpeId);
                     }
                     else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "HIGH") ) {
-                        summaryNodes.HIGH = createSummaryNode(primaryCpeId, "HIGH", cs.summary.HIGH, COLOR_ORANGE);
+                        summaryNodes.HIGH = createSummaryNode(primaryCpeId, "HIGH", cs.summary.summary.HIGH, COLOR_ORANGE);
                         this.nodes.add(summaryNodes.HIGH);
                         this.edges.add( {from: summaryNodes.HIGH.id, to: primaryCpeId} );
                         createdNodes.add("HIGH" + "_" +  primaryCpeId);
                     }
                     else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "MEDIUM") ) {
-                        summaryNodes.MEDIUM = createSummaryNode(primaryCpeId, "MEDIUM", cs.summary.MEDIUM, COLOR_AMBER);
+                        summaryNodes.MEDIUM = createSummaryNode(primaryCpeId, "MEDIUM", cs.summary.summary.MEDIUM, COLOR_AMBER);
                         this.nodes.add(summaryNodes.MEDIUM);
                         this.edges.add( {from: summaryNodes.MEDIUM.id, to: primaryCpeId} );
                         createdNodes.add("MEDIUM" + "_" +  primaryCpeId);
                     }
                     else if ( needToCreateSummaryNode(cs, createdNodes, primaryCpeId, "LOW") ) {
-                        summaryNodes.LOW = createSummaryNode(primaryCpeId, "LOW", cs.summary.LOW, COLOR_GREEN);
+                        summaryNodes.LOW = createSummaryNode(primaryCpeId, "LOW", cs.summary.summary.LOW, COLOR_GREEN);
                         this.nodes.add(summaryNodes.LOW);
                         this.edges.add( {from: summaryNodes.LOW.id, to: primaryCpeId} );
                         createdNodes.add("LOW" + "_" +  primaryCpeId);
