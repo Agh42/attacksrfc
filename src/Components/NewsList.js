@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Button, Icon} from 'semantic-ui-react'
 
 const Articles = (props) => (
     props.articles.map((article) =>
@@ -19,17 +20,30 @@ const Articles = (props) => (
                     <a target="_blank" rel="noopener noreferrer"  
                         href={"https://translate.google.com/translate?js=n&sl=auto&tl=en&u="
                         + article.url}>
-                        [View Translation...]
+                        <span class="ui blue text">[View Translation...]</span>
                     </a>
                 </div>
                 <div class="description">
-                    {article.description}...
+                    <span class="ui grey text">{article.provider}:</span> {article.description}...
                 </div>
-                <div class="extra">Published: {formatDateTime(article.datePublished)}</div>
+                <div class="extra">
+                    Published: {formatDateTime(article.datePublished)}
+                    <Button primary floated="right" animated='fade'
+                        onClick={buttonClicked(article.cvesMentioned)}>
+                        <Button.Content hidden>Add...</Button.Content>
+                        <Button.Content visible>
+                            <Icon name='plus' />
+                        </Button.Content>
+                    </Button>
+                </div>
             </div>
         </div>
     )
 )
+
+function buttonClicked(cves) {
+    console.log("Clicked: " + cves)
+}
 
 function formatDateTime(isoDate) {
     let mom = moment(isoDate, moment.ISO_8601, true);

@@ -1,4 +1,4 @@
-export const NewsClient = {getArticles};
+export const NewsClient = {getArticles, getHotTopics};
 export default NewsClient;
 
 const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
@@ -14,6 +14,17 @@ function getArticles(cve, success) {
       }).then(checkStatus)
         .then(parseJSON)
         .then(success);
+}
+
+function getHotTopics(success, link = CVESERVICE_URL+'/api/v1/articles?sort=datePublished,desc&size=20') {
+  return fetch( link,
+    {
+      headers: {
+        Accept: 'application/json',
+      },
+    }).then(checkStatus)
+    .then(parseJSON)
+    .then(success);
 }
 
 function checkStatus(response) {

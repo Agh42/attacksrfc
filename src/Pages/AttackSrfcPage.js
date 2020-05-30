@@ -16,6 +16,8 @@ import TimerangeSelector from '../Components/TimerangeSelector';
 import CVEs from '../Dto/CVEs.js';
 import CPEs from '../Dto/CPEs';
 import CookieConsent from '../Components/CookieConsent';
+import NewsList from '../Components/NewsList';
+import NewsListMenu from '../Components/NewsListMenu';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -92,6 +94,10 @@ export default class AttackSrfcPage extends Component {
             selectedCpeSummary: {},
             _summaryDisplay: SHOW_SUMMARY_CPE,
 
+            hotTopics: [],
+            hotTopicsLinks: {},
+            hotTopicsPage: {},
+
             _redirect: "",
             _cveAction: CVE_ACTION_NONE,
             _graphAction: GRAPH_ACTION_NONE,
@@ -111,6 +117,7 @@ export default class AttackSrfcPage extends Component {
         this.initHealthCheck();
         this.initSelectedCpes();
         this.initStats();
+        this.loadHotTopics();
     }
     
     
@@ -208,6 +215,21 @@ export default class AttackSrfcPage extends Component {
         CpeClient.getStats( (dbStats) => {
             this.setState({stats: dbStats});
         });
+    }
+
+    loadHotTopics =  (link) => {
+        NewsClient.getHotTopics( 
+            (response) => {
+                let articles = ('_embedded' in response) ? response._embedded.articles : [];
+                let links = ('_links' in response) ? response._links : {};
+                let page = ('page' in response) ? response.page : {};
+                this.setState({ 
+                    hotTopics: articles,
+                    hotTopicsLinks: links,
+                    hotTopicsPage: page
+                })
+            }, 
+            link);
     }
     
     initHealthCheck = () => {
@@ -488,6 +510,10 @@ export default class AttackSrfcPage extends Component {
         console.log("Edit " + editCpeId);
     }
 
+    handleNewsListMenuClick = (link) => {
+        this.loadHotTopics(link);
+    }
+
     handleHomeClick = () => {
         this.setState({
             _summaryDisplay: SHOW_SUMMARY_CPE,
@@ -551,6 +577,25 @@ export default class AttackSrfcPage extends Component {
                         cve={this.state.selectedCve}
                         articles={this.state.articles}
                     />
+                </Tab.Pane>
+            }, {
+                menuItem: 'Hot Topics', 
+                pane:
+                <Tab.Pane >
+                    <NewsListMenu
+                        links={this.state.hotTopicsLinks}
+                        page={this.state.hotTopicsPage}
+                        onSelect={this.handleNewsListMenuClick}
+                    />
+                    <div className='ui raised segments'
+                        style={{overflow: 'auto', "height":"52em"}}
+                    >
+                        <div className='ui segment'>
+                            <NewsList
+                                articles={this.state.hotTopics}
+                            />
+                        </div>
+                    </div>
                 </Tab.Pane>
             }
         ];
