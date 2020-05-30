@@ -345,6 +345,7 @@ export default class CveDetails extends Component {
                       <Accordion.Content active={activeIndex === 1}>
                        <NewsList
                          articles={this.props.articles}
+                         onCveSelected={this.props.onNewsCveSelected}
                        />
                       </Accordion.Content>
                    </Accordion>

@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { Button, Icon} from 'semantic-ui-react'
+import { Button, Icon, Dropdown} from 'semantic-ui-react'
+
+function toOptions(cves, onClick) {
+    return cves.map((cve) =>
+        { return {key: cve, text: cve, value: cve,  onClick: onClick} }
+    );
+}
 
 const Articles = (props) => (
     props.articles.map((article) =>
@@ -27,7 +33,16 @@ const Articles = (props) => (
                     <span class="ui grey text">{article.provider}:</span> {article.description}...
                 </div>
                 <div class="extra">
-                    Published: {formatDateTime(article.datePublished)}
+                    <div class="ui text">Published: {formatDateTime(article.datePublished)}</div>
+                    
+                    <Dropdown
+                        className="primary right floated"
+                        selection
+                        floating
+                        text='Mentioned CVEs...'
+                        options={toOptions(article.cvesMentioned, props.onCveSelected)}
+                    />
+                    {/*
                     <Button primary floated="right" animated='fade'
                         onClick={buttonClicked(article.cvesMentioned)}>
                         <Button.Content hidden>Add...</Button.Content>
@@ -35,15 +50,12 @@ const Articles = (props) => (
                             <Icon name='plus' />
                         </Button.Content>
                     </Button>
+                    */}
                 </div>
             </div>
         </div>
     )
 )
-
-function buttonClicked(cves) {
-    console.log("Clicked: " + cves)
-}
 
 function formatDateTime(isoDate) {
     let mom = moment(isoDate, moment.ISO_8601, true);
@@ -53,6 +65,11 @@ function formatDateTime(isoDate) {
 export default class NewsList extends Component {
     static propTypes = {
         articles: PropTypes.array.isRequired,
+        onCveSelected: PropTypes.func.isRequired,
+    }
+
+    onCveSelected = (ev, props) => {
+        this.props.onCveSelected(props.value);
     }
 
     render () {
@@ -74,6 +91,7 @@ export default class NewsList extends Component {
             <div class="ui divided items">
                 <Articles
                     articles={this.props.articles}
+                    onCveSelected={this.onCveSelected}
                 />
             </div>
         )

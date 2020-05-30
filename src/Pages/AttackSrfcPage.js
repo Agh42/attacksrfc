@@ -114,6 +114,17 @@ export default class AttackSrfcPage extends Component {
   
 
     componentDidMount() {
+        if (((this.props.match||{}).params||{}).cveParam) {
+            let cve = {id: this.props.match.params.cveParam};
+            this.setState({
+                selectedCve : cve,
+                leftActiveTabIndex : 1,
+                _cveAction: CVE_ACTION_LOAD_DETAILS
+            }, () => {
+                this.loadCveDetails();
+            });
+
+        }
         this.initHealthCheck();
         this.initSelectedCpes();
         this.initStats();
@@ -468,6 +479,17 @@ export default class AttackSrfcPage extends Component {
         }
     }
 
+    handleNewsCveSelected = (cveId) => {
+        let cve = {id: cveId};
+        this.setState({
+            selectedCve : cve,
+            leftActiveTabIndex : 1,
+            _cveAction: CVE_ACTION_LOAD_DETAILS
+        }, () => {
+            this.loadCveDetails();
+        });
+    }
+
     handleCpeToggleClick = (toggleCpeId) => {
         let toggledCpe = this.state.selectedCpes.find(cpe => cpe.id === toggleCpeId);
         if (!toggledCpe)
@@ -576,6 +598,7 @@ export default class AttackSrfcPage extends Component {
                     <CveDetails
                         cve={this.state.selectedCve}
                         articles={this.state.articles}
+                        onNewsCveSelected={this.handleNewsCveSelected}
                     />
                 </Tab.Pane>
             }, {
@@ -593,6 +616,7 @@ export default class AttackSrfcPage extends Component {
                         <div className='ui segment'>
                             <NewsList
                                 articles={this.state.hotTopics}
+                                onCveSelected={this.handleNewsCveSelected}
                             />
                         </div>
                     </div>
