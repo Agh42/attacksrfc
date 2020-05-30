@@ -374,6 +374,7 @@ export default class AttackSrfcPage extends Component {
             let articles = ('_embedded' in response) ? response._embedded.articles : [];
             this.setState({ articles: articles })
         });
+        this.props.history.push('/cve/' + this.state.selectedCve.id);
     }
 
     loadCvesPage = () => {
