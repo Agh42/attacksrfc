@@ -43,7 +43,7 @@ const Articles = (props) => (
                         options={toOptions(article.cvesMentioned, props.onCveSelected)}
                     />
                     {/*
-                    <Button primary floated="right" animated='fade'
+                    <Button className="primary right floated" animated='fade'
                         onClick={buttonClicked(article.cvesMentioned)}>
                         <Button.Content hidden>Add...</Button.Content>
                         <Button.Content visible>

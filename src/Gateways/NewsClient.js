@@ -6,7 +6,7 @@ const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
 function getArticles(cve, success) {
     console.log("Fetching articles for: " + cve);
     return fetch(CVESERVICE_URL
-        + '/api/v1/articles/search/findDistinctByCvesMentionedIn?cve='
+        + '/api/v1/articles/search/findDistinctByCvesMentionedInOrderByDatePublishedDesc?cve='
         + encodeURI(cve), {
         headers: {
           Accept: 'application/json',

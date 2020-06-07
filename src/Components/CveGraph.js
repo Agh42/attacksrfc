@@ -403,7 +403,7 @@ export default class CveGraph extends Component {
     // FIXME replace old 'willreceiveprops' method with 'willMount'
     UNSAFE_componentWillReceiveProps(nextProps) {
         console.log("graph: will receive props");
-        if (nextProps.allCves.length === 0){
+        if ( (!('allCves' in nextProps)) || !nextProps.allCves || nextProps.allCves.length === 0){
                this.showPlaceholder();
                return;
         }

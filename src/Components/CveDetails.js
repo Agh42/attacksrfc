@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {CVEs, NEWSWORTHY, HOTTOPIC} from '../Dto/CVEs';
-import {Accordion, Icon} from 'semantic-ui-react';
+import {Accordion, Icon, Dropdown} from 'semantic-ui-react';
 import moment from 'moment';
 import { deflateSync } from 'zlib';
 import NewsList from '../Components/NewsList';
@@ -51,6 +51,10 @@ export default class CveDetails extends Component {
       this.setState({ activeIndex: newIndex })
     }
 
+    shareCopy = () => {
+
+    }
+
     /**
      * Returns index of tag list (outer array) containing 'exploit' tag:
      */
@@ -87,12 +91,30 @@ export default class CveDetails extends Component {
                 style={{overflow: 'auto', "height":"52em"}}
             >
                 <div className='ui segment'>
-                <div class="ui large header">
+                <div class="ui left floated large header">
                     <a href={"http://cve.mitre.org/cgi-bin/cvename.cgi?name="+this.props.cve.id} 
                         target="_blank" rel="noopener noreferrer" >
                         {this.props.cve.id}
                     </a>
                 </div>
+                {/*
+                <div class="ui right floated header">
+                <Dropdown
+                    className="primary right floated"
+                    floating
+                    direction="left"
+                    icon="share alternate"
+                    text="Share"
+                >
+                    <Dropdown.Menu>
+                      <Dropdown.Item icon='copy' text='Copy Link' onClick={this.shareCopy} />
+                      <Dropdown.Item icon='twitter' text='Share on Twitter' onClick={this.shareTwitter} />
+                      <Dropdown.Item icon='mail' text='Share by mail' onClick={this.shareMail} />
+                    </Dropdown.Menu>
+                </Dropdown>
+                </div>
+                 */}
+                
 
                 <div class="ui link items">
 
@@ -143,7 +165,11 @@ export default class CveDetails extends Component {
                     })()
                   }
 
-                    <a class="link item"
+                  {
+                    ('cvss' in this.props.cve
+                      )
+                    ? 
+                      <a class="link item"
                       target="_blank" rel="noopener noreferrer"  
                       href={CVSS_CALCULATOR_URL + this.props.cve["cvss-vector"]} >
                         <div class="content">
@@ -158,6 +184,14 @@ export default class CveDetails extends Component {
                           </div>
                         </div>
                     </a>
+                    :  <div class="link item">
+                        <div class="header">
+                          - not scored by NVD -
+                        </div>
+                      </div>
+                  }
+
+                   
 
                   {('cvssv3_score' in this.props.cve
                     && this.props.cve.cvssv3_score > 0 ) 
@@ -196,7 +230,13 @@ export default class CveDetails extends Component {
                         <Icon name='dropdown' />
                         Vulnerability Details
                       </Accordion.Title>
+
+                      
                       <Accordion.Content active={activeIndex === 0}>
+                      {
+                        ('cvss' in this.props.cve
+                          )
+                        ?
                       <div class="ui small list">
                       <div class="item"><i class="check circle teal icon"></i>
                         <div class="content">
@@ -329,9 +369,21 @@ export default class CveDetails extends Component {
                             </div>
                           </div>
                       </div>
-                      
-                    
                 </div>
+
+                : <div class="ui small list">
+                  <div class="item"><i class="question circle teal icon"></i>
+                      <div class="content">
+                        <div class="header">Reserved:</div>
+                        <div class="description">
+                          This CVE-ID has been reserved. The details of this CVE have not yet been published by NIST.
+                          Official guidance will be shown here once it becomes available. There may be information 
+                          published by vendors or third parties. Check the news items for such preliminary information.
+                        </div>
+                      </div>
+                      </div>
+                      </div>
+                      }
                       </Accordion.Content>
 
                       <Accordion.Title

@@ -365,11 +365,13 @@ export default class AttackSrfcPage extends Component {
     }
     
     loadCveDetails = () => {
-        CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => (
-            this.setState({
-                selectedCve: fullCve,
-            })
-        ));
+        CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => {
+            if ( Object.keys(fullCve).length !== 0 ) {
+                this.setState({
+                    selectedCve: fullCve,
+                })
+            }
+        });
         NewsClient.getArticles(this.state.selectedCve.id, (response) => {
             let articles = ('_embedded' in response) ? response._embedded.articles : [];
             this.setState({ articles: articles })
@@ -603,7 +605,7 @@ export default class AttackSrfcPage extends Component {
                     />
                 </Tab.Pane>
             }, {
-                menuItem: 'Hot Topics', 
+                menuItem:  { key: 'hottopics', icon: 'red fire', content: 'Hot Topics' }, 
                 pane:
                 <Tab.Pane >
                     <NewsListMenu
