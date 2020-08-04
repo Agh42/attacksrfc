@@ -166,7 +166,9 @@ export default class CveDetails extends Component {
                   }
 
                   {
-                    ('cvss' in this.props.cve
+                    ('cvss' in this.props.cve 
+                      && 'access' in this.props.cve 
+                      && 'vector' in this.props.cve.access
                       )
                     ? 
                       <a class="link item"

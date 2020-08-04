@@ -581,7 +581,7 @@ export default class AttackSrfcPage extends Component {
         }
 
         const leftTabPanes = [
-            {   menuItem: 'Inventory', 
+            {   menuItem: { key: 'invtab', icon: 'archive', content: 'Inv.' }, 
                 pane:
                 <Tab.Pane >
                     <EditableInventoryList
@@ -595,7 +595,7 @@ export default class AttackSrfcPage extends Component {
                     />
                 </Tab.Pane>
             }, {
-                menuItem: 'Vulnerability', 
+                menuItem: { key: 'vulntab', icon: 'bug', content: 'Vuln.' }, 
                 pane:
                 <Tab.Pane >
                     <CveDetails
