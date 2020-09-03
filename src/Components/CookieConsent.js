@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 
-export default class CveGraph extends Component {
+export default class CookieConsent extends Component {
 
     onClick = () => {
         this.setState({

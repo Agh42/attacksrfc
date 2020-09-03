@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tab, Button, Icon, Header, Modal } from 'semantic-ui-react';
+import { useAuth0 } from "@auth0/auth0-react";
 
 import moment from 'moment';
 import store from 'store';
@@ -18,6 +19,8 @@ import CPEs from '../Dto/CPEs';
 import CookieConsent from '../Components/CookieConsent';
 import NewsList from '../Components/NewsList';
 import NewsListMenu from '../Components/NewsListMenu';
+import LinkToPreferences from '../Components/LinkToPreferences';
+import LinkToLogin from '../Components/LinkToLogin';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -56,9 +59,9 @@ const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
 const MAX_SELECTED_CPES = 10;
 
-
 export default class AttackSrfcPage extends Component {
 
+    
     // used to explicitely disable default actions where needed:
     noop() {
         return undefined;
@@ -733,13 +736,7 @@ export default class AttackSrfcPage extends Component {
                                     <CookieConsent/>       
                                     
                                     <div class="right menu primary">
-                                    <Link to="/login" class="item">
-                                        <i className="sign in icon" />
-                                        &nbsp;&nbsp;Login
-                                    </Link>
-                                    <Link to="/login" class="item" onClick={this.noop}>
-                                        <i className="disabled cog icon" />
-                                    </Link>
+                                    <LinkToLogin/>
                                     </div>
                                 </div>
                             } 
