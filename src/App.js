@@ -10,7 +10,7 @@ import {
 
 import AttackSrfcPage from './Pages/AttackSrfcPage';
 import RegisterPage from './Pages/RegisterPage';
-import LoginPage from './Pages/LoginPage';
+import PreferencesPage from './Pages/PreferencesPage';
 import './fomantic/dist/semantic.min.css';
 
 export default class App extends Component {
@@ -30,7 +30,7 @@ export default class App extends Component {
                     <Route exact path='/' component={AttackSrfcPage} />
                     <Route path='/index.html' component={AttackSrfcPage} />
                     <Route path='/register' component={RegisterPage} />
-                    <Route path='/login' component={LoginPage} />
+                    <Route path='/preferences' component={PreferencesPage} />
                     <Route exact path="/cve/:cveParam" component={AttackSrfcPage}  />
                     
                     
