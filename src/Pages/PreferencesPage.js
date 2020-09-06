@@ -1,223 +1,173 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import LinkToLogin from '../Components/LinkToLogin';
+import { withAuth0 } from '@auth0/auth0-react';
+import { Button, Icon, Checkbox, Form } from 'semantic-ui-react'
+import {Link, Redirect} from 'react-router-dom';
 
-// TODO XXX center alined card based form layout for auth0-profile and API-account
+// page load redirects:
+const REDIRECT_HOME= 'REDIRECT_HOME';
 
-export default class RegisterPage extends Component {
+
+class PreferencesPage extends Component {
+
+  state = {
+    _redirect: "",
+  };
+
+  componentDidMount() {
+    this.loadAccount();
+  } 
+
+  loadAccount = () => {
+    // TODO load account mathcing extid from service with token
+  }
+
+  handleCancelClick = () => {
+    this.setState({_redirect: REDIRECT_HOME});
+  }
+
+  handleSaveClick = () => {
+    // TODO save account with auth0 token
+  }
+
   render() {
+    if (this.state._redirect) {
+      return {
+          REDIRECT_HOME: <Redirect to='/' />
+      }[this.state._redirect];
+  }
+
+    const {
+      isLoading,
+      isAuthenticated,
+      error,
+      user,
+      loginWithRedirect,
+      logout, 
+    } = this.props.auth0;
+
     return (
-      <React.Fragment>
-        <div class="ui middle aligned grid container">
-          <div class="row">
-            <div class="sixteen wide column">
-              <div class="ui stackable four centered cards">
+      <div class="ui fluid container">
+        <div class="ui padded grid">
+                <div class="one column row">
+                    <div class="sixteen wide column">
+                      <div class="ui top fixed inverted teal icon menu"
+                          style={{overflow: 'auto'}}
+                      >
+                          <a className="item" href="/"><i className="caret left icon" /></a>
+                          <div className="ui item"><h4 className="ui left aligned inverted header">
+                              AttackSrfc - CVE Search and Vulnerability Management
+                              <div className="sub header">
+                              Your profile
+                              </div>
+                              </h4>
+                          </div>
+                          <div class="right menu primary">
+                          <LinkToLogin/>
+                          </div>
+                      </div>
+                    </div> {/* end col */}
+                </div> {/* end row */}
+                <div class="row">
+                  <div class="sixteen wide column">
+                    <div className='ui centered grid'>
+                        <div className='one column row'>
+                            <div className='eight wide column'>
 
-                <div class="raised card">
-                  <div class="content">
-                    <div class="centered header">Free</div>
-                    <div class="ui hidden divider"></div>
-                    <div class="description">
-                      <div class="ui list">
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            Access to over 293.000 product identifiers and more than 136.000 vulnerabilities.
-                                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">Vulnerability-search and graph view</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">Hot-topics view</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">One inventory limited to 10 products</div>
+                            <div class="ui form">
+                              <h4 class="ui dividing header">Your profile</h4>
+                              <div class="ui message">
+                                <div class="content">Your profile information is synchronized with your identity provider.
+                                It cannot be changed here. If it is not up to date, try signing out and back in again.</div>
+                              </div>
+                              <div class="two fields">
+                                <div class="field">
+                                  <label>Avatar</label>
+                                  <img class="ui avatar image" src={user.picture}></img>
+                                </div>
+                                <div class="field">
+                                  <label>Nickname</label>
+                                  <input type="text" readOnly value={user.nickname}></input>
+                                </div>
+                              </div>
+                              <div class="two fields">
+                                <div class="field">
+                                  <label>Email</label>
+                                  <input type="text" readOnly value={user.email}></input>
+                                </div>
+                                <div class="field">
+                                  <label>Name</label>
+                                  <input type="text" readOnly value={user.name}></input>
+                                </div>
+                              </div>
+
+                              <h4 class="ui dividing header">Preferences</h4>
+                              <div class="ui segment">
+                                <Form.Field>
+                                  <Checkbox toggle label='Enable email notifications (master switch)' />
+                                </Form.Field>
+                                <Form.Field>
+                                  <Checkbox toggle label='Enable notifications for hot topics' />
+                                </Form.Field>
+                              </div>
+
+                              <h4 class="ui dividing header">Inventories</h4>
+                              <div class="ui message">
+                                <div class="header">You have saved the following inventories:</div>
+                                <ul class="list">
+                                  <li>[No saved inventories]</li>
+                                </ul>
+                              </div>
+
+                              <h4 class="ui dividing header">Invites</h4>
+                              <div class="ui message">
+                                <div class="header">You have invited the following users to your organization:</div>
+                                <ul class="list">
+                                  <li>[No invites]</li>
+                                </ul>
+                              </div>
+
+                              <h4 class="ui dividing header">Subscriptions</h4>
+                              <div class="ui message">
+                                <div class="content">You have no paid subscriptions.</div>
+                                
+                              </div>
+                               
+
+                                <Button.Group attached="top">
+                                  <Button positive animated='fade'
+                                      onClick={this.props.handleSaveClick}>
+                                      <Button.Content hidden>Save</Button.Content>
+                                      <Button.Content visible>
+                                          <Icon name='save' />
+                                      </Button.Content>
+                                  </Button>
+                                  <Button animated='fade'
+                                      onClick={this.handleCancelClick}>
+                                      <Button.Content hidden>Cancel</Button.Content>
+                                      <Button.Content visible>
+                                          <Icon name='caret left' />
+                                      </Button.Content>
+                                  </Button>
+                                  <Button negative animated='fade'
+                                      onClick={this.props.handleDeleteClick}>
+                                      <Button.Content hidden>Delete Account</Button.Content>
+                                      <Button.Content visible>
+                                          <Icon name='trash' />
+                                      </Button.Content>
+                                  </Button>
+                                </Button.Group>
+                            </div>
+                            </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <a href="/attacksrfc" class="ui disabled button">
-                    You got it
-                            </a>
                 </div>
-
-                <div class="raised card">
-                  <div class="content">
-                    <div class="centered header">Sponsor</div>
-                    <span class="ui orange right corner label"><i className="star icon" /></span>
-                    <span class="ui yellow ribbon label">Coming soon</span>
-                    <div class="description">
-                      <div class="ui list">
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            Access to over 293.000 product identifiers and more than 136.000 vulnerabilities.
-                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">Vulnerability search and graph view</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">Hot-topics view</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            Personal login
-                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            Inventory size increased to 100 products
-                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            Save and manage multiple inventories
-                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            All data is stored in secure, redundant cloud locations
-                       in the European Union.
-                                              </div>
-                        </div>
-
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            Email notifications on vulnerabilities and news monitoring
-                                              </div>
-                        </div>
-
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            You get the sponsor role in the Discord chat.
-                                              </div>
-                        </div>
-
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            By becoming a sponsor you support open source software and help us to pay
-                            for cloud computing and storage.
-                                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            <b>New accounts are currently not available publicly. Check the subreddit or chat
-                                               to follow eventual updates.</b>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <Link to="/register" class="ui disabled button">
-                    <i class="shopping cart icon"></i>
-                    Coming soon.
-                            </Link>
-                </div>
-
-                <div class="raised card">
-                  <div class="content">
-                    <div class="centered header">Community</div>
-                    <div class="ui hidden divider"></div>
-                    <div class="description">
-                      <div class="ui list">
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            CSTOOL.io is free and open-source software (free as in freedom).
-                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">The source code is available on GitHub and Bitbucket.</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">Up-to-date docker containers of all components can be downloaded on Docker Hub.</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">You can use all of those for free (free as in beer) under the terms of the <a href="/legal.html" >GNU AGPL and other licenses.</a></div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">CSTOOL.io is privately maintained and receives no public funding. I also do not sell user data.</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">The income from sponsor accounts helps to cover the operating costs and ensure further development of CSTOOL.io.</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">If you just want to use the freely available features or downloadable containers, that is fine and I'd be happy to receive any feedback or contributions you might have.</div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">However if you consider sponsoring the project I will greatly appreciate that - even if you don't intend to use the public cloud service.</div>
-                        </div>
-
-
-                       
-
-                      </div>
-                    </div>
-                  </div>
-                  <a href="https://github.com/Agh42/CSTOOL_io" class="ui button">
-                    <i class="github icon"></i>
-                    Go to GitHub
-                  </a>
-                </div>
-
-                <div class="raised card">
-                  <div class="content">
-                    <div class="centered header">On-Premise / Private Cloud</div>
-                    <div class="ui hidden divider"></div>
-                    <div class="description">
-                      <div class="ui list">
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            If you need to run a professionally supported on-premise / on-private-cloud
-                            installation, feel free to get in touch to discuss options.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <a href="mailto:info@cstool.io" class="ui button">
-                    <i class="phone icon"></i>
-                    Ask for quote
-                  </a>
-                </div>
-
-
-
-              </div>
-            </div>
           </div>
-        </div>
-
-        <div class="ui center aligned grid">
-          <div class="column">
-            <Link to="/login">Login</Link> with existing account or <Link to="/">go back</Link>.
-                           </div>
-        </div>
-
-
-      </React.Fragment>
+         
+          </div>
+          
     );
   }
 }
+export default withAuth0(PreferencesPage);

@@ -19,7 +19,6 @@ import CPEs from '../Dto/CPEs';
 import CookieConsent from '../Components/CookieConsent';
 import NewsList from '../Components/NewsList';
 import NewsListMenu from '../Components/NewsListMenu';
-import LinkToPreferences from '../Components/LinkToPreferences';
 import LinkToLogin from '../Components/LinkToLogin';
 
 import {Link, Redirect} from 'react-router-dom';
@@ -709,7 +708,7 @@ export default class AttackSrfcPage extends Component {
         return (
          <React.Fragment>
 
-         <div clas="ui fluid container">
+         <div class="ui fluid container">
 
          
             <div class="ui padded grid">

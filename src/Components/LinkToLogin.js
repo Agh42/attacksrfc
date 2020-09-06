@@ -33,8 +33,8 @@ class LinkToLogin extends Component {
                     target="_blank" rel="noopener noreferrer"  
                     onClick={() => loginWithRedirect()} >
                     <div class="middle aligned content">
-                        <i class="sign in link icon"></i>
-                        Login
+                        <i class="sign in icon"></i>
+                        Sign in / Sign up
                     </div>
                 </a>
             );
@@ -44,14 +44,15 @@ class LinkToLogin extends Component {
                      <Link to="/preferences" class="item" onClick={this.noop}>
                         <img class="ui avatar image" src={user.picture}></img>
                         <span>{user.nickname}</span>
-                        <i class="caret down link icon"></i>
+                        &nbsp;
+                        <i class="cogs icon"></i>
                     </Link>
                     <a class="link item"
                         target="_blank" rel="noopener noreferrer"  
                         onClick={() => logout({returnTo: window.location.origin})} >
                         <div class="middle aligned content">
-                            <i class="sign out link icon"></i>
-                            Logout
+                            <i class="sign out icon"></i>
+                            Sign out
                         </div>
                     </a>
                     </React.Fragment>
