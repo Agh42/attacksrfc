@@ -1,41 +1,126 @@
 import React, { Component } from 'react';
 import LinkToLogin from '../Components/LinkToLogin';
 import { withAuth0 } from '@auth0/auth0-react';
-import { Button, Icon, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Icon, Checkbox, Form, Message } from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom';
+import AccountClient from '../Gateways/AccountClient';
 
 // page load redirects:
 const REDIRECT_HOME= 'REDIRECT_HOME';
 
+const CLEAN = "save_ready";
+const DIRTY = "save_dirty";
+const SAVED = "save_success";
+const NOTSAVED = "save_error";
+
+const saveSuccessMessage = (props) => (
+  <Message
+    icon='inbox'
+    header='Saved!'
+    content='Your account was successfully saved.'
+  />
+)
 
 class PreferencesPage extends Component {
 
   state = {
     _redirect: "",
+    _saveStatus: CLEAN,
+    account: {},
   };
 
   componentDidMount() {
     this.loadAccount();
   } 
 
+  componentDidUpdate() {
+    switch (this.state._saveStatus) {
+      case SAVED:
+        setTimeout(() => {
+            this.setState({_saveStatus: CLEAN});
+        }, 2000);
+        break;
+      default:
+          break;
+    }
+  }
+
   loadAccount = () => {
-    // TODO load account mathcing extid from service with token
+    const {getAccessTokenSilently} = this.props.auth0;
+    getAccessTokenSilently().then(
+      this.callApiGetAccount
+      );
+  }
+
+  callApiGetAccount = (token) => {
+    AccountClient.getAccount( 
+      (account) => {
+      this.setState({
+        account: account,
+        _saveStatus: CLEAN,
+      })
+    }, token);
   }
 
   handleCancelClick = () => {
     this.setState({_redirect: REDIRECT_HOME});
   }
 
-  handleSaveClick = () => {
-    // TODO save account with auth0 token
+  handleDeleteClick = () => {
+    console.log("Delete account selected")
   }
+
+  handleSaveClick = () => {
+    const {getAccessTokenSilently} = this.props.auth0;
+    getAccessTokenSilently().then(
+      this.callApiSaveAccount
+    );
+  }
+
+  callApiSaveAccount = (token) => {
+    AccountClient.saveAccount(
+      this.saveSuccessful, 
+      this.state.account, 
+      token);
+  }
+
+  saveSuccessful = () => {
+    this.setState({_saveStatus: SAVED});
+  }
+
+  togglePrefValue = (e, {value} ) => {
+    if (!('preferences' in this.state.account))
+      return;
+
+    const newPreferences = this.state.account.preferences;
+    newPreferences[value] = !newPreferences[value];
+    this.setState({
+      account: {...this.state.account, preferences: newPreferences},
+      _saveStatus: DIRTY,
+    });
+
+  }
+
+  /* onInputChange = ({ name, value, error }) => {
+    const fields = this.state.fields;
+    const fieldErrors = this.state.fieldErrors;
+
+    fields[name] = value;
+    fieldErrors[name] = error;
+    console.log("name_error:" + name+"_"+error);
+    console.log("name_value:" + name+"_"+value);
+
+    this.setState({ fields, fieldErrors });
+}; */
 
   render() {
     if (this.state._redirect) {
       return {
           REDIRECT_HOME: <Redirect to='/' />
       }[this.state._redirect];
-  }
+    }
+
+    
 
     const {
       isLoading,
@@ -70,16 +155,40 @@ class PreferencesPage extends Component {
                 </div> {/* end row */}
                 <div class="row">
                   <div class="sixteen wide column">
+                    {this.state._saveStatus === SAVED ? saveSuccessMessage : ""}
                     <div className='ui centered grid'>
                         <div className='one column row'>
                             <div className='eight wide column'>
 
                             <div class="ui form">
-                              <h4 class="ui dividing header">Your profile</h4>
-                              <div class="ui message">
-                                <div class="content">Your profile information is synchronized with your identity provider.
-                                It cannot be changed here. If it is not up to date, try signing out and back in again.</div>
-                              </div>
+
+                              <Button.Group attached="top">
+                                <Button positive animated='fade'
+                                    disabled={!(this.state._saveStatus === DIRTY)}
+                                    onClick={this.handleSaveClick}>
+                                    <Button.Content hidden>Save</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='save' />
+                                    </Button.Content>
+                                </Button>
+                                <Button animated='fade'
+                                    onClick={this.handleCancelClick}>
+                                    <Button.Content hidden>Cancel</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='caret left' />
+                                    </Button.Content>
+                                </Button>
+                                <Button negative animated='fade'
+                                    onClick={this.handleDeleteClick}>
+                                    <Button.Content hidden>Delete Account</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='trash' />
+                                    </Button.Content>
+                                </Button>
+                              </Button.Group>
+
+                              <h4 class="ui dividing header">Your profile (read-only)</h4>
+                              
                               <div class="two fields">
                                 <div class="field">
                                   <label>Avatar</label>
@@ -104,10 +213,22 @@ class PreferencesPage extends Component {
                               <h4 class="ui dividing header">Preferences</h4>
                               <div class="ui segment">
                                 <Form.Field>
-                                  <Checkbox toggle label='Enable email notifications (master switch)' />
+                                  <Checkbox 
+                                    toggle 
+                                    label='E-mail notifications for hot topics' 
+                                    value='notificationsHotTopics'
+                                    checked={(this.state.account.preferences||{}).notificationsHotTopics}
+                                    onChange={this.togglePrefValue}
+                                    />
                                 </Form.Field>
                                 <Form.Field>
-                                  <Checkbox toggle label='Enable notifications for hot topics' />
+                                  <Checkbox 
+                                    toggle 
+                                    label='E-mail notifications for inventories (master switch)' 
+                                    value='notificationsInventories'
+                                    checked={(this.state.account.preferences||{}).notificationsInventories}
+                                    onChange={this.togglePrefValue}
+                                    />
                                 </Form.Field>
                               </div>
 
@@ -129,14 +250,16 @@ class PreferencesPage extends Component {
 
                               <h4 class="ui dividing header">Subscriptions</h4>
                               <div class="ui message">
-                                <div class="content">You have no paid subscriptions.</div>
-                                
+                                <div class="header">You have the following subscriptions:</div>
+                                <ul class="list">
+                                  <li>[No subscriptions]</li>
+                                </ul>
                               </div>
-                               
 
                                 <Button.Group attached="top">
                                   <Button positive animated='fade'
-                                      onClick={this.props.handleSaveClick}>
+                                      disabled={!(this.state._saveStatus === DIRTY)}
+                                      onClick={this.handleSaveClick}>
                                       <Button.Content hidden>Save</Button.Content>
                                       <Button.Content visible>
                                           <Icon name='save' />
@@ -150,7 +273,7 @@ class PreferencesPage extends Component {
                                       </Button.Content>
                                   </Button>
                                   <Button negative animated='fade'
-                                      onClick={this.props.handleDeleteClick}>
+                                      onClick={this.handleDeleteClick}>
                                       <Button.Content hidden>Delete Account</Button.Content>
                                       <Button.Content visible>
                                           <Icon name='trash' />
