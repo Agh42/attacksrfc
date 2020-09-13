@@ -13,14 +13,6 @@ const DIRTY = "save_dirty";
 const SAVED = "save_success";
 const NOTSAVED = "save_error";
 
-const saveSuccessMessage = (props) => (
-  <Message
-    icon='inbox'
-    header='Saved!'
-    content='Your account was successfully saved.'
-  />
-)
-
 class PreferencesPage extends Component {
 
   state = {
@@ -101,26 +93,12 @@ class PreferencesPage extends Component {
 
   }
 
-  /* onInputChange = ({ name, value, error }) => {
-    const fields = this.state.fields;
-    const fieldErrors = this.state.fieldErrors;
-
-    fields[name] = value;
-    fieldErrors[name] = error;
-    console.log("name_error:" + name+"_"+error);
-    console.log("name_value:" + name+"_"+value);
-
-    this.setState({ fields, fieldErrors });
-}; */
-
   render() {
     if (this.state._redirect) {
       return {
           REDIRECT_HOME: <Redirect to='/' />
       }[this.state._redirect];
     }
-
-    
 
     const {
       isLoading,
@@ -147,6 +125,7 @@ class PreferencesPage extends Component {
                               </div>
                               </h4>
                           </div>
+                         
                           <div class="right menu primary">
                           <LinkToLogin/>
                           </div>
@@ -155,14 +134,21 @@ class PreferencesPage extends Component {
                 </div> {/* end row */}
                 <div class="row">
                   <div class="sixteen wide column">
-                    {this.state._saveStatus === SAVED ? saveSuccessMessage : ""}
                     <div className='ui centered grid'>
                         <div className='one column row'>
                             <div className='eight wide column'>
-
+                           
                             <div class="ui form">
-
+                              {this.state._saveStatus === SAVED ? (
+                                  <Message positive attached
+                                    icon='checkmark'
+                                    header='Saved!'
+                                    content='Your account was successfully saved.'
+                                  />
+                                ) : ""
+                              }
                               <Button.Group attached="top">
+                              
                                 <Button positive animated='fade'
                                     disabled={!(this.state._saveStatus === DIRTY)}
                                     onClick={this.handleSaveClick}>
@@ -256,6 +242,14 @@ class PreferencesPage extends Component {
                                 </ul>
                               </div>
 
+                                {this.state._saveStatus === SAVED ? (
+                                    <Message positive attached
+                                      icon='checkmark'
+                                      header='Saved!'
+                                      content='Your account was successfully saved.'
+                                    />
+                                  ) : ""
+                                }
                                 <Button.Group attached="top">
                                   <Button positive animated='fade'
                                       disabled={!(this.state._saveStatus === DIRTY)}
@@ -280,6 +274,7 @@ class PreferencesPage extends Component {
                                       </Button.Content>
                                   </Button>
                                 </Button.Group>
+                              
                             </div>
                             </div>
                         </div>
