@@ -11,7 +11,7 @@ const REDIRECT_HOME= 'REDIRECT_HOME';
 const CLEAN = "save_ready";
 const DIRTY = "save_dirty";
 const SAVED = "save_success";
-const NOTSAVED = "save_error";
+const SAVING = "save_working";
 
 class PreferencesPage extends Component {
 
@@ -63,6 +63,7 @@ class PreferencesPage extends Component {
   }
 
   handleSaveClick = () => {
+    this.setState({_saveStatus: SAVING});
     const {getAccessTokenSilently} = this.props.auth0;
     getAccessTokenSilently().then(
       this.callApiSaveAccount
@@ -77,7 +78,10 @@ class PreferencesPage extends Component {
   }
 
   saveSuccessful = () => {
-    this.setState({_saveStatus: SAVED});
+    this.setState({
+      _saveStatus: SAVED,
+      _redirect: REDIRECT_HOME
+    });
   }
 
   togglePrefValue = (e, {value} ) => {
@@ -139,14 +143,14 @@ class PreferencesPage extends Component {
                             <div className='eight wide column'>
                            
                             <div class="ui form">
-                              {this.state._saveStatus === SAVED ? (
+                              {/* {this.state._saveStatus === SAVED ? (
                                   <Message positive attached
                                     icon='checkmark'
                                     header='Saved!'
                                     content='Your account was successfully saved.'
                                   />
                                 ) : ""
-                              }
+                              } */}
                               <Button.Group attached="top">
                               
                                 <Button positive animated='fade'
@@ -154,7 +158,7 @@ class PreferencesPage extends Component {
                                     onClick={this.handleSaveClick}>
                                     <Button.Content hidden>Save</Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='save' />
+                                        <Icon name={(this.state._saveStatus === SAVING) ? "hourglass" : "save"} />
                                     </Button.Content>
                                 </Button>
                                 <Button animated='fade'
@@ -242,21 +246,21 @@ class PreferencesPage extends Component {
                                 </ul>
                               </div>
 
-                                {this.state._saveStatus === SAVED ? (
-                                    <Message positive attached
-                                      icon='checkmark'
-                                      header='Saved!'
-                                      content='Your account was successfully saved.'
-                                    />
-                                  ) : ""
-                                }
+                              {/* {this.state._saveStatus === SAVED ? (
+                                  <Message positive attached
+                                    icon='checkmark'
+                                    header='Saved!'
+                                    content='Your account was successfully saved.'
+                                  />
+                                ) : ""
+                              } */}
                                 <Button.Group attached="top">
                                   <Button positive animated='fade'
                                       disabled={!(this.state._saveStatus === DIRTY)}
                                       onClick={this.handleSaveClick}>
                                       <Button.Content hidden>Save</Button.Content>
                                       <Button.Content visible>
-                                          <Icon name='save' />
+                                          <Icon name={(this.state._saveStatus === SAVING) ? "hourglass" : "save"} />
                                       </Button.Content>
                                   </Button>
                                   <Button animated='fade'
