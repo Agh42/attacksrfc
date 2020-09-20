@@ -1,5 +1,5 @@
 
-export const AccountClient= {getAccount, saveAccount};
+export const AccountClient= {getAccount, saveAccount, deleteAccount};
 export default AccountClient;
 
 const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
@@ -35,7 +35,26 @@ function saveAccount(success, account, token) {
   fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
     .then(checkStatus)
     .then(success);
+}
 
+function deleteAccount(success, account, token) {
+  console.log("Deleting account");
+
+  var data = JSON.stringify(account);
+
+  var requestOptions = {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: data,
+    redirect: 'follow'
+  };
+
+  fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
+    .then(checkStatus)
+    .then(success);
 }
 
 function checkStatus(response) {

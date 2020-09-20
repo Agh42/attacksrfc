@@ -40,18 +40,29 @@ class PreferencesPage extends Component {
   loadAccount = () => {
     const {getAccessTokenSilently} = this.props.auth0;
     getAccessTokenSilently().then(
-      this.callApiGetAccount
+      this.callApiGetOrCreateAccount
       );
+  }
+
+  callApiGetOrCreateAccount = (token) => {
+      this.callApiGetAccount(token);
   }
 
   callApiGetAccount = (token) => {
     AccountClient.getAccount( 
-      (account) => {
-      this.setState({
-        account: account,
-        _saveStatus: CLEAN,
-      })
-    }, token);
+        (account) => {
+        this.setState({
+          account: account,
+          _saveStatus: CLEAN,
+        })
+      }, token)
+      .catch (error => {
+        // try to create account:
+        AccountClient.saveAccount(
+          this.loadAccount, 
+          this.state.account, 
+          token);
+        });
   }
 
   handleCancelClick = () => {
@@ -60,6 +71,11 @@ class PreferencesPage extends Component {
 
   handleDeleteClick = () => {
     console.log("Delete account selected")
+    this.setState({_saveStatus: SAVING});
+    const {getAccessTokenSilently} = this.props.auth0;
+    getAccessTokenSilently().then(
+      this.callApiDeleteAccount
+    );
   }
 
   handleSaveClick = () => {
@@ -72,6 +88,13 @@ class PreferencesPage extends Component {
 
   callApiSaveAccount = (token) => {
     AccountClient.saveAccount(
+      this.saveSuccessful, 
+      this.state.account, 
+      token);
+  }
+
+  callApiDeleteAccount = (token) => {
+    AccountClient.deleteAccount(
       this.saveSuccessful, 
       this.state.account, 
       token);
