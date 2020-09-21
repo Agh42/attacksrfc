@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import LinkToLogin from '../Components/LinkToLogin';
 import { withAuth0 } from '@auth0/auth0-react';
-import { Button, Icon, Checkbox, Form, Message } from 'semantic-ui-react'
+import { Button, Icon, Checkbox, Form, Confirm } from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom';
 import AccountClient from '../Gateways/AccountClient';
+import { declareExportDeclaration } from '@babel/types';
 
 // page load redirects:
 const REDIRECT_HOME= 'REDIRECT_HOME';
@@ -18,6 +19,7 @@ class PreferencesPage extends Component {
   state = {
     _redirect: "",
     _saveStatus: CLEAN,
+    _showConfirm: false,
     account: {},
   };
 
@@ -45,10 +47,6 @@ class PreferencesPage extends Component {
   }
 
   callApiGetOrCreateAccount = (token) => {
-      this.callApiGetAccount(token);
-  }
-
-  callApiGetAccount = (token) => {
     AccountClient.getAccount( 
         (account) => {
         this.setState({
@@ -71,11 +69,7 @@ class PreferencesPage extends Component {
 
   handleDeleteClick = () => {
     console.log("Delete account selected")
-    this.setState({_saveStatus: SAVING});
-    const {getAccessTokenSilently} = this.props.auth0;
-    getAccessTokenSilently().then(
-      this.callApiDeleteAccount
-    );
+    this.setState({_showConfirm: true});
   }
 
   handleSaveClick = () => {
@@ -85,6 +79,7 @@ class PreferencesPage extends Component {
       this.callApiSaveAccount
     );
   }
+
 
   callApiSaveAccount = (token) => {
     AccountClient.saveAccount(
@@ -120,6 +115,18 @@ class PreferencesPage extends Component {
 
   }
 
+  handleDialogCancel = () => {
+    this.setState({_showConfirm: false});
+  }
+
+  handleDialogConfirm = () => {
+    this.setState({_saveStatus: SAVING});
+    const {getAccessTokenSilently} = this.props.auth0;
+    getAccessTokenSilently().then(
+      this.callApiDeleteAccount
+    );
+  }
+
   render() {
     if (this.state._redirect) {
       return {
@@ -138,6 +145,15 @@ class PreferencesPage extends Component {
 
     return (
       <div class="ui fluid container">
+       <Confirm
+          open={this.state._showConfirm}
+          header='Completely remove your account?'
+          content='This will remove your account, your inventories and all related information. This is final and cannot be undone.'
+          cancelButton='Keep my account.'
+          confirmButton="Delete my account and all of my data forever!"
+          onCancel={this.handleDialogCancel}
+          onConfirm={this.handleDialogConfirm}
+        />
         <div class="ui padded grid">
                 <div class="one column row">
                     <div class="sixteen wide column">
