@@ -14,6 +14,26 @@ const DIRTY = "save_dirty";
 const SAVED = "save_success";
 const SAVING = "save_working";
 
+const Subscriptions = (props) => (
+  <div class="ui list">
+    {
+    props.subscriptions.map( (sub) =>
+      <div class="item">
+        <i class="donate icon"></i>
+        <div class="content">
+          <div class="header">
+          {sub.name}
+          </div>
+          <div class="description">
+          Grants {sub.maxInventories} inventories with {sub.maxProductsPerInventory} products each.
+          </div>
+        </div>
+      </div>
+    )
+    }
+  </div>
+)
+
 class PreferencesPage extends Component {
 
   state = {
@@ -125,6 +145,8 @@ class PreferencesPage extends Component {
     getAccessTokenSilently().then(
       this.callApiDeleteAccount
     );
+    const {logout} = this.props.auth0;
+    logout({returnTo: window.location.origin});
   }
 
   render() {
@@ -135,12 +157,7 @@ class PreferencesPage extends Component {
     }
 
     const {
-      isLoading,
-      isAuthenticated,
-      error,
-      user,
-      loginWithRedirect,
-      logout, 
+      user
     } = this.props.auth0;
 
     return (
@@ -148,7 +165,9 @@ class PreferencesPage extends Component {
        <Confirm
           open={this.state._showConfirm}
           header='Completely remove your account?'
-          content='This will remove your account, your inventories and all related information. This is final and cannot be undone.'
+          content='This will remove your account, your inventories and all related information. This is final 
+            and cannot be undone. For technical reasons it may take a couple of hours until your identity is also removed
+            from our authentication provider. Your data will be deleted completely without any option to restore it.'
           cancelButton='Keep my account.'
           confirmButton="Delete my account and all of my data forever!"
           onCancel={this.handleDialogCancel}
@@ -277,12 +296,16 @@ class PreferencesPage extends Component {
                                 </ul>
                               </div>
 
-                              <h4 class="ui dividing header">Subscriptions</h4>
+                              <h4 class="ui dividing header">Sponsorship</h4>
                               <div class="ui message">
-                                <div class="header">You have the following subscriptions:</div>
-                                <ul class="list">
-                                  <li>[No subscriptions]</li>
-                                </ul>
+                                <div class="header">Your donations grant you:</div>
+                                {
+                                  ((this.state.account.tenant||{}).subscriptions)
+                                  ? <Subscriptions 
+                                    subscriptions={this.state.account.tenant.subscriptions}
+                                  />
+                                  : "No donations."
+                                }
                               </div>
 
                               {/* {this.state._saveStatus === SAVED ? (
