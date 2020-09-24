@@ -19,7 +19,7 @@ const Subscriptions = (props) => (
     {
     props.subscriptions.map( (sub) =>
       <div class="item">
-        <i class="donate icon"></i>
+        <i class="arrow alternate circle up icon"></i>
         <div class="content">
           <div class="header">
           {sub.name}
@@ -296,15 +296,15 @@ class PreferencesPage extends Component {
                                 </ul>
                               </div>
 
-                              <h4 class="ui dividing header">Sponsorship</h4>
+                              <h4 class="ui dividing header">Upgrades</h4>
                               <div class="ui message">
-                                <div class="header">Your donations grant you:</div>
+                                <div class="header">You own the following upgrades:</div>
                                 {
                                   ((this.state.account.tenant||{}).subscriptions)
                                   ? <Subscriptions 
                                     subscriptions={this.state.account.tenant.subscriptions}
                                   />
-                                  : "No donations."
+                                  : "No upgrades."
                                 }
                               </div>
 

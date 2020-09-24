@@ -190,10 +190,14 @@ export default class EditableInventoryList extends Component {
                 onChange: this.onChange
         };
 
-        const inventories = [
-            { key: 'i1', value: 'i1', text: '<Unsaved inventory>' },
-            { key: 'inew', value: 'inew', text: '<Add new...>' },
-        ]
+        const inventories = this.props.inventories.map( (i) => {
+            return {key: i.name, value: i.name, text: i.name};
+        });
+
+        // const inventories = [
+        //     { key: 'i1', value: 'i1', text: '<Unsaved inventory>' },
+        //     { key: 'inew', value: 'inew', text: '<Add new...>' },
+        // ]
         
         return (
                 <div className="ui raised segment" 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Tab, Button, Icon, Header, Modal } from 'semantic-ui-react';
-import { useAuth0 } from "@auth0/auth0-react";
+import { withAuth0 } from "@auth0/auth0-react";
 
 import moment from 'moment';
 import store from 'store';
@@ -56,9 +56,8 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
-const MAX_SELECTED_CPES = 10;
 
-export default class AttackSrfcPage extends Component {
+class AttackSrfcPage extends Component {
 
     
     // used to explicitely disable default actions where needed:
@@ -88,6 +87,14 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
             cveStartDate: moment().subtract(182, "days"),
             cveEndDate: moment(),
+
+            account: {
+                inventories: [],
+                tenant: {
+                    maxInventories: 1,
+                    maxItemsPerInventory: 10
+                }
+            },
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -130,6 +137,7 @@ export default class AttackSrfcPage extends Component {
         this.initHealthCheck();
         this.initSelectedCpes();
         this.initStats();
+        this.loadAccount();
         this.loadHotTopics();
     }
     
@@ -230,6 +238,29 @@ export default class AttackSrfcPage extends Component {
         });
     }
 
+    loadAccount = () => {
+        const { getAccessTokenSilently } = this.props.auth0;
+        getAccessTokenSilently().then(
+            this.callApiGetOrCreateAccount
+        );
+    }
+
+    callApiGetOrCreateAccount = (token) => {
+        AccountClient.getAccount(
+            (account) => {
+                this.setState({
+                    account: account,
+                })
+            }, token)
+            .catch(error => {
+                // try to create account:
+                AccountClient.saveAccount(
+                    this.loadAccount,
+                    this.state.account,
+                    token);
+            });
+    }
+
     loadHotTopics =  (link) => {
         NewsClient.getHotTopics( 
             (response) => {
@@ -286,14 +317,14 @@ export default class AttackSrfcPage extends Component {
      * status to active.
      */
     handleAddCpeClick = (newCpe) => {
-        if (this.state.selectedCpes.length+1 > MAX_SELECTED_CPES) {
+        if (this.state.selectedCpes.length+1 > this.state.account.tenant.maxItemsPerInventory) {
             this.setState({
                 _dialogMessage: "This inventory is full. Log in to increase "
                                 + "inventory size and to save multiple inventories.",
             });
         }
 
-        if (this.state.selectedCpes.length > MAX_SELECTED_CPES) {
+        if (this.state.selectedCpes.length > this.state.account.tenant.maxItemsPerInventory) {
             return;
         }
         
@@ -537,6 +568,18 @@ export default class AttackSrfcPage extends Component {
         console.log("Edit " + editCpeId);
     }
 
+    handleSelectInventoryClick = (cpeList) => {
+        this.setState({
+            selectedCpes: cpeList,
+            cpeSummaries: cpeList.map( (c) => {
+                return {
+                    cpe: c,
+                    count: "",
+                };
+            }),
+        });
+    }
+
     handleNewsListMenuClick = (link) => {
         this.loadHotTopics(link);
     }
@@ -587,13 +630,16 @@ export default class AttackSrfcPage extends Component {
                 pane:
                 <Tab.Pane >
                     <EditableInventoryList
-                        maxCpes={MAX_SELECTED_CPES}
+                        inventories={this.state.account.inventories}
+                        maxInventories={this.state.account.tenant.maxInventories}
+                        maxCpes={this.state.account.tenant.maxItemsPerInventory}
                         selectedCpes={this.state.selectedCpes}
                         onSelectCpeClick={this.handleAddCpeClick}
                         onSaveClick={this.handleSaveClick}
                         onDeleteClick={this.handleDeleteCpeClick}
                         onCpeToggleClick={this.handleCpeToggleClick}
                         onEditCpeClick={this.handleEditCpeClick}
+                        onSelectInventoryClick={this.handleSelectInventoryClick}
                     />
                 </Tab.Pane>
             }, {
@@ -690,7 +736,7 @@ export default class AttackSrfcPage extends Component {
                 pane:
                 <Tab.Pane>
                     <CveGraph
-                        maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
+                        maxCpesReached={this.state.selectedCpes.length > this.state.account.tenant.maxItemsPerInventory}
                         allCves={this.state.graphCves} // CVEs loaded for graph
                         currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
                             ? this.state.selectedCpeSummaryForGraph.cpe 
@@ -832,3 +878,5 @@ export default class AttackSrfcPage extends Component {
         );
         }
   }
+
+  export default withAuth0(AttackSrfcPage);
