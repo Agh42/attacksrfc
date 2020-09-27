@@ -56,6 +56,11 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
+const ACCOUNT_SAVE_CLEAN = "save_ready";
+const ACCOUNT_SAVE_DIRTY = "save_dirty";
+const ACCOUNT_SAVE_SAVED = "save_success";
+const ACCOUNT_SAVE_SAVING = "save_working";
+
 
 class AttackSrfcPage extends Component {
 
@@ -89,12 +94,18 @@ class AttackSrfcPage extends Component {
             cveEndDate: moment(),
 
             account: {
-                inventories: [],
+                inventories: [
+                    {   name: 'New inventory', 
+                        products: [],
+                        notify: false,
+                    },
+                ],
                 tenant: {
                     maxInventories: 1,
                     maxItemsPerInventory: 10
                 }
             },
+            _saveStatus: ACCOUNT_SAVE_CLEAN,
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -245,6 +256,14 @@ class AttackSrfcPage extends Component {
         );
     }
 
+    saveAccount = () => {
+        this.setState({_saveStatus: ACCOUNT_SAVE_SAVING});
+        const { getAccessTokenSilently } = this.props.auth0;
+        getAccessTokenSilently().then(
+            this.callApiSaveAccount
+        );
+    }
+
     callApiGetOrCreateAccount = (token) => {
         AccountClient.getAccount(
             (account) => {
@@ -260,6 +279,19 @@ class AttackSrfcPage extends Component {
                     token);
             });
     }
+
+    callApiSaveAccount = (token) => {
+        AccountClient.saveAccount(
+            this.saveSuccessful, 
+            this.state.account, 
+            token);
+    }
+
+    saveSuccessful = () => {
+        this.setState({
+          _saveStatus: ACCOUNT_SAVE_SAVED,
+        });
+      }
 
     loadHotTopics =  (link) => {
         NewsClient.getHotTopics( 
@@ -291,10 +323,6 @@ class AttackSrfcPage extends Component {
                 (failure) => {
                     this.setState({_uhoh: true});
                 });
-    }
-
-    handleSaveClick = () => {
-          this.setState({_redirect: REDIRECT_LOGIN});
     }
 
     handlePaginationChange = (newPage) => {
@@ -577,6 +605,7 @@ class AttackSrfcPage extends Component {
                     count: "",
                 };
             }),
+            _cpeAction: CPE_ACTION_RELOAD,
         });
     }
 
@@ -616,6 +645,52 @@ class AttackSrfcPage extends Component {
         this.setState({ leftActiveTabIndex: activeIndex });
     }
 
+    handleAddInventoryClick = (name) => {
+        let newInventories = [...this.state.account.inventories,
+            {
+                name: name,
+                products: [],
+                notify: false,
+            }
+        ];
+        this.setState({
+            account: {...this.state.account, 
+                inventories: newInventories,
+            }
+        });
+    }
+
+    handleDeleteInventoryClick = (toDeleteName) => {
+        this.setState({
+            account: {...this.state.account, 
+                inventories: this.state.account.inventories.filter(
+                    i => i.name !== toDeleteName
+                ),
+            }
+        });
+    }
+
+    handleInventoryNotificationClick = (toggleName) => {
+        this.setState({
+            account: {...this.state.account, 
+                inventories: this.state.account.inventories.map( i => {
+                    if (i.name === toggleName) {
+                        return {...i, notify: !i.notify};
+                    } else {
+                        return i;
+                    }
+                }),
+            }
+        });
+    }
+
+    handleSaveInventoryClick = (newInventories) => {
+        this.setState({
+            account: {...this.state.account,
+                inventories: newInventories,
+            },
+        }, this.saveAccount);
+    }
 
     render() {
         if (this.state._redirect) {
@@ -635,11 +710,14 @@ class AttackSrfcPage extends Component {
                         maxCpes={this.state.account.tenant.maxItemsPerInventory}
                         selectedCpes={this.state.selectedCpes}
                         onSelectCpeClick={this.handleAddCpeClick}
-                        onSaveClick={this.handleSaveClick}
+                        onSaveInventoryClick={this.handleSaveInventoryClick}
                         onDeleteClick={this.handleDeleteCpeClick}
                         onCpeToggleClick={this.handleCpeToggleClick}
                         onEditCpeClick={this.handleEditCpeClick}
                         onSelectInventoryClick={this.handleSelectInventoryClick}
+                        onAddInventoryClick={this.handleAddInventoryClick}
+                        onDeleteInventoryClick={this.handleDeleteInventoryClick}
+                        onToggleNotificationClick={this.handleInventoryNotificationClick}
                     />
                 </Tab.Pane>
             }, {

@@ -4,6 +4,7 @@ import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
 import {Link, Redirect} from 'react-router-dom';
+import { withAuth0 } from '@auth0/auth0-react';
 
 //###############################################################
 //### AutoSuggest functions:
@@ -65,33 +66,33 @@ class CpeItem extends React.Component {
         let  c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, rest;
         [c,cpeversion,type, vendor, product, version, update, edition, lang, sw_edition, ...rest] 
             = this.props.cpe.id.split(":");
-        
-            return (
-                <div class="item">
-                    <div class="right floated content">
-                        <i className="delete link icon"
-                                onClick={this.handleDeleteClick}></i>&nbsp;
-                        <i className="tags link icon"
-                                onClick={this.handleEditCpeClick}></i>
-                    </div>
-                   
-                    <div class="content">
-                        <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
-                            <i className={ {
-                                        'o': "terminal icon",
-                                        'a': "desktop icon",
-                                        'h': "microchip icon",
-                                    }[type]
-                                }
-                                ></i>
-                           <a className="detail"
-                               onClick={this.handleCpeClick}>
-                               {type+":"+vendor+":"+product+":"+version+":"+update+":"+edition}
-                           </a>
-                       </div>
+
+        return (
+            <div class="item">
+                <div class="right floated content">
+                    <i className="delete link icon"
+                            onClick={this.handleDeleteClick}></i>&nbsp;
+                    <i className="tags link icon"
+                            onClick={this.handleEditCpeClick}></i>
+                </div>
+                
+                <div class="content">
+                    <div class={this.props.isActive ? "ui teal label" : "ui label"} > 
+                        <i className={ {
+                                    'o': "terminal icon",
+                                    'a': "desktop icon",
+                                    'h': "microchip icon",
+                                }[type]
+                            }
+                            ></i>
+                        <a className="detail"
+                            onClick={this.handleCpeClick}>
+                            {type+":"+vendor+":"+product+":"+version+":"+update+":"+edition}
+                        </a>
                     </div>
                 </div>
-            )};
+            </div>
+        )};
 }
 
 
@@ -99,13 +100,14 @@ class CpeItem extends React.Component {
  * List of all searched and saved CPEs. 
  * 
  */
-export default class EditableInventoryList extends Component {
+class EditableInventoryList extends Component {
     constructor() {
         super();
         this.state = {
                 searchValue: '',
                 suggestions: [],
                 _isLoading: false,
+                selectedInventoryName: this.props.inventories[0].name,
         }
         this.latestRequest = null;
     }
@@ -181,6 +183,13 @@ export default class EditableInventoryList extends Component {
                 isActive={cpe.isActive}
             />
         ));
+
+        const {
+            isLoading,
+            isAuthenticated,
+            error,
+            user,
+        } = this.props.auth0;
         
         // attributes for autosuggest input:
         const {searchValue, suggestions} = this.state;
@@ -190,7 +199,7 @@ export default class EditableInventoryList extends Component {
                 onChange: this.onChange
         };
 
-        const inventories = this.props.inventories.map( (i) => {
+        const inventoryOptions = this.props.inventories.map( (i) => {
             return {key: i.name, value: i.name, text: i.name};
         });
 
@@ -198,6 +207,36 @@ export default class EditableInventoryList extends Component {
         //     { key: 'i1', value: 'i1', text: '<Unsaved inventory>' },
         //     { key: 'inew', value: 'inew', text: '<Add new...>' },
         // ]
+
+        handleSaveInventoryClick = () => {
+            this.props.onSaveInventoryClick(this.props.inventories);
+        }
+
+        handleAddInventoryClick = () => {
+            if (this.props.inventories.length >= this.props.maxInventories) {
+                return;
+            }
+            this.props.onAddInventoryClick("New inventory");
+        }
+
+        handleDeleteInventoryClick = () => {
+            this.props.onDeleteInventoryClick(this.state.selectedInventoryName);
+        }
+
+        handleNotificationClick = () => {
+            this.props.onToggleNotificationClick(this.state.selectedInventoryName);
+        }
+
+        handleDropdownChange = (e, {value}) => {
+            this.setState({
+                selectedInventoryName: value,
+            });
+            this.props.onSelectInventoryClick(
+                this.props.inventories
+                .filter(i => i.name === value)
+                .map(i => i.products)
+            );
+        }
         
         return (
                 <div className="ui raised segment" 
@@ -205,11 +244,26 @@ export default class EditableInventoryList extends Component {
 
 
                     {(this.props.selectedCpes.length > this.props.maxCpes )
+                    || (this.props.inventories.length > this.props.maxInventories)
                     ? <div className="ui negative icon message">
                         <i className="warning circle icon"></i>
                         <div class="content">
-                        This inventory is full. <Link to="/login" class="item">Log in</Link> to 
-                        increase inventory size and save multiple inventories.
+                        {this.props.selectedCpes.length > this.props.maxCpes
+                            ? 'This inventory is full. '
+                            : ''} 
+                        {this.props.inventories.length > this.props.maxInventories
+                            ? 'You cannot create another inventory. '
+                            : ''} 
+                        {isAuthenticated
+                        ? <span>
+                                <Link to="/login" class="item">Sign in/sign up</Link> for free to 
+                                increase your inventory size and save multiple inventories.
+                          </span>
+                        : <span>
+                                <Link to="/register" class="item">Upgrade your account</Link> to 
+                                increase your inventory size and save multiple inventories.
+                          </span>
+                        }
                         </div>
                       </div>
                     : <span>
@@ -217,48 +271,51 @@ export default class EditableInventoryList extends Component {
                             <i class="archive icon"></i>
                             <div class="content">
                                 Inventory
-                                <div class="ui teal sub header">Unsaved inventory</div>
+                                <div class="ui teal sub header">{this.state.selectedInventoryName}</div>
                             </div>
                         </h3>
                         <form class="ui form">
                             <div class="field">
                                 <Dropdown
                                     placeholder='<Unsaved inventory...>'
+                                    onChange={this.handleDropdownChange}
                                     fluid
                                     search
                                     selection
-                                    disabled
-                                    options={inventories}
+                                    options={inventoryOptions}
                                 />
                             </div>
                          
                             <Button.Group attached="top">
                                 <Button positive animated='fade'
-                                    onClick={this.props.onSaveClick}>
+                                    onClick={this.handleSaveInventoryClick}>
                                     <Button.Content hidden>Save</Button.Content>
                                     <Button.Content visible>
                                         <Icon name='save' />
                                     </Button.Content>
                                 </Button>
-                                <Button animated='fade'
-                                    onClick={this.props.onSaveClick}>
+                                <Button disabled={!isAuthenticated}
+                                    animated='fade'
+                                    onClick={this.handleAddInventoryClick}>
                                     <Button.Content hidden>Add</Button.Content>
                                     <Button.Content visible>
                                         <Icon name='plus' />
                                     </Button.Content>
                                 </Button>
-                                <Button disabled animated='fade'
-                                    onClick={this.props.onSaveClick}>
+                                <Button disabled={!isAuthenticated} animated='fade'
+                                    onClick={this.handleDeleteInventoryClick}>
                                     <Button.Content hidden>Del</Button.Content>
                                     <Button.Content visible>
                                         <Icon name='trash' />
                                     </Button.Content>
                                 </Button>
                                 <Button negative animated='fade'
-                                    onClick={this.props.onSaveClick}>
+                                    onClick={this.handleNotificationClick}>
                                     <Button.Content hidden>Alerts</Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='bell slash' />
+                                        <Icon name={this.state.selectedInventory.notify 
+                                            ? 'bell' 
+                                            : 'bell slash'} />
                                     </Button.Content>
                                 </Button>
                             </Button.Group>
@@ -269,15 +326,15 @@ export default class EditableInventoryList extends Component {
                             Product selection
                         </h4>
                         <Autosuggest 
-                        suggestions={suggestions}
-                        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                        getSuggestionValue={getSuggestionValue}
-                        onSuggestionSelected={this.onSuggestionSelected}
-                        renderSuggestion={renderSuggestion}
-                        focusInputOnSuggestionClick={false}
-                        inputProps={inputProps} 
-                        renderInputComponent={renderAutoSuggestInputComponent}
+                            suggestions={suggestions}
+                            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                            getSuggestionValue={getSuggestionValue}
+                            onSuggestionSelected={this.onSuggestionSelected}
+                            renderSuggestion={renderSuggestion}
+                            focusInputOnSuggestionClick={false}
+                            inputProps={inputProps} 
+                            renderInputComponent={renderAutoSuggestInputComponent}
                         />
                     </span>
                     }
@@ -293,3 +350,4 @@ export default class EditableInventoryList extends Component {
         );
     }
 }
+export default withAuth0(EditableInventoryList);
