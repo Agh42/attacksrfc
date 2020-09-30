@@ -12,6 +12,7 @@ import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 import NewsClient from '../Gateways/NewsClient';
+import AccountClient from '../Gateways/AccountClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
 import CVEs from '../Dto/CVEs.js';
@@ -83,6 +84,7 @@ class AttackSrfcPage extends Component {
     */
     state = {
             selectedCpes: [],
+            selectedInventoryName: "<Unsaved inventory...>",
             selectedCve: {},
             articles: [],
             selectedCvesPage: [],
@@ -95,7 +97,7 @@ class AttackSrfcPage extends Component {
 
             account: {
                 inventories: [
-                    {   name: 'New inventory', 
+                    {   name: '<Unsaved inventory...>', 
                         products: [],
                         notify: false,
                     },
@@ -250,15 +252,19 @@ class AttackSrfcPage extends Component {
     }
 
     loadAccount = () => {
-        const { getAccessTokenSilently } = this.props.auth0;
+        const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
+        if (!isAuthenticated) return;
+        
         getAccessTokenSilently().then(
             this.callApiGetOrCreateAccount
         );
     }
 
     saveAccount = () => {
+        const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
+        if (!isAuthenticated) return;
+
         this.setState({_saveStatus: ACCOUNT_SAVE_SAVING});
-        const { getAccessTokenSilently } = this.props.auth0;
         getAccessTokenSilently().then(
             this.callApiSaveAccount
         );
@@ -269,6 +275,15 @@ class AttackSrfcPage extends Component {
             (account) => {
                 this.setState({
                     account: account,
+                    selectedInventoryName: account.inventories[0].name,
+                    selectedCpes: account.inventories[0].products,
+                    cpeSummaries: account.inventories[0].products.map( (c) => {
+                        return {
+                            cpe: c,
+                            count: "",
+                        };
+                    }),
+                    _cpeAction: CPE_ACTION_RELOAD,
                 })
             }, token)
             .catch(error => {
@@ -596,10 +611,12 @@ class AttackSrfcPage extends Component {
         console.log("Edit " + editCpeId);
     }
 
-    handleSelectInventoryClick = (cpeList) => {
+    handleSelectInventoryClick = (name) => {
+        let newCpeList = this.state.account.inventories.find(i => i.name === name).products;
         this.setState({
-            selectedCpes: cpeList,
-            cpeSummaries: cpeList.map( (c) => {
+            selectedCpes: newCpeList,
+            selectedInventoryName: name,
+            cpeSummaries: newCpeList.map( (c) => {
                 return {
                     cpe: c,
                     count: "",
@@ -660,21 +677,21 @@ class AttackSrfcPage extends Component {
         });
     }
 
-    handleDeleteInventoryClick = (toDeleteName) => {
+    handleDeleteInventoryClick = () => {
         this.setState({
             account: {...this.state.account, 
                 inventories: this.state.account.inventories.filter(
-                    i => i.name !== toDeleteName
+                    i => i.name !== this.state.selectedInventoryName
                 ),
             }
         });
     }
 
-    handleInventoryNotificationClick = (toggleName) => {
+    handleInventoryNotificationClick = () => {
         this.setState({
             account: {...this.state.account, 
                 inventories: this.state.account.inventories.map( i => {
-                    if (i.name === toggleName) {
+                    if (i.name === this.state.selectedInventoryName) {
                         return {...i, notify: !i.notify};
                     } else {
                         return i;
@@ -684,10 +701,18 @@ class AttackSrfcPage extends Component {
         });
     }
 
-    handleSaveInventoryClick = (newInventories) => {
+    handleSaveInventoryClick = () => {
         this.setState({
             account: {...this.state.account,
-                inventories: newInventories,
+                inventories: this.sstate.account.inventories.map(i => {
+                    if (i.name === this.state.selectedInventoryName) {
+                        return {...i,
+                            products: this.state.selectedCpes,
+                        };
+                    } else {
+                        return i;
+                    }
+                }),
             },
         }, this.saveAccount);
     }
@@ -709,6 +734,7 @@ class AttackSrfcPage extends Component {
                         maxInventories={this.state.account.tenant.maxInventories}
                         maxCpes={this.state.account.tenant.maxItemsPerInventory}
                         selectedCpes={this.state.selectedCpes}
+                        selectedInventoryName={this.state.selectedInventoryName}
                         onSelectCpeClick={this.handleAddCpeClick}
                         onSaveInventoryClick={this.handleSaveInventoryClick}
                         onDeleteClick={this.handleDeleteCpeClick}

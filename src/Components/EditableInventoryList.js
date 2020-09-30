@@ -101,16 +101,12 @@ class CpeItem extends React.Component {
  * 
  */
 class EditableInventoryList extends Component {
-    constructor() {
-        super();
-        this.state = {
-                searchValue: '',
-                suggestions: [],
-                _isLoading: false,
-                selectedInventoryName: this.props.inventories[0].name,
-        }
-        this.latestRequest = null;
+    state = {
+        searchValue: '',
+        suggestions: [],
+        _isLoading: false,
     }
+    latestRequest = null;
     
     onChange = (event, { newValue, method }) => {
         this.setState({
@@ -169,6 +165,31 @@ class EditableInventoryList extends Component {
                       });
                   })
       }
+
+    handleSaveInventoryClick = () => {
+        this.props.onSaveInventoryClick();
+    }
+
+    handleAddInventoryClick = () => {
+        if (this.props.inventories.length >= this.props.maxInventories) {
+            return;
+        }
+        this.props.onAddInventoryClick("New inventory");
+    }
+
+    handleDeleteInventoryClick = () => {
+        this.props.onDeleteInventoryClick();
+    }
+
+    handleNotificationClick = () => {
+        this.props.onToggleNotificationClick();
+    }
+
+    handleDropdownChange = (e, {value}) => {
+        if (value === this.props.selectedInventoryName)
+            return;
+        this.props.onSelectInventoryClick(value);
+    }
     
     render() {
         // stateless component for cpe list:
@@ -208,35 +229,7 @@ class EditableInventoryList extends Component {
         //     { key: 'inew', value: 'inew', text: '<Add new...>' },
         // ]
 
-        handleSaveInventoryClick = () => {
-            this.props.onSaveInventoryClick(this.props.inventories);
-        }
-
-        handleAddInventoryClick = () => {
-            if (this.props.inventories.length >= this.props.maxInventories) {
-                return;
-            }
-            this.props.onAddInventoryClick("New inventory");
-        }
-
-        handleDeleteInventoryClick = () => {
-            this.props.onDeleteInventoryClick(this.state.selectedInventoryName);
-        }
-
-        handleNotificationClick = () => {
-            this.props.onToggleNotificationClick(this.state.selectedInventoryName);
-        }
-
-        handleDropdownChange = (e, {value}) => {
-            this.setState({
-                selectedInventoryName: value,
-            });
-            this.props.onSelectInventoryClick(
-                this.props.inventories
-                .filter(i => i.name === value)
-                .map(i => i.products)
-            );
-        }
+       
         
         return (
                 <div className="ui raised segment" 
@@ -271,7 +264,7 @@ class EditableInventoryList extends Component {
                             <i class="archive icon"></i>
                             <div class="content">
                                 Inventory
-                                <div class="ui teal sub header">{this.state.selectedInventoryName}</div>
+                                <div class="ui teal sub header">{this.props.selectedInventoryName}</div>
                             </div>
                         </h3>
                         <form class="ui form">
@@ -313,7 +306,7 @@ class EditableInventoryList extends Component {
                                     onClick={this.handleNotificationClick}>
                                     <Button.Content hidden>Alerts</Button.Content>
                                     <Button.Content visible>
-                                        <Icon name={this.state.selectedInventory.notify 
+                                        <Icon name={this.props.inventories.find(i => i.name === this.props.selectedInventoryName).notify 
                                             ? 'bell' 
                                             : 'bell slash'} />
                                     </Button.Content>
