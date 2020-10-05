@@ -57,10 +57,11 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
-const ACCOUNT_SAVE_CLEAN = "save_ready";
-const ACCOUNT_SAVE_DIRTY = "save_dirty";
-const ACCOUNT_SAVE_SAVED = "save_success";
-const ACCOUNT_SAVE_SAVING = "save_working";
+const ACCOUNT_NONE = "account_none";
+const ACCOUNT_SAVE_DIRTY = "account_dirty";
+const ACCOUNT_SAVE_CLEAN = "account_clean";
+const ACCOUNT_SAVE_SAVING = "account_saving";
+const ACCOUNT_LOADING = "account_loading";
 
 
 class AttackSrfcPage extends Component {
@@ -96,6 +97,10 @@ class AttackSrfcPage extends Component {
             cveEndDate: moment(),
 
             account: {
+                preferences: {
+                    notificationsHotTopics: false,
+                    notificationsHotTopics: false,
+                },
                 inventories: [
                     {   name: '<Unsaved inventory...>', 
                         products: [],
@@ -103,11 +108,12 @@ class AttackSrfcPage extends Component {
                     },
                 ],
                 tenant: {
+                    name: "My organization",
                     maxInventories: 1,
                     maxItemsPerInventory: 10
                 }
             },
-            _saveStatus: ACCOUNT_SAVE_CLEAN,
+            _accountStatus: ACCOUNT_NONE,
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -130,10 +136,6 @@ class AttackSrfcPage extends Component {
             activeTabIndex: 0,
             leftActiveTabIndex: 0,
     };
-
-
-   
-  
 
     componentDidMount() {
         if (((this.props.match||{}).params||{}).cveParam) {
@@ -209,9 +211,7 @@ class AttackSrfcPage extends Component {
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
     // FIXME switch to page one when loading cvelist with fewer cves
-    // FIXME limit cpe inventory to 10 active cpes
     // TODO add cache and rate limiting
-    // TODO add cookie consent
     // TODO add tutorial
     
     /*
@@ -225,6 +225,11 @@ class AttackSrfcPage extends Component {
         else {
             var initialCpes = CpeClient.getExampleCpes();
         }
+
+        var newInventories = [ 
+            {...this.state.account.inventories[0], products: initialCpes},
+            ...this.state.account.inventories.slice(1, this.state.account.inventories.length)
+        ];
     
         this.setState( {selectedCpes: initialCpes,
                         selectedCpeSummaryForGraph: initialCpes[0],
@@ -234,6 +239,7 @@ class AttackSrfcPage extends Component {
                                 count: "",
                             };
                         }),
+                        account: {...this.state.account, inventories: newInventories},
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
                         _graphAction: GRAPH_ACTION_RELOAD,
@@ -253,7 +259,7 @@ class AttackSrfcPage extends Component {
 
     loadAccount = () => {
         const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
-        if (!isAuthenticated) return;
+        if (!isAuthenticated || this.state._accountStatus !== ACCOUNT_NONE) return;
         
         getAccessTokenSilently().then(
             this.callApiGetOrCreateAccount
@@ -264,7 +270,7 @@ class AttackSrfcPage extends Component {
         const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
         if (!isAuthenticated) return;
 
-        this.setState({_saveStatus: ACCOUNT_SAVE_SAVING});
+        this.setState({_accountStatus: ACCOUNT_SAVE_SAVING});
         getAccessTokenSilently().then(
             this.callApiSaveAccount
         );
@@ -304,7 +310,7 @@ class AttackSrfcPage extends Component {
 
     saveSuccessful = () => {
         this.setState({
-          _saveStatus: ACCOUNT_SAVE_SAVED,
+          _accountStatus: ACCOUNT_SAVE_CLEAN,
         });
       }
 
@@ -704,7 +710,7 @@ class AttackSrfcPage extends Component {
     handleSaveInventoryClick = () => {
         this.setState({
             account: {...this.state.account,
-                inventories: this.sstate.account.inventories.map(i => {
+                inventories: this.state.account.inventories.map(i => {
                     if (i.name === this.state.selectedInventoryName) {
                         return {...i,
                             products: this.state.selectedCpes,

@@ -166,26 +166,31 @@ class EditableInventoryList extends Component {
                   })
       }
 
-    handleSaveInventoryClick = () => {
+    handleSaveInventoryClick = (e, data) => {
+        e.preventDefault();
         this.props.onSaveInventoryClick();
     }
 
-    handleAddInventoryClick = () => {
+    handleAddInventoryClick = (e, data) => {
+        e.preventDefault();
         if (this.props.inventories.length >= this.props.maxInventories) {
             return;
         }
         this.props.onAddInventoryClick("New inventory");
     }
 
-    handleDeleteInventoryClick = () => {
+    handleDeleteInventoryClick = (e, data) => {
+        e.preventDefault();
         this.props.onDeleteInventoryClick();
     }
 
-    handleNotificationClick = () => {
+    handleNotificationClick = (e, data) => {
+        e.preventDefault();
         this.props.onToggleNotificationClick();
     }
 
     handleDropdownChange = (e, {value}) => {
+        e.preventDefault();
         if (value === this.props.selectedInventoryName)
             return;
         this.props.onSelectInventoryClick(value);
