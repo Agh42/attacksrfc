@@ -57,11 +57,11 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
-const ACCOUNT_NONE = "account_none";
-const ACCOUNT_SAVE_DIRTY = "account_dirty";
-const ACCOUNT_SAVE_CLEAN = "account_clean";
-const ACCOUNT_SAVE_SAVING = "account_saving";
-const ACCOUNT_LOADING = "account_loading";
+export const ACCOUNT_NONE = "account_none";
+export const ACCOUNT_SAVE_DIRTY = "account_dirty";
+export const ACCOUNT_SAVE_CLEAN = "account_clean";
+export const ACCOUNT_SAVE_SAVING = "account_saving";
+export const ACCOUNT_LOADING = "account_loading";
 
 
 class AttackSrfcPage extends Component {
@@ -260,7 +260,8 @@ class AttackSrfcPage extends Component {
     loadAccount = () => {
         const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
         if (!isAuthenticated || this.state._accountStatus !== ACCOUNT_NONE) return;
-        
+        this.setState({_accountStatus: ACCOUNT_LOADING});
+
         getAccessTokenSilently().then(
             this.callApiGetOrCreateAccount
         );
@@ -290,7 +291,8 @@ class AttackSrfcPage extends Component {
                         };
                     }),
                     _cpeAction: CPE_ACTION_RELOAD,
-                })
+                    _accountStatus: ACCOUNT_SAVE_CLEAN,
+                }, this.storeCpes)
             }, token)
             .catch(error => {
                 // try to create account:
@@ -302,6 +304,7 @@ class AttackSrfcPage extends Component {
     }
 
     callApiSaveAccount = (token) => {
+        this.setState({_accountStatus: ACCOUNT_SAVE_SAVING});
         AccountClient.saveAccount(
             this.saveSuccessful, 
             this.state.account, 
@@ -629,7 +632,7 @@ class AttackSrfcPage extends Component {
                 };
             }),
             _cpeAction: CPE_ACTION_RELOAD,
-        });
+        }, this.storeCpes);
     }
 
     handleNewsListMenuClick = (link) => {
@@ -750,6 +753,7 @@ class AttackSrfcPage extends Component {
                         onAddInventoryClick={this.handleAddInventoryClick}
                         onDeleteInventoryClick={this.handleDeleteInventoryClick}
                         onToggleNotificationClick={this.handleInventoryNotificationClick}
+                        accountStatus={this.state._accountStatus}
                     />
                 </Tab.Pane>
             }, {

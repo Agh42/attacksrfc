@@ -123,11 +123,8 @@ class PreferencesPage extends Component {
   }
 
   togglePrefValue = (e, {value} ) => {
-    if (!('preferences' in this.state.account))
-      return;
-
-    const newPreferences = this.state.account.preferences;
-    newPreferences[value] = !newPreferences[value];
+    var newPreferences = this.state.account.preferences||{};
+    newPreferences[value] = (value in newPreferences) ? !newPreferences[value] : true;
     this.setState({
       account: {...this.state.account, preferences: newPreferences},
       _saveStatus: DIRTY,
@@ -235,7 +232,7 @@ class PreferencesPage extends Component {
                                 </Button>
                               </Button.Group>
 
-                              <h4 class="ui dividing header">Your profile (read-only)</h4>
+                              <h4 class="ui dividing header">Your profile</h4>
                               
                               <div class="two fields">
                                 <div class="field">
@@ -244,17 +241,17 @@ class PreferencesPage extends Component {
                                 </div>
                                 <div class="field">
                                   <label>Nickname</label>
-                                  <input type="text" readOnly value={user.nickname}></input>
+                                  <input disabled type="text" readOnly value={user.nickname}></input>
                                 </div>
                               </div>
                               <div class="two fields">
                                 <div class="field">
                                   <label>Email</label>
-                                  <input type="text" readOnly value={user.email}></input>
+                                  <input disabled type="text" readOnly value={user.email}></input>
                                 </div>
                                 <div class="field">
                                   <label>Name</label>
-                                  <input type="text" readOnly value={user.name}></input>
+                                  <input disabled type="text" readOnly value={user.name}></input>
                                 </div>
                               </div>
 

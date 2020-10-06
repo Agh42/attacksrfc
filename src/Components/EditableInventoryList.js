@@ -5,6 +5,12 @@ import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
 import {Link, Redirect} from 'react-router-dom';
 import { withAuth0 } from '@auth0/auth0-react';
+import {
+ACCOUNT_NONE,
+ACCOUNT_SAVE_DIRTY,
+ACCOUNT_SAVE_CLEAN,
+ACCOUNT_SAVE_SAVING,
+ACCOUNT_LOADING} from '../Pages/AttackSrfcPage';
 
 //###############################################################
 //### AutoSuggest functions:
@@ -289,7 +295,25 @@ class EditableInventoryList extends Component {
                                     onClick={this.handleSaveInventoryClick}>
                                     <Button.Content hidden>Save</Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='save' />
+                                    {
+                                        {
+                                            [ACCOUNT_SAVE_DIRTY]: (
+                                                <Icon name='save' />
+                                            ),
+                                            [ACCOUNT_LOADING]: (
+                                                <Icon name='hourglass outline' />
+                                            ),
+                                            [ACCOUNT_NONE]: (
+                                                <Icon name='save' />
+                                            ),
+                                            [ACCOUNT_SAVE_CLEAN]: (
+                                                <Icon name='check' />
+                                            ),
+                                            [ACCOUNT_SAVE_SAVING]: (
+                                                <Icon name='hourglass outline' />
+                                            )
+                                        }[this.props.accountStatus]
+                                    }
                                     </Button.Content>
                                 </Button>
                                 <Button disabled={!isAuthenticated}
