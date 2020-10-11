@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withAuth0 } from '@auth0/auth0-react';
 
-export default class RegisterPage extends Component {
+class RegisterPage extends Component {
   render() {
+
+    const {
+      isLoading,
+      isAuthenticated,
+      error,
+      user,
+      loginWithRedirect,
+      logout, 
+    } = this.props.auth0;
+
     return (
       <React.Fragment>
         <div class="ui middle aligned grid container">
@@ -20,7 +31,7 @@ export default class RegisterPage extends Component {
                           <i class="check circle icon"></i>
                           <div class="content">
                             Access to over 293.000 product identifiers and more than 136.000 vulnerabilities.
-                                          </div>
+                          </div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
@@ -32,14 +43,16 @@ export default class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">One inventory limited to 10 products</div>
+                          <div class="content">Two inventories limited to 10 products each</div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <a href="/attacksrfc" class="ui disabled button">
-                    You got it
-                            </a>
+                  <a class="ui button"
+                       onClick={() => loginWithRedirect()} >
+                  >
+                    Sign up
+                  </a>
                 </div>
 
                 <div class="raised card">
@@ -219,3 +232,4 @@ export default class RegisterPage extends Component {
     );
   }
 }
+export default withAuth0(RegisterPage);

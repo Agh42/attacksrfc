@@ -672,6 +672,10 @@ class AttackSrfcPage extends Component {
     }
 
     handleAddInventoryClick = (name) => {
+        if (this.state.account.inventories.length >= this.state.account.tenant.maxInventories) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
         let newInventories = [...this.state.account.inventories,
             {
                 name: name,
@@ -687,19 +691,37 @@ class AttackSrfcPage extends Component {
     }
 
     handleDeleteInventoryClick = () => {
+        if (this.state.account.inventories.length<2)
+            return;
         this.setState({
             account: {...this.state.account, 
                 inventories: this.state.account.inventories.filter(
-                    i => i.name !== this.state.selectedInventoryName
+                    i => (i.name !== this.state.selectedInventoryName)
                 ),
+                selectedInventoryName: this.state.account.inventories[0].name,
             }
+        });
+    }
+
+    handleRenameInventoryClick = (newname) => {
+        this.setState({
+            account: {...this.state.account,
+                inventories: this.state.account.inventories.map((i) => {
+                    if (i.name === this.state.selectedInventoryName) {
+                        return {...i, name: newname};
+                    } else {
+                        return i;
+                    }
+                })
+            },
+            selectedInventoryName: newname,
         });
     }
 
     handleInventoryNotificationClick = () => {
         this.setState({
             account: {...this.state.account, 
-                inventories: this.state.account.inventories.map( i => {
+                inventories: this.state.account.inventories.map( (i) => {
                     if (i.name === this.state.selectedInventoryName) {
                         return {...i, notify: !i.notify};
                     } else {
@@ -753,6 +775,7 @@ class AttackSrfcPage extends Component {
                         onAddInventoryClick={this.handleAddInventoryClick}
                         onDeleteInventoryClick={this.handleDeleteInventoryClick}
                         onToggleNotificationClick={this.handleInventoryNotificationClick}
+                        onRenameInventoryClick={this.handleRenameInventoryClick}
                         accountStatus={this.state._accountStatus}
                     />
                 </Tab.Pane>

@@ -293,9 +293,9 @@ class PreferencesPage extends Component {
                                 </ul>
                               </div>
 
-                              <h4 class="ui dividing header">Upgrades</h4>
+                              <h4 class="ui dividing header">Hmm... Upgrades!</h4>
                               <div class="ui message">
-                                <div class="header">You own the following upgrades:</div>
+                                <div class="header">You activated the following upgrades:</div>
                                 {
                                   ((this.state.account.tenant||{}).subscriptions)
                                   ? <Subscriptions 

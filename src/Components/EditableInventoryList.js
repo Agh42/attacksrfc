@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Button, Icon, Dropdown } from 'semantic-ui-react'
+import { Button, Icon, Dropdown, Modal } from 'semantic-ui-react'
 import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
 import {Link, Redirect} from 'react-router-dom';
 import { withAuth0 } from '@auth0/auth0-react';
+import Message, { MESSAGE_INVENTORY_LIMIT } from './Message.js';
 import {
 ACCOUNT_NONE,
 ACCOUNT_SAVE_DIRTY,
 ACCOUNT_SAVE_CLEAN,
 ACCOUNT_SAVE_SAVING,
 ACCOUNT_LOADING} from '../Pages/AttackSrfcPage';
+import RenameForm from './RenameForm';
 
 //###############################################################
 //### AutoSuggest functions:
@@ -110,7 +112,9 @@ class EditableInventoryList extends Component {
     state = {
         searchValue: '',
         suggestions: [],
+        message: '',
         _isLoading: false,
+        _modalOpen: false,
     }
     latestRequest = null;
     
@@ -174,15 +178,24 @@ class EditableInventoryList extends Component {
 
     handleSaveInventoryClick = (e, data) => {
         e.preventDefault();
+        
         this.props.onSaveInventoryClick();
     }
 
     handleAddInventoryClick = (e, data) => {
         e.preventDefault();
         if (this.props.inventories.length >= this.props.maxInventories) {
+            this.setState({
+                message: MESSAGE_INVENTORY_LIMIT,
+            });
             return;
         }
         this.props.onAddInventoryClick("New inventory");
+    }
+
+    handleRenameInventoryClick = (e, data) => {
+        e.preventDefault();
+        this.setState({_modalOpen: true});
     }
 
     handleDeleteInventoryClick = (e, data) => {
@@ -200,6 +213,15 @@ class EditableInventoryList extends Component {
         if (value === this.props.selectedInventoryName)
             return;
         this.props.onSelectInventoryClick(value);
+    }
+
+    handleRenameSubmit = (newName) => {
+        this.setState({_modalOpen: false});
+        this.props.onRenameInventoryClick(newName);
+    }
+    
+    closeModal = () => {
+        this.setState({_modalOpen: false});
     }
     
     render() {
@@ -246,6 +268,25 @@ class EditableInventoryList extends Component {
                 <div className="ui raised segment" 
                      style={{overflow: 'auto', "height":"52em"}}>
 
+                    <Modal
+                        closeIcon
+                        open={this.state._modalOpen}
+                        onClose={this.closeModal}
+                    >
+                        <Modal.Header>Rename</Modal.Header>
+                        <Modal.Content>
+                            <RenameForm 
+                                onSubmit={this.handleRenameSubmit} 
+                                inventoryName={this.props.selectedInventoryName}
+                            />
+                        </Modal.Content>
+                    </Modal>
+
+                    {
+                        (this.state.message)
+                        ? <Message message={this.state.message}   />
+                        : ""
+                    }
 
                     {(this.props.selectedCpes.length > this.props.maxCpes )
                     || (this.props.inventories.length > this.props.maxInventories)
@@ -258,9 +299,9 @@ class EditableInventoryList extends Component {
                         {this.props.inventories.length > this.props.maxInventories
                             ? 'You cannot create another inventory. '
                             : ''} 
-                        {isAuthenticated
+                        {!isAuthenticated
                         ? <span>
-                                <Link to="/login" class="item">Sign in/sign up</Link> for free to 
+                                <Link to="/register" class="item">Sign in/sign up</Link> for free to 
                                 increase your inventory size and save multiple inventories.
                           </span>
                         : <span>
@@ -293,7 +334,17 @@ class EditableInventoryList extends Component {
                             <Button.Group attached="top">
                                 <Button positive animated='fade'
                                     onClick={this.handleSaveInventoryClick}>
-                                    <Button.Content hidden>Save</Button.Content>
+                                    <Button.Content hidden>
+                                    {
+                                        {
+                                            [ACCOUNT_SAVE_DIRTY]: ( "Save" ),
+                                            [ACCOUNT_LOADING]: ("Loading"),
+                                            [ACCOUNT_NONE]: ("Save"),
+                                            [ACCOUNT_SAVE_CLEAN]: ("Saved"),
+                                            [ACCOUNT_SAVE_SAVING]: ("Saving")
+                                        }[this.props.accountStatus]
+                                    }
+                                    </Button.Content>
                                     <Button.Content visible>
                                     {
                                         {
@@ -307,7 +358,7 @@ class EditableInventoryList extends Component {
                                                 <Icon name='save' />
                                             ),
                                             [ACCOUNT_SAVE_CLEAN]: (
-                                                <Icon name='check' />
+                                                <Icon name='save outline' />
                                             ),
                                             [ACCOUNT_SAVE_SAVING]: (
                                                 <Icon name='hourglass outline' />
@@ -318,20 +369,31 @@ class EditableInventoryList extends Component {
                                 </Button>
                                 <Button disabled={!isAuthenticated}
                                     animated='fade'
+                                    onClick={this.handleRenameInventoryClick}>
+                                    <Button.Content hidden>Rename</Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='edit outline' />
+                                    </Button.Content>
+                                </Button>
+                                <Button disabled={!isAuthenticated}
+                                    animated='fade'
                                     onClick={this.handleAddInventoryClick}>
                                     <Button.Content hidden>Add</Button.Content>
                                     <Button.Content visible>
                                         <Icon name='plus' />
                                     </Button.Content>
                                 </Button>
-                                <Button disabled={!isAuthenticated} animated='fade'
+                                <Button disabled={!isAuthenticated || this.props.inventories.length <2} animated='fade'
                                     onClick={this.handleDeleteInventoryClick}>
                                     <Button.Content hidden>Del</Button.Content>
                                     <Button.Content visible>
                                         <Icon name='trash' />
                                     </Button.Content>
                                 </Button>
-                                <Button negative animated='fade'
+                                <Button 
+                                    positive={this.props.inventories.find(i => i.name === this.props.selectedInventoryName).notify} 
+                                    negative={!this.props.inventories.find(i => i.name === this.props.selectedInventoryName).notify} 
+                                    animated='fade'
                                     onClick={this.handleNotificationClick}>
                                     <Button.Content hidden>Alerts</Button.Content>
                                     <Button.Content visible>
