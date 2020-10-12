@@ -9,6 +9,12 @@ class LinkToLogin extends Component {
         return undefined;
     }
 
+    handleLogout = () => {
+        const {logout} = this.props.auth0;
+        this.props.onSignOut();
+        logout({returnTo: window.location.origin});
+    }
+
     render() {
         const {
             isLoading,
@@ -49,7 +55,7 @@ class LinkToLogin extends Component {
                     </Link>
                     <a class="link item"
                         target="_blank" rel="noopener noreferrer"  
-                        onClick={() => logout({returnTo: window.location.origin})} >
+                        onClick={this.handleLogout} >
                         <div class="middle aligned content">
                             <i class="sign out icon"></i>
                             Sign out

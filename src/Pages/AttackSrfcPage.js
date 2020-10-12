@@ -114,6 +114,7 @@ class AttackSrfcPage extends Component {
                 }
             },
             _accountStatus: ACCOUNT_NONE,
+            wasLoggedIn: false,
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -199,8 +200,9 @@ class AttackSrfcPage extends Component {
                 break;
             default:
                 break;
-
         }
+
+      
     }
     
     
@@ -244,6 +246,11 @@ class AttackSrfcPage extends Component {
                         _cpeAction: CPE_ACTION_RELOAD,
                         _graphAction: GRAPH_ACTION_RELOAD,
                     });
+    }
+
+    clearStore = () => {
+        store.set('selectedCpes', []);
+        this.initSelectedCpes();
     }
 
     initStats = () => {
@@ -918,7 +925,9 @@ class AttackSrfcPage extends Component {
                                     <CookieConsent/>       
                                     
                                     <div class="right menu primary">
-                                    <LinkToLogin/>
+                                    <LinkToLogin 
+                                        onSignOut={this.clearStore} 
+                                    />
                                     </div>
                                 </div>
                             } 
