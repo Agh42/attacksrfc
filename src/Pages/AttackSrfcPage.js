@@ -195,14 +195,19 @@ class AttackSrfcPage extends Component {
         
         switch (this.state._cpeAction) {
             case CPE_ACTION_RELOAD:
-                this.setState({_cpeAction: CPE_ACTION_NONE});
+                this.setState({
+                    _cpeAction: CPE_ACTION_NONE,
+                });
                 this.loadCpeSummaries();
                 break;
             default:
                 break;
         }
 
-      
+        if (this.state._accountStatus === ACCOUNT_NONE) {
+            // try loading account again:
+            this.loadAccount();
+        }
     }
     
     
@@ -265,8 +270,8 @@ class AttackSrfcPage extends Component {
     }
 
     loadAccount = () => {
-        const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
-        if (!isAuthenticated || this.state._accountStatus !== ACCOUNT_NONE) return;
+        const { isAuthenticated, getAccessTokenSilently } = this.props.auth0;
+        if ( !isAuthenticated || this.state._accountStatus !== ACCOUNT_NONE) return;
         this.setState({_accountStatus: ACCOUNT_LOADING});
 
         getAccessTokenSilently().then(
@@ -683,6 +688,10 @@ class AttackSrfcPage extends Component {
             this.setState({_redirect: REDIRECT_REGISTER});
             return;
         }
+        if (this.state.account.inventories.find(i => i.name === name)) {
+            //avoid dup name
+            name = name + "(1)";
+        }
         let newInventories = [...this.state.account.inventories,
             {
                 name: name,
@@ -693,28 +702,42 @@ class AttackSrfcPage extends Component {
         this.setState({
             account: {...this.state.account, 
                 inventories: newInventories,
-            }
+            },
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         });
     }
 
     handleDeleteInventoryClick = () => {
         if (this.state.account.inventories.length<2)
             return;
+        var newInventories = this.state.account.inventories.filter(
+            i => (i.name !== this.state.selectedInventoryName)
+        );
         this.setState({
             account: {...this.state.account, 
-                inventories: this.state.account.inventories.filter(
-                    i => (i.name !== this.state.selectedInventoryName)
-                ),
-                selectedInventoryName: this.state.account.inventories[0].name,
+                inventories: newInventories,
+                selectedInventoryName: newInventories[0].name,
+                selectedCpes: newInventories[0].products,
+                cpeSummaries: newInventories[0].products.map( (c) => {
+                    return {
+                        cpe: c,
+                        count: "",
+                    };
+                }),
+                _cpeAction: CPE_ACTION_RELOAD,
+                _accountStatus: ACCOUNT_SAVE_DIRTY,
             }
         });
     }
 
     handleRenameInventoryClick = (newname) => {
+        // only rename first found - safety to be able to resolve dups
+        var doRename=true;
         this.setState({
             account: {...this.state.account,
                 inventories: this.state.account.inventories.map((i) => {
-                    if (i.name === this.state.selectedInventoryName) {
+                    if (doRename && i.name === this.state.selectedInventoryName) {
+                        doRename=false;
                         return {...i, name: newname};
                     } else {
                         return i;
@@ -722,10 +745,15 @@ class AttackSrfcPage extends Component {
                 })
             },
             selectedInventoryName: newname,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         });
     }
 
     handleInventoryNotificationClick = () => {
+        if (this.state._accountStatus === ACCOUNT_NONE) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
         this.setState({
             account: {...this.state.account, 
                 inventories: this.state.account.inventories.map( (i) => {
@@ -735,11 +763,16 @@ class AttackSrfcPage extends Component {
                         return i;
                     }
                 }),
-            }
+            },
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         });
     }
 
     handleSaveInventoryClick = () => {
+        if (this.state._accountStatus === ACCOUNT_NONE) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
         this.setState({
             account: {...this.state.account,
                 inventories: this.state.account.inventories.map(i => {

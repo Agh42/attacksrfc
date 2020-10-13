@@ -332,7 +332,9 @@ class EditableInventoryList extends Component {
                             </div>
                          
                             <Button.Group attached="top">
-                                <Button positive animated='fade'
+                                <Button positive 
+                                    animated='fade'
+                                    disabled={this.props.accountStatus !== ACCOUNT_SAVE_DIRTY}
                                     onClick={this.handleSaveInventoryClick}>
                                     <Button.Content hidden>
                                     {
@@ -391,13 +393,13 @@ class EditableInventoryList extends Component {
                                     </Button.Content>
                                 </Button>
                                 <Button 
-                                    positive={this.props.inventories.find(i => i.name === this.props.selectedInventoryName).notify} 
-                                    negative={!this.props.inventories.find(i => i.name === this.props.selectedInventoryName).notify} 
+                                    positive={(this.props.inventories.find(i => i.name === this.props.selectedInventoryName)||{}).notify} 
+                                    negative={!(this.props.inventories.find(i => i.name === this.props.selectedInventoryName)||{}).notify} 
                                     animated='fade'
                                     onClick={this.handleNotificationClick}>
                                     <Button.Content hidden>Alerts</Button.Content>
                                     <Button.Content visible>
-                                        <Icon name={this.props.inventories.find(i => i.name === this.props.selectedInventoryName).notify 
+                                        <Icon name={(this.props.inventories.find(i => i.name === this.props.selectedInventoryName)||{}).notify 
                                             ? 'bell' 
                                             : 'bell slash'} />
                                     </Button.Content>
