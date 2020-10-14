@@ -22,6 +22,7 @@ class RenameForm extends Component {
                     name='inventoryName'
                     value={inventoryName}
                     onChange={this.handleChange}
+                    autoFocus
                 />
                 <Form.Button content='Submit'/>
             </Form.Group>

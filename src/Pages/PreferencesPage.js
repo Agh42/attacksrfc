@@ -34,6 +34,26 @@ const Subscriptions = (props) => (
   </div>
 )
 
+const Inventories = (props) => (
+  <div class="ui list">
+    {
+    props.inventories.map( (inv) =>
+      <div class="item">
+        <i class="archive icon"></i>
+        <div class="content">
+          <div class="header">
+          {inv.name}
+          </div>
+          <div class="description">
+          Notifications are {inv.notify ? 'On' : 'Off'}. Contains {inv.products.length} products.
+          </div>
+        </div>
+      </div>
+    )
+    }
+  </div>
+)
+
 class PreferencesPage extends Component {
 
   state = {
@@ -280,9 +300,13 @@ class PreferencesPage extends Component {
                               <h4 class="ui dividing header">Inventories</h4>
                               <div class="ui message">
                                 <div class="header">You have saved the following inventories:</div>
-                                <ul class="list">
-                                  <li>[No saved inventories]</li>
-                                </ul>
+                                {
+                                  ((this.state.account||{}).inventories)
+                                  ? <Inventories 
+                                    inventories={this.state.account.inventories}
+                                  />
+                                  : "No inventories."
+                                }
                               </div>
 
                               <h4 class="ui dividing header">Invites</h4>

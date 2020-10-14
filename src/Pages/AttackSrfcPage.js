@@ -688,10 +688,13 @@ class AttackSrfcPage extends Component {
             this.setState({_redirect: REDIRECT_REGISTER});
             return;
         }
-        if (this.state.account.inventories.find(i => i.name === name)) {
+
+        var i=1;
+        while (this.state.account.inventories.find(i => i.name === name)) {
             //avoid dup name
-            name = name + "(1)";
+            name = name + "_" + i++;
         }
+
         let newInventories = [...this.state.account.inventories,
             {
                 name: name,
@@ -703,6 +706,10 @@ class AttackSrfcPage extends Component {
             account: {...this.state.account, 
                 inventories: newInventories,
             },
+            selectedInventoryName: name,
+            selectedCpes: [],
+            cpeSummaries: [],
+            _cpeAction: CPE_ACTION_RELOAD,
             _accountStatus: ACCOUNT_SAVE_DIRTY,
         });
     }
@@ -716,17 +723,17 @@ class AttackSrfcPage extends Component {
         this.setState({
             account: {...this.state.account, 
                 inventories: newInventories,
-                selectedInventoryName: newInventories[0].name,
-                selectedCpes: newInventories[0].products,
-                cpeSummaries: newInventories[0].products.map( (c) => {
-                    return {
-                        cpe: c,
-                        count: "",
-                    };
-                }),
-                _cpeAction: CPE_ACTION_RELOAD,
-                _accountStatus: ACCOUNT_SAVE_DIRTY,
-            }
+            },
+            selectedInventoryName: newInventories[0].name,
+            selectedCpes: newInventories[0].products,
+            cpeSummaries: newInventories[0].products.map( (c) => {
+                return {
+                    cpe: c,
+                    count: "",
+                };
+            }),
+            _cpeAction: CPE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         });
     }
 
