@@ -21,12 +21,19 @@ const CVSS_CALCULATOR_URL = "https://cvssjs.github.io/#";
 
 export default class CveDetails extends Component {
   
-    state = { activeIndex: 0 }
+    state = { activeIndex: (this.props.activeView === 'info') ? 0 : 1 }
 
     static propTypes = {
         cve: PropTypes.object.isRequired,
         articles: PropTypes.array.isRequired,
+        activeView: PropTypes.string.isRequired,
     };
+
+    componentDidUpdate = (prevProps) => {
+      if (prevProps.activeView !== this.props.activeView) {
+        this.setState({activeIndex: (this.props.activeView === 'info') ? 0 : 1});
+      }
+    }
 
     hasExploit = () => {
       if (!this.props.cve.references_tags) {
@@ -42,6 +49,7 @@ export default class CveDetails extends Component {
       this.setState({
         activeIndex: 1,
       });
+      this.props.onCveDetailsViewChange('news');
     }
 
     handleAccordionClick = (e, titleProps) => {
@@ -49,6 +57,7 @@ export default class CveDetails extends Component {
       const { activeIndex } = this.state
       const newIndex = activeIndex === index ? -1 : index
       this.setState({ activeIndex: newIndex })
+      this.props.onCveDetailsViewChange((newIndex === 0) ? 'info' : 'news');
     }
 
     shareCopy = () => {

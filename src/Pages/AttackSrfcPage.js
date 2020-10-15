@@ -133,6 +133,7 @@ class AttackSrfcPage extends Component {
             _cpeAction: CPE_ACTION_NONE,
             _saveStatus: 'READY',
             _dialogMessage: "",
+            _cveDetailsView: 'info',
 
             activeTabIndex: 0,
             leftActiveTabIndex: 0,
@@ -141,7 +142,13 @@ class AttackSrfcPage extends Component {
     componentDidMount() {
         if (((this.props.match||{}).params||{}).cveParam) {
             let cve = {id: this.props.match.params.cveParam};
+            let view = 'info';
+            if (((this.props.match||{}).params||{}).view
+                && this.props.match.params.view === 'news') {
+                view = 'news';
+            }
             this.setState({
+                _cveDetailsView: view,
                 selectedCve : cve,
                 leftActiveTabIndex : 1,
                 _cveAction: CVE_ACTION_LOAD_DETAILS
@@ -473,7 +480,17 @@ class AttackSrfcPage extends Component {
             let articles = ('_embedded' in response) ? response._embedded.articles : [];
             this.setState({ articles: articles })
         });
-        this.props.history.push('/cve/' + this.state.selectedCve.id);
+        if (this.state._cveDetailsView === 'info')
+            this.props.history.push('/cve/' + this.state.selectedCve.id);
+        else
+            this.props.history.push('/cve/' + this.state.selectedCve.id + '/news');
+    }
+
+    handleCveDetailsViewChange = (view) => {
+        if (view === 'info')
+            this.props.history.push('/cve/' + this.state.selectedCve.id);
+        else
+            this.props.history.push('/cve/' + this.state.selectedCve.id + '/news');
     }
 
     loadCvesPage = () => {
@@ -832,8 +849,10 @@ class AttackSrfcPage extends Component {
                 <Tab.Pane >
                     <CveDetails
                         cve={this.state.selectedCve}
+                        activeView={this.state._cveDetailsView}
                         articles={this.state.articles}
                         onNewsCveSelected={this.handleNewsCveSelected}
+                        onCveDetailsViewChange={this.handleCveDetailsViewChange}
                     />
                 </Tab.Pane>
             }, {

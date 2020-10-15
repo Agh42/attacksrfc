@@ -37,6 +37,7 @@ export default class App extends Component {
         <Route path='/index.html' component={AttackSrfcPage} />
         <Route path='/register' component={RegisterPage} />
         <ProtectedRoute path="/preferences" component={PreferencesPage} />
+        <Route exact path="/cve/:cveParam/:view" component={AttackSrfcPage} />
         <Route exact path="/cve/:cveParam" component={AttackSrfcPage} />
 
 
