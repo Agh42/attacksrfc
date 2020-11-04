@@ -380,6 +380,7 @@ class AttackSrfcPage extends Component {
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         }, this.storeCpes);
     }
 
@@ -406,6 +407,7 @@ class AttackSrfcPage extends Component {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
                 cpeSummaries: [...this.state.cpeSummaries, {cpe: activeCpe, count: ""}],
                 _cpeAction: CPE_ACTION_RELOAD,
+                _accountStatus: ACCOUNT_SAVE_DIRTY,
             }, this.storeCpes);
             
         }
@@ -556,8 +558,8 @@ class AttackSrfcPage extends Component {
             this.state.lastLoadedStartDate, this.state.cveStartDate);
 
         this.state.cpeSummaries.forEach( (cs) => {
-            if ( !Array.isArray(cs.summary) 
-                || !cs.summary.length 
+            if ( ! ('summary' in cs)
+                || (Object.keys(cs.summary).length === 0) 
                 || timeChanged) {
                 CpeClient.getCveSummaryForCpe(
                     CVEs.getCpeAsUriBinding(cs.cpe),
@@ -632,6 +634,7 @@ class AttackSrfcPage extends Component {
                }
             }),
             _cpeAction: CPE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         }, this.storeCpes);
     }
 
