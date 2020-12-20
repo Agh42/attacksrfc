@@ -390,10 +390,18 @@ class AttackSrfcPage extends Component {
      */
     handleAddCpeClick = (newCpe) => {
         if (this.state.selectedCpes.length+1 > this.state.account.tenant.maxItemsPerInventory) {
-            this.setState({
-                _dialogMessage: "This inventory is full. Log in to increase "
-                                + "inventory size and to save multiple inventories.",
-            });
+            const { isAuthenticated } = this.props.auth0;
+            if (isAuthenticated) {
+                this.setState({
+                    _dialogMessage: "This inventory is full. Upgrade your account to increase inventory size.",
+                });
+            }
+            else {
+                this.setState({
+                    _dialogMessage: "This inventory is full. Sign up to increase "
+                                    + "inventory size and to save multiple inventories. It's free!",
+                });
+            }
         }
 
         if (this.state.selectedCpes.length > this.state.account.tenant.maxItemsPerInventory) {
@@ -468,7 +476,7 @@ class AttackSrfcPage extends Component {
             leftActiveTabIndex : 1,
             _cveAction: CVE_ACTION_LOAD_DETAILS
         });
-    }
+    } // TODO xxx add route for CPE next to CVE
     
     loadCveDetails = () => {
         CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => {
@@ -777,7 +785,8 @@ class AttackSrfcPage extends Component {
     }
 
     handleInventoryNotificationClick = () => {
-        if (this.state._accountStatus === ACCOUNT_NONE) {
+        const { isAuthenticated } = this.props.auth0;
+        if (this.state._accountStatus === ACCOUNT_NONE || !isAuthenticated) {
             this.setState({_redirect: REDIRECT_REGISTER});
             return;
         }
@@ -976,7 +985,7 @@ class AttackSrfcPage extends Component {
                                 >
                                     <a className="item" href="/homepage.html"><i className="home icon" /></a>
                                     <div className="ui item"><h4 className="ui left aligned inverted header">
-                                        AttackSrfc - CVE Search and Vulnerability Management
+                                        AttackSrfc - CVE Search and Vulnerability Management (beta)
                                         <div className="sub header">
                                         Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
                                         - Last updated: {this.formatDateTime(this.state.stats.lastModified)}

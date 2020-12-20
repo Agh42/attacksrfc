@@ -45,10 +45,16 @@ class RegisterPage extends Component {
                           <i class="check circle icon"></i>
                           <div class="content">Two inventories limited to 10 products each</div>
                         </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            <strong>Email notifications</strong> on vulnerabilities and news monitoring
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <a class="ui button"
+                  <a class="ui positive button"
                        onClick={() => loginWithRedirect()} >
                     <i class="hat wizard icon"></i>
                     Sign up / Sign in
@@ -104,8 +110,8 @@ class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Email notifications on vulnerabilities and news monitoring
-                                              </div>
+                            <strong>Email notifications</strong> on vulnerabilities and news monitoring
+                          </div>
                         </div>
 
                         <div class="item">
@@ -125,7 +131,7 @@ class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            <b>New accounts are currently not available publicly. Check the subreddit or chat
+                            <b>Sponsor accounts are not yet available publicly. Check the subreddit or chat
                                                to follow eventual updates.</b>
                           </div>
                         </div>
@@ -133,7 +139,7 @@ class RegisterPage extends Component {
                     </div>
                   </div>
                   <Link to="/register" class="ui disabled button">
-                    <i class="shopping cart icon"></i>
+                    <i class="arrow alternate circle up icon"></i>
                     Coming soon.
                             </Link>
                 </div>

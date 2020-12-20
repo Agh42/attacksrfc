@@ -301,8 +301,8 @@ class EditableInventoryList extends Component {
                             : ''} 
                         {!isAuthenticated
                         ? <span>
-                                <Link to="/register" class="item">Sign in/sign up</Link> for free to 
-                                increase your inventory size and save multiple inventories.
+                                <Link to="/register" class="item">Sign in/sign up</Link> to 
+                                increase your inventory size and save multiple inventories. It's free!
                           </span>
                         : <span>
                                 <Link to="/register" class="item">Upgrade your account</Link> to 
@@ -334,7 +334,7 @@ class EditableInventoryList extends Component {
                             <Button.Group attached="top">
                                 <Button positive 
                                     animated='fade'
-                                    disabled={this.props.accountStatus !== ACCOUNT_SAVE_DIRTY}
+                                    disabled={this.props.accountStatus !== ACCOUNT_SAVE_DIRTY || !isAuthenticated}
                                     onClick={this.handleSaveInventoryClick}>
                                     <Button.Content hidden>
                                     {

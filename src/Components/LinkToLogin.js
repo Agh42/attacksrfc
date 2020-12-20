@@ -39,7 +39,7 @@ class LinkToLogin extends Component {
                     target="_blank" rel="noopener noreferrer"  
                     onClick={() => loginWithRedirect()} >
                     <div class="middle aligned content">
-                        <i class="sign in icon"></i>
+                        <i class="hat wizard icon"></i>
                         Sign in / Sign up
                     </div>
                 </a>
