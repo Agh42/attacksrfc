@@ -162,6 +162,7 @@ class AttackSrfcPage extends Component {
         this.initStats();
         this.loadAccount();
         this.loadHotTopics();
+        this.autoSaveInterval = setInterval(() => this.autoSave(), 2000);
     }
     
     
@@ -216,6 +217,10 @@ class AttackSrfcPage extends Component {
             this.loadAccount();
         }
     }
+
+    componentWillUnmount() {
+        clearInterval(this.autoSaveInterval);
+      }
     
     
     // TODO add direct cve search support to cpe dropdown
@@ -355,7 +360,7 @@ class AttackSrfcPage extends Component {
         setInterval(this.healthCheck, 5000);    
     }
     
-    healthCheck =() => {
+    healthCheck = () => {
             CpeClient.healthCheck( 
                 (success) => {
                     if (success && this.state._uhoh) {
@@ -366,6 +371,26 @@ class AttackSrfcPage extends Component {
                 (failure) => {
                     this.setState({_uhoh: true});
                 });
+    }
+
+    autoSave() {
+        const { isAuthenticated } = this.props.auth0;
+        if (!isAuthenticated) return;
+        if (this.state._accountStatus !== ACCOUNT_SAVE_DIRTY) return;
+        
+        this.setState({
+            account: {...this.state.account,
+                inventories: this.state.account.inventories.map(i => {
+                    if (i.name === this.state.selectedInventoryName) {
+                        return {...i,
+                            products: this.state.selectedCpes,
+                        };
+                    } else {
+                        return i;
+                    }
+                }),
+            },
+        }, this.saveAccount);
     }
 
     handlePaginationChange = (newPage) => {
@@ -809,6 +834,13 @@ class AttackSrfcPage extends Component {
             this.setState({_redirect: REDIRECT_REGISTER});
             return;
         }
+
+        const { isAuthenticated } = this.props.auth0;
+        if (!isAuthenticated && this.state._accountStatus === ACCOUNT_SAVE_DIRTY) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
+
         this.setState({
             account: {...this.state.account,
                 inventories: this.state.account.inventories.map(i => {

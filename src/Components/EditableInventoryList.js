@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Dropdown, Modal } from 'semantic-ui-react'
+import { Button, Icon, Dropdown, Modal, Header } from 'semantic-ui-react'
 import Autosuggest from 'react-autosuggest';
 import CpeClient from '../Gateways/CpeClient';
 import CPEs from '../Dto/CPEs';
@@ -200,7 +200,7 @@ class EditableInventoryList extends Component {
 
     handleDeleteInventoryClick = (e, data) => {
         e.preventDefault();
-        this.props.onDeleteInventoryClick();
+        this.setState({_deleteModalOpen: true});
     }
 
     handleNotificationClick = (e, data) => {
@@ -222,6 +222,15 @@ class EditableInventoryList extends Component {
     
     closeModal = () => {
         this.setState({_modalOpen: false});
+    }
+
+    closeDeleteModal = () => {
+        this.setState({_deleteModalOpen: false});
+    }
+
+    confirmDeleteModal = () => {
+        this.closeDeleteModal();
+        this.props.onDeleteInventoryClick();
     }
     
     render() {
@@ -282,6 +291,35 @@ class EditableInventoryList extends Component {
                         </Modal.Content>
                     </Modal>
 
+                    <Modal
+                        closeIcon
+                        open={this.state._deleteModalOpen}
+                        onClose={this.closeDeleteModal}
+                    >
+                        <Modal.Header>Delete</Modal.Header>
+                        <Modal.Content>
+                        <Modal.Description>
+                            <Header>Delete inventory: "{this.props.selectedInventoryName}" ?</Header>
+                            <p>
+                                Do you really want to remove the selected inventory? This action is final
+                                and cannot be undone. You will loose all selected products for this inventory.
+                            </p>
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button onClick={this.closeDeleteModal}>
+                            Cancel
+                            </Button>
+                            <Button negative
+                                content="Delete inventory"
+                                labelPosition='right'
+                                icon='checkmark'
+                                onClick={this.confirmDeleteModal}
+                                positive
+                            />
+                        </Modal.Actions>
+                    </Modal>
+
                     {
                         (this.state.message)
                         ? <Message message={this.state.message}   />
@@ -332,9 +370,9 @@ class EditableInventoryList extends Component {
                             </div>
                          
                             <Button.Group attached="top">
-                                <Button positive 
+                                <Button 
                                     animated='fade'
-                                    disabled={this.props.accountStatus !== ACCOUNT_SAVE_DIRTY || !isAuthenticated}
+                                    disabled={this.props.accountStatus !== ACCOUNT_SAVE_DIRTY}
                                     onClick={this.handleSaveInventoryClick}>
                                     <Button.Content hidden>
                                     {

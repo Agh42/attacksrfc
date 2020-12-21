@@ -43,7 +43,8 @@ class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">Two inventories limited to 10 products each</div>
+                          <div class="content"><strong>Save your inventory</strong> (Free tier limited 
+                          to two inventories with ten products each)</div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
@@ -57,7 +58,7 @@ class RegisterPage extends Component {
                   <a class="ui positive button"
                        onClick={() => loginWithRedirect()} >
                     <i class="hat wizard icon"></i>
-                    Sign up / Sign in
+                    Sign up / Sign in - it's free!
                   </a>
                 </div>
 
