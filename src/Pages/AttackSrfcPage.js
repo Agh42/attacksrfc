@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Tab, Button, Icon, Header, Modal } from 'semantic-ui-react';
+import { withAuth0 } from "@auth0/auth0-react";
 
 import moment from 'moment';
 import store from 'store';
@@ -11,6 +12,7 @@ import CveDetails from '../Components/CveDetails';
 import SelectableCpeDetailsTable from '../Components/SelectableCpeDetailsTable';
 import CpeClient from '../Gateways/CpeClient';
 import NewsClient from '../Gateways/NewsClient';
+import AccountClient from '../Gateways/AccountClient';
 import DowntimeTimer from '../Components/DowntimeTimer';
 import TimerangeSelector from '../Components/TimerangeSelector';
 import CVEs from '../Dto/CVEs.js';
@@ -18,6 +20,7 @@ import CPEs from '../Dto/CPEs';
 import CookieConsent from '../Components/CookieConsent';
 import NewsList from '../Components/NewsList';
 import NewsListMenu from '../Components/NewsListMenu';
+import LinkToLogin from '../Components/LinkToLogin';
 
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
@@ -54,11 +57,16 @@ const GRAPH_TIMERANGE_UNCHANGED ='_TIMERANGE_UNCHANGED';
 const REDIRECT_REGISTER = 'REDIRECT_REGISTER';
 const REDIRECT_LOGIN = 'REDIRECT_LOGIN';
 
-const MAX_SELECTED_CPES = 10;
+export const ACCOUNT_NONE = "account_none";
+export const ACCOUNT_SAVE_DIRTY = "account_dirty";
+export const ACCOUNT_SAVE_CLEAN = "account_clean";
+export const ACCOUNT_SAVE_SAVING = "account_saving";
+export const ACCOUNT_LOADING = "account_loading";
 
 
-export default class AttackSrfcPage extends Component {
+class AttackSrfcPage extends Component {
 
+    
     // used to explicitely disable default actions where needed:
     noop() {
         return undefined;
@@ -77,6 +85,7 @@ export default class AttackSrfcPage extends Component {
     */
     state = {
             selectedCpes: [],
+            selectedInventoryName: "<Unsaved inventory...>",
             selectedCve: {},
             articles: [],
             selectedCvesPage: [],
@@ -86,6 +95,26 @@ export default class AttackSrfcPage extends Component {
             numCurrentPage: 1,
             cveStartDate: moment().subtract(182, "days"),
             cveEndDate: moment(),
+
+            account: {
+                preferences: {
+                    notificationsHotTopics: false,
+                    notificationsHotTopics: false,
+                },
+                inventories: [
+                    {   name: '<Unsaved inventory...>', 
+                        products: [],
+                        notify: false,
+                    },
+                ],
+                tenant: {
+                    name: "My organization",
+                    maxInventories: 1,
+                    maxItemsPerInventory: 10
+                }
+            },
+            _accountStatus: ACCOUNT_NONE,
+            wasLoggedIn: false,
             
             graphCves: [],
             selectedCpeSummaryForGraph: {},
@@ -104,19 +133,22 @@ export default class AttackSrfcPage extends Component {
             _cpeAction: CPE_ACTION_NONE,
             _saveStatus: 'READY',
             _dialogMessage: "",
+            _cveDetailsView: 'info',
 
             activeTabIndex: 0,
             leftActiveTabIndex: 0,
     };
 
-
-   
-  
-
     componentDidMount() {
         if (((this.props.match||{}).params||{}).cveParam) {
             let cve = {id: this.props.match.params.cveParam};
+            let view = 'info';
+            if (((this.props.match||{}).params||{}).view
+                && this.props.match.params.view === 'news') {
+                view = 'news';
+            }
             this.setState({
+                _cveDetailsView: view,
                 selectedCve : cve,
                 leftActiveTabIndex : 1,
                 _cveAction: CVE_ACTION_LOAD_DETAILS
@@ -128,7 +160,9 @@ export default class AttackSrfcPage extends Component {
         this.initHealthCheck();
         this.initSelectedCpes();
         this.initStats();
+        this.loadAccount();
         this.loadHotTopics();
+        this.autoSaveInterval = setInterval(() => this.autoSave(), 2000);
     }
     
     
@@ -169,14 +203,24 @@ export default class AttackSrfcPage extends Component {
         
         switch (this.state._cpeAction) {
             case CPE_ACTION_RELOAD:
-                this.setState({_cpeAction: CPE_ACTION_NONE});
+                this.setState({
+                    _cpeAction: CPE_ACTION_NONE,
+                });
                 this.loadCpeSummaries();
                 break;
             default:
                 break;
+        }
 
+        if (this.state._accountStatus === ACCOUNT_NONE) {
+            // try loading account again:
+            this.loadAccount();
         }
     }
+
+    componentWillUnmount() {
+        clearInterval(this.autoSaveInterval);
+      }
     
     
     // TODO add direct cve search support to cpe dropdown
@@ -186,9 +230,7 @@ export default class AttackSrfcPage extends Component {
     // FIXME page counter not reset when cpe has only 1 cve
     // TODO add mobile only top menu
     // FIXME switch to page one when loading cvelist with fewer cves
-    // FIXME limit cpe inventory to 10 active cpes
     // TODO add cache and rate limiting
-    // TODO add cookie consent
     // TODO add tutorial
     
     /*
@@ -202,6 +244,11 @@ export default class AttackSrfcPage extends Component {
         else {
             var initialCpes = CpeClient.getExampleCpes();
         }
+
+        var newInventories = [ 
+            {...this.state.account.inventories[0], products: initialCpes},
+            ...this.state.account.inventories.slice(1, this.state.account.inventories.length)
+        ];
     
         this.setState( {selectedCpes: initialCpes,
                         selectedCpeSummaryForGraph: initialCpes[0],
@@ -211,10 +258,16 @@ export default class AttackSrfcPage extends Component {
                                 count: "",
                             };
                         }),
+                        account: {...this.state.account, inventories: newInventories},
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
                         _graphAction: GRAPH_ACTION_RELOAD,
                     });
+    }
+
+    clearStore = () => {
+        store.set('selectedCpes', []);
+        this.initSelectedCpes();
     }
 
     initStats = () => {
@@ -227,6 +280,66 @@ export default class AttackSrfcPage extends Component {
             this.setState({stats: dbStats});
         });
     }
+
+    loadAccount = () => {
+        const { isAuthenticated, getAccessTokenSilently } = this.props.auth0;
+        if ( !isAuthenticated || this.state._accountStatus !== ACCOUNT_NONE) return;
+        this.setState({_accountStatus: ACCOUNT_LOADING});
+
+        getAccessTokenSilently().then(
+            this.callApiGetOrCreateAccount
+        );
+    }
+
+    saveAccount = () => {
+        const { isLoading, isAuthenticated, getAccessTokenSilently } = this.props.auth0;
+        if (!isAuthenticated) return;
+
+        this.setState({_accountStatus: ACCOUNT_SAVE_SAVING});
+        getAccessTokenSilently().then(
+            this.callApiSaveAccount
+        );
+    }
+
+    callApiGetOrCreateAccount = (token) => {
+        AccountClient.getAccount(
+            (account) => {
+                this.setState({
+                    account: account,
+                    selectedInventoryName: account.inventories[0].name,
+                    selectedCpes: account.inventories[0].products,
+                    cpeSummaries: account.inventories[0].products.map( (c) => {
+                        return {
+                            cpe: c,
+                            count: "",
+                        };
+                    }),
+                    _cpeAction: CPE_ACTION_RELOAD,
+                    _accountStatus: ACCOUNT_SAVE_CLEAN,
+                }, this.storeCpes)
+            }, token)
+            .catch(error => {
+                // try to create account:
+                AccountClient.saveAccount(
+                    this.loadAccount,
+                    this.state.account,
+                    token);
+            });
+    }
+
+    callApiSaveAccount = (token) => {
+        this.setState({_accountStatus: ACCOUNT_SAVE_SAVING});
+        AccountClient.saveAccount(
+            this.saveSuccessful, 
+            this.state.account, 
+            token);
+    }
+
+    saveSuccessful = () => {
+        this.setState({
+          _accountStatus: ACCOUNT_SAVE_CLEAN,
+        });
+      }
 
     loadHotTopics =  (link) => {
         NewsClient.getHotTopics( 
@@ -247,7 +360,7 @@ export default class AttackSrfcPage extends Component {
         setInterval(this.healthCheck, 5000);    
     }
     
-    healthCheck =() => {
+    healthCheck = () => {
             CpeClient.healthCheck( 
                 (success) => {
                     if (success && this.state._uhoh) {
@@ -260,8 +373,24 @@ export default class AttackSrfcPage extends Component {
                 });
     }
 
-    handleSaveClick = () => {
-          this.setState({_redirect: REDIRECT_LOGIN});
+    autoSave() {
+        const { isAuthenticated } = this.props.auth0;
+        if (!isAuthenticated) return;
+        if (this.state._accountStatus !== ACCOUNT_SAVE_DIRTY) return;
+        
+        this.setState({
+            account: {...this.state.account,
+                inventories: this.state.account.inventories.map(i => {
+                    if (i.name === this.state.selectedInventoryName) {
+                        return {...i,
+                            products: this.state.selectedCpes,
+                        };
+                    } else {
+                        return i;
+                    }
+                }),
+            },
+        }, this.saveAccount);
     }
 
     handlePaginationChange = (newPage) => {
@@ -276,6 +405,7 @@ export default class AttackSrfcPage extends Component {
             cpeSummaries: this.state.cpeSummaries.filter(cs => cs.cpe.id !== cpeId ),
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         }, this.storeCpes);
     }
 
@@ -284,14 +414,22 @@ export default class AttackSrfcPage extends Component {
      * status to active.
      */
     handleAddCpeClick = (newCpe) => {
-        if (this.state.selectedCpes.length+1 > MAX_SELECTED_CPES) {
-            this.setState({
-                _dialogMessage: "This inventory is full. Log in to increase "
-                                + "inventory size and to save multiple inventories.",
-            });
+        if (this.state.selectedCpes.length+1 > this.state.account.tenant.maxItemsPerInventory) {
+            const { isAuthenticated } = this.props.auth0;
+            if (isAuthenticated) {
+                this.setState({
+                    _dialogMessage: "This inventory is full. Upgrade your account to increase inventory size.",
+                });
+            }
+            else {
+                this.setState({
+                    _dialogMessage: "This inventory is full. Sign up to increase "
+                                    + "inventory size and to save multiple inventories. It's free!",
+                });
+            }
         }
 
-        if (this.state.selectedCpes.length > MAX_SELECTED_CPES) {
+        if (this.state.selectedCpes.length > this.state.account.tenant.maxItemsPerInventory) {
             return;
         }
         
@@ -302,6 +440,7 @@ export default class AttackSrfcPage extends Component {
                 selectedCpes: [...this.state.selectedCpes, activeCpe],
                 cpeSummaries: [...this.state.cpeSummaries, {cpe: activeCpe, count: ""}],
                 _cpeAction: CPE_ACTION_RELOAD,
+                _accountStatus: ACCOUNT_SAVE_DIRTY,
             }, this.storeCpes);
             
         }
@@ -362,7 +501,7 @@ export default class AttackSrfcPage extends Component {
             leftActiveTabIndex : 1,
             _cveAction: CVE_ACTION_LOAD_DETAILS
         });
-    }
+    } // TODO xxx add route for CPE next to CVE
     
     loadCveDetails = () => {
         CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => {
@@ -376,7 +515,17 @@ export default class AttackSrfcPage extends Component {
             let articles = ('_embedded' in response) ? response._embedded.articles : [];
             this.setState({ articles: articles })
         });
-        this.props.history.push('/cve/' + this.state.selectedCve.id);
+        if (this.state._cveDetailsView === 'info')
+            this.props.history.push('/cve/' + this.state.selectedCve.id);
+        else
+            this.props.history.push('/cve/' + this.state.selectedCve.id + '/news');
+    }
+
+    handleCveDetailsViewChange = (view) => {
+        if (view === 'info')
+            this.props.history.push('/cve/' + this.state.selectedCve.id);
+        else
+            this.props.history.push('/cve/' + this.state.selectedCve.id + '/news');
     }
 
     loadCvesPage = () => {
@@ -442,8 +591,8 @@ export default class AttackSrfcPage extends Component {
             this.state.lastLoadedStartDate, this.state.cveStartDate);
 
         this.state.cpeSummaries.forEach( (cs) => {
-            if ( !Array.isArray(cs.summary) 
-                || !cs.summary.length 
+            if ( ! ('summary' in cs)
+                || (Object.keys(cs.summary).length === 0) 
                 || timeChanged) {
                 CpeClient.getCveSummaryForCpe(
                     CVEs.getCpeAsUriBinding(cs.cpe),
@@ -518,6 +667,7 @@ export default class AttackSrfcPage extends Component {
                }
             }),
             _cpeAction: CPE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
         }, this.storeCpes);
     }
 
@@ -533,6 +683,21 @@ export default class AttackSrfcPage extends Component {
     handleEditCpeClick = (editCpeId) => {
         // TODO implement dialog to narrow down cpe by version range, platform etc.
         console.log("Edit " + editCpeId);
+    }
+
+    handleSelectInventoryClick = (name) => {
+        let newCpeList = this.state.account.inventories.find(i => i.name === name).products;
+        this.setState({
+            selectedCpes: newCpeList,
+            selectedInventoryName: name,
+            cpeSummaries: newCpeList.map( (c) => {
+                return {
+                    cpe: c,
+                    count: "",
+                };
+            }),
+            _cpeAction: CPE_ACTION_RELOAD,
+        }, this.storeCpes);
     }
 
     handleNewsListMenuClick = (link) => {
@@ -571,6 +736,125 @@ export default class AttackSrfcPage extends Component {
         this.setState({ leftActiveTabIndex: activeIndex });
     }
 
+    handleAddInventoryClick = (name) => {
+        if (this.state.account.inventories.length >= this.state.account.tenant.maxInventories) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
+
+        var i=1;
+        while (this.state.account.inventories.find(i => i.name === name)) {
+            //avoid dup name
+            name = name + "_" + i++;
+        }
+
+        let newInventories = [...this.state.account.inventories,
+            {
+                name: name,
+                products: [],
+                notify: false,
+            }
+        ];
+        this.setState({
+            account: {...this.state.account, 
+                inventories: newInventories,
+            },
+            selectedInventoryName: name,
+            selectedCpes: [],
+            cpeSummaries: [],
+            _cpeAction: CPE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
+        });
+    }
+
+    handleDeleteInventoryClick = () => {
+        if (this.state.account.inventories.length<2)
+            return;
+        var newInventories = this.state.account.inventories.filter(
+            i => (i.name !== this.state.selectedInventoryName)
+        );
+        this.setState({
+            account: {...this.state.account, 
+                inventories: newInventories,
+            },
+            selectedInventoryName: newInventories[0].name,
+            selectedCpes: newInventories[0].products,
+            cpeSummaries: newInventories[0].products.map( (c) => {
+                return {
+                    cpe: c,
+                    count: "",
+                };
+            }),
+            _cpeAction: CPE_ACTION_RELOAD,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
+        });
+    }
+
+    handleRenameInventoryClick = (newname) => {
+        // only rename first found - safety to be able to resolve dups
+        var doRename=true;
+        this.setState({
+            account: {...this.state.account,
+                inventories: this.state.account.inventories.map((i) => {
+                    if (doRename && i.name === this.state.selectedInventoryName) {
+                        doRename=false;
+                        return {...i, name: newname};
+                    } else {
+                        return i;
+                    }
+                })
+            },
+            selectedInventoryName: newname,
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
+        });
+    }
+
+    handleInventoryNotificationClick = () => {
+        const { isAuthenticated } = this.props.auth0;
+        if (this.state._accountStatus === ACCOUNT_NONE || !isAuthenticated) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
+        this.setState({
+            account: {...this.state.account, 
+                inventories: this.state.account.inventories.map( (i) => {
+                    if (i.name === this.state.selectedInventoryName) {
+                        return {...i, notify: !i.notify};
+                    } else {
+                        return i;
+                    }
+                }),
+            },
+            _accountStatus: ACCOUNT_SAVE_DIRTY,
+        });
+    }
+
+    handleSaveInventoryClick = () => {
+        if (this.state._accountStatus === ACCOUNT_NONE) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
+
+        const { isAuthenticated } = this.props.auth0;
+        if (!isAuthenticated && this.state._accountStatus === ACCOUNT_SAVE_DIRTY) {
+            this.setState({_redirect: REDIRECT_REGISTER});
+            return;
+        }
+
+        this.setState({
+            account: {...this.state.account,
+                inventories: this.state.account.inventories.map(i => {
+                    if (i.name === this.state.selectedInventoryName) {
+                        return {...i,
+                            products: this.state.selectedCpes,
+                        };
+                    } else {
+                        return i;
+                    }
+                }),
+            },
+        }, this.saveAccount);
+    }
 
     render() {
         if (this.state._redirect) {
@@ -581,27 +865,38 @@ export default class AttackSrfcPage extends Component {
         }
 
         const leftTabPanes = [
-            {   menuItem: 'Inventory', 
+            {   menuItem: { key: 'invtab', icon: 'archive', content: 'Inv.' }, 
                 pane:
                 <Tab.Pane >
                     <EditableInventoryList
-                        maxCpes={MAX_SELECTED_CPES}
+                        inventories={this.state.account.inventories}
+                        maxInventories={this.state.account.tenant.maxInventories}
+                        maxCpes={this.state.account.tenant.maxItemsPerInventory}
                         selectedCpes={this.state.selectedCpes}
+                        selectedInventoryName={this.state.selectedInventoryName}
                         onSelectCpeClick={this.handleAddCpeClick}
-                        onSaveClick={this.handleSaveClick}
+                        onSaveInventoryClick={this.handleSaveInventoryClick}
                         onDeleteClick={this.handleDeleteCpeClick}
                         onCpeToggleClick={this.handleCpeToggleClick}
                         onEditCpeClick={this.handleEditCpeClick}
+                        onSelectInventoryClick={this.handleSelectInventoryClick}
+                        onAddInventoryClick={this.handleAddInventoryClick}
+                        onDeleteInventoryClick={this.handleDeleteInventoryClick}
+                        onToggleNotificationClick={this.handleInventoryNotificationClick}
+                        onRenameInventoryClick={this.handleRenameInventoryClick}
+                        accountStatus={this.state._accountStatus}
                     />
                 </Tab.Pane>
             }, {
-                menuItem: 'Vulnerability', 
+                menuItem: { key: 'vulntab', icon: 'bug', content: 'Vuln.' }, 
                 pane:
                 <Tab.Pane >
                     <CveDetails
                         cve={this.state.selectedCve}
+                        activeView={this.state._cveDetailsView}
                         articles={this.state.articles}
                         onNewsCveSelected={this.handleNewsCveSelected}
+                        onCveDetailsViewChange={this.handleCveDetailsViewChange}
                     />
                 </Tab.Pane>
             }, {
@@ -688,7 +983,7 @@ export default class AttackSrfcPage extends Component {
                 pane:
                 <Tab.Pane>
                     <CveGraph
-                        maxCpesReached={this.state.selectedCpes.length > MAX_SELECTED_CPES}
+                        maxCpesReached={this.state.selectedCpes.length > this.state.account.tenant.maxItemsPerInventory}
                         allCves={this.state.graphCves} // CVEs loaded for graph
                         currentCpe={'cpe' in this.state.selectedCpeSummaryForGraph // currently selected CPE summary
                             ? this.state.selectedCpeSummaryForGraph.cpe 
@@ -706,7 +1001,7 @@ export default class AttackSrfcPage extends Component {
         return (
          <React.Fragment>
 
-         <div clas="ui fluid container">
+         <div class="ui fluid container">
 
          
             <div class="ui padded grid">
@@ -722,7 +1017,7 @@ export default class AttackSrfcPage extends Component {
                                 >
                                     <a className="item" href="/homepage.html"><i className="home icon" /></a>
                                     <div className="ui item"><h4 className="ui left aligned inverted header">
-                                        AttackSrfc - CVE Search and Vulnerability Management
+                                        AttackSrfc - CVE Search and Vulnerability Management (beta)
                                         <div className="sub header">
                                         Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
                                         - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
@@ -733,13 +1028,9 @@ export default class AttackSrfcPage extends Component {
                                     <CookieConsent/>       
                                     
                                     <div class="right menu primary">
-                                    <Link to="/login" class="item">
-                                        <i className="sign in icon" />
-                                        &nbsp;&nbsp;Login
-                                    </Link>
-                                    <Link to="/login" class="item" onClick={this.noop}>
-                                        <i className="disabled cog icon" />
-                                    </Link>
+                                    <LinkToLogin 
+                                        onSignOut={this.clearStore} 
+                                    />
                                     </div>
                                 </div>
                             } 
@@ -836,3 +1127,5 @@ export default class AttackSrfcPage extends Component {
         );
         }
   }
+
+  export default withAuth0(AttackSrfcPage);

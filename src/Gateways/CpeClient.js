@@ -210,7 +210,7 @@ export function getStats(success) {
 }
 
 export function healthCheck(success, failed) {
-  return fetch(CVESERVICE_URL+'/api/v1/stats', {
+  return fetch(CVESERVICE_URL+'/actuator/health', {
     headers: {
       Accept: 'application/json',
     },

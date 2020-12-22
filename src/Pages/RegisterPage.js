@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withAuth0 } from '@auth0/auth0-react';
 
-export default class RegisterPage extends Component {
+class RegisterPage extends Component {
   render() {
+
+    const {
+      isLoading,
+      isAuthenticated,
+      error,
+      user,
+      loginWithRedirect,
+      logout, 
+    } = this.props.auth0;
+
     return (
       <React.Fragment>
         <div class="ui middle aligned grid container">
@@ -19,8 +30,8 @@ export default class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Access to over 293.000 product identifiers and more than 136.000 vulnerabilities.
-                                          </div>
+                            Access to over 326.000 product identifiers and more than 151.000 vulnerabilities.
+                          </div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
@@ -32,14 +43,23 @@ export default class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">One inventory limited to 10 products</div>
+                          <div class="content"><strong>Save your inventory</strong> (Free tier limited 
+                          to two inventories with ten products each)</div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            <strong>Email notifications</strong> on vulnerabilities and news monitoring
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <a href="/attacksrfc" class="ui disabled button">
-                    You got it
-                            </a>
+                  <a class="ui positive button"
+                       onClick={() => loginWithRedirect()} >
+                    <i class="hat wizard icon"></i>
+                    Sign up / Sign in - it's free!
+                  </a>
                 </div>
 
                 <div class="raised card">
@@ -52,7 +72,7 @@ export default class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Access to over 293.000 product identifiers and more than 136.000 vulnerabilities.
+                            Access to over 326.000 product identifiers and more than 151.000 vulnerabilities.
                           </div>
                         </div>
                         <div class="item">
@@ -72,7 +92,7 @@ export default class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Inventory size increased to 100 products
+                            Multiple inventories with up to 100 products each.
                           </div>
                         </div>
                         <div class="item">
@@ -84,22 +104,21 @@ export default class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            All data is stored in secure, redundant cloud locations
-                       in the European Union.
+                            All data is stored on secure cloud services in the European Union.
                                               </div>
                         </div>
 
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Email notifications on vulnerabilities and news monitoring
-                                              </div>
+                            <strong>Email notifications</strong> on vulnerabilities and news monitoring
+                          </div>
                         </div>
 
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            You get the sponsor role in the Discord chat.
+                            You get the sponsor role in the chat.
                                               </div>
                         </div>
 
@@ -113,7 +132,7 @@ export default class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            <b>New accounts are currently not available publicly. Check the subreddit or chat
+                            <b>Sponsor accounts are not yet available publicly. Check the subreddit or chat
                                                to follow eventual updates.</b>
                           </div>
                         </div>
@@ -121,7 +140,7 @@ export default class RegisterPage extends Component {
                     </div>
                   </div>
                   <Link to="/register" class="ui disabled button">
-                    <i class="shopping cart icon"></i>
+                    <i class="arrow alternate circle up icon"></i>
                     Coming soon.
                             </Link>
                 </div>
@@ -152,7 +171,7 @@ export default class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">CSTOOL.io is privately maintained and receives no public funding. I also do not sell user data.</div>
+                          <div class="content">CSTOOL.io is privately maintained and receives no public funding. We also do not sell user data.</div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
@@ -160,11 +179,11 @@ export default class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">If you just want to use the freely available features or downloadable containers, that is fine and I'd be happy to receive any feedback or contributions you might have.</div>
+                          <div class="content">If you just want to use the freely available features or downloadable containers, that is fine and we'd be happy to receive any feedback or contributions you might have.</div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">However if you consider sponsoring the project I will greatly appreciate that - even if you don't intend to use the public cloud service.</div>
+                          <div class="content">However if you consider sponsoring the project we will greatly appreciate that - even if you don't intend to use the public cloud service.</div>
                         </div>
 
 
@@ -188,7 +207,7 @@ export default class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            If you need to run a professionally supported on-premise / on-private-cloud
+                            If you need to run a professionally supported on-premise or private-cloud
                             installation, feel free to get in touch to discuss options.
                           </div>
                         </div>
@@ -210,7 +229,7 @@ export default class RegisterPage extends Component {
 
         <div class="ui center aligned grid">
           <div class="column">
-            <Link to="/login">Login</Link> with existing account or <Link to="/">go back</Link>.
+            <Link to="/">Go back.</Link>
                            </div>
         </div>
 
@@ -219,3 +238,4 @@ export default class RegisterPage extends Component {
     );
   }
 }
+export default withAuth0(RegisterPage);
