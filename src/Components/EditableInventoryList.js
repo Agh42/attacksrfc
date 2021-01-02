@@ -350,7 +350,7 @@ class EditableInventoryList extends Component {
                         </div>
                       </div>
                     : <span>
-                        <h3 class="ui header">
+                        <h3 className="ui header tipselector1">
                             <i class="archive icon"></i>
                             <div class="content">
                                 Inventory

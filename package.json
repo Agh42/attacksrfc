@@ -6,6 +6,8 @@
     "@auth0/auth0-react": "^1.8.0",
     "clipboard": "^2.0.8",
     "fomantic-ui": "^2.8.8",
+    "intro.js": "2.9.3",
+    "intro.js-react": "0.2.0",
     "path-to-regexp": "^6.2.0",
     "moment": "^2.29.1",
     "proptypes": "^1.1.0",

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import 'intro.js/introjs.css';
 import {
   BrowserRouter as Router,
   Route,
