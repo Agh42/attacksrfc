@@ -25,6 +25,8 @@ import LinkToLogin from '../Components/LinkToLogin';
 import {Link, Redirect} from 'react-router-dom';
 import { ENGINE_METHOD_NONE } from 'constants';
 
+import { Steps, Hints } from 'intro.js-react';
+
 // cve items displayed per page:
 const itemsPerPage = 20;
 
@@ -137,6 +139,8 @@ class AttackSrfcPage extends Component {
 
             activeTabIndex: 0,
             leftActiveTabIndex: 0,
+
+            stepsEnabled: false,
     };
 
     componentDidMount() {
@@ -151,7 +155,8 @@ class AttackSrfcPage extends Component {
                 _cveDetailsView: view,
                 selectedCve : cve,
                 leftActiveTabIndex : 1,
-                _cveAction: CVE_ACTION_LOAD_DETAILS
+                _cveAction: CVE_ACTION_LOAD_DETAILS,
+                stepsEnabled: false
             }, () => {
                 this.loadCveDetails();
             });
@@ -245,6 +250,10 @@ class AttackSrfcPage extends Component {
             var initialCpes = CpeClient.getExampleCpes();
         }
 
+        var stepsEnabled = true;
+        if (store.get('stepsDisabled'))
+            stepsEnabled = false;
+
         var newInventories = [ 
             {...this.state.account.inventories[0], products: initialCpes},
             ...this.state.account.inventories.slice(1, this.state.account.inventories.length)
@@ -262,11 +271,13 @@ class AttackSrfcPage extends Component {
                         _cveAction: CVE_ACTION_RELOAD,
                         _cpeAction: CPE_ACTION_RELOAD,
                         _graphAction: GRAPH_ACTION_RELOAD,
+                        stepsEnabled: stepsEnabled,
                     });
     }
 
     clearStore = () => {
         store.set('selectedCpes', []);
+        store.set('stepsDisabled', false);
         this.initSelectedCpes();
     }
 
@@ -284,7 +295,10 @@ class AttackSrfcPage extends Component {
     loadAccount = () => {
         const { isAuthenticated, getAccessTokenSilently } = this.props.auth0;
         if ( !isAuthenticated || this.state._accountStatus !== ACCOUNT_NONE) return;
-        this.setState({_accountStatus: ACCOUNT_LOADING});
+        this.setState({
+            _accountStatus: ACCOUNT_LOADING,
+            stepsEnabled: false,
+        });
 
         getAccessTokenSilently().then(
             this.callApiGetOrCreateAccount
@@ -448,6 +462,7 @@ class AttackSrfcPage extends Component {
 
     storeCpes = () => {
         store.set('selectedCpes', this.state.selectedCpes);
+        store.set('stepsDisabled', true);
     }
     
     /*
@@ -856,6 +871,10 @@ class AttackSrfcPage extends Component {
         }, this.saveAccount);
     }
 
+    onExit = () => {
+        this.setState(() => ({ stepsEnabled: false }));
+      };
+
     render() {
         if (this.state._redirect) {
             return {
@@ -868,7 +887,7 @@ class AttackSrfcPage extends Component {
             {   menuItem: { key: 'invtab', icon: 'archive', content: 'Inv.' }, 
                 pane:
                 <Tab.Pane >
-                    <EditableInventoryList
+                    <EditableInventoryList 
                         inventories={this.state.account.inventories}
                         maxInventories={this.state.account.tenant.maxInventories}
                         maxCpes={this.state.account.tenant.maxItemsPerInventory}
@@ -900,7 +919,7 @@ class AttackSrfcPage extends Component {
                     />
                 </Tab.Pane>
             }, {
-                menuItem:  { key: 'hottopics', icon: 'red fire', content: 'Hot Topics' }, 
+                menuItem:  { key: 'hottopics', icon: 'red fire', content: 'Hot Topics', className: 'tipselector4' }, 
                 pane:
                 <Tab.Pane >
                     <NewsListMenu
@@ -979,7 +998,7 @@ class AttackSrfcPage extends Component {
                         
                 
             },
-            {   menuItem: 'Graph', 
+            {   menuItem: { key: 'graph', content: 'Graph', className: 'tipselector3' }, 
                 pane:
                 <Tab.Pane>
                     <CveGraph
@@ -998,8 +1017,38 @@ class AttackSrfcPage extends Component {
             }, 
         ]
 
+        const steps = [
+            {  
+                element: '.tipselector1',
+                intro: 'Welcome! This is your inventory of software and hardware. Search for products to add them to the list.',
+            },
+            {
+                element: '.tipselector2',
+                intro: 'These are the known vulnerabilities for your inventory. Select a product to list its '
+                    + 'vulnerabilities. Pay attention to vulnerabilities that have known exploits or that made '
+                    + 'it into the news!',
+            },
+            {
+                element: '.tipselector3',
+                intro: '"Graph" shows the vulnerability graph for the selected product. You can zoom in, drag items '
+                    + 'and click to add a product to the inventory.',
+            },
+            {
+                element: '.tipselector4',
+                intro: '"Hot topics" lists vulnerabilities that were mentioned in recent news. You can jump '
+                    + 'to the related vulnerabilities from there.',
+            },
+        ];
+
         return (
          <React.Fragment>
+
+            <Steps
+                enabled={this.state.stepsEnabled && !this.state._uhoh && this.state.leftActiveTabIndex===0}
+                steps={steps}
+                initialStep={0}
+                onExit={this.onExit}
+            />
 
          <div class="ui fluid container">
 

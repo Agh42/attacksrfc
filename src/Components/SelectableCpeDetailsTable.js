@@ -252,7 +252,7 @@ export default class SelectableCpeDetailsTable extends Component {
                }
             </div>
 
-            <table className="ui selectable striped table" id="cpeSummaryTable">
+            <table className="ui selectable striped table tipselector2" id="cpeSummaryTable">
                     <thead>
                     <tr class="center aligned">
                     <th>Product</th>
