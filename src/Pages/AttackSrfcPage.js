@@ -113,6 +113,9 @@ class AttackSrfcPage extends Component {
                     name: "My organization",
                     maxInventories: 1,
                     maxItemsPerInventory: 10
+                },
+                userInfo: {
+                    emailVerified: true,
                 }
             },
             _accountStatus: ACCOUNT_NONE,
@@ -337,7 +340,8 @@ class AttackSrfcPage extends Component {
                 AccountClient.saveAccount(
                     this.loadAccount,
                     this.state.account,
-                    token);
+                    token,
+                    true);
             });
     }
 
@@ -346,7 +350,8 @@ class AttackSrfcPage extends Component {
         AccountClient.saveAccount(
             this.saveSuccessful, 
             this.state.account, 
-            token);
+            token,
+            false);
     }
 
     saveSuccessful = () => {
@@ -503,7 +508,6 @@ class AttackSrfcPage extends Component {
         this.setState({
             cveStartDate: range[0],
             cveEndDate: range[1],
-            //_graphAction: GRAPH_ACTION_RELOAD, // triggered after summary reload
             _cpeAction: CPE_ACTION_RELOAD,
             _cveAction: CVE_ACTION_RELOAD,
         });    
@@ -516,7 +520,7 @@ class AttackSrfcPage extends Component {
             leftActiveTabIndex : 1,
             _cveAction: CVE_ACTION_LOAD_DETAILS
         });
-    } // TODO xxx add route for CPE next to CVE
+    } // TODO add route for CPE next to CVE
     
     loadCveDetails = () => {
         CpeClient.getCveById(this.state.selectedCve.id, (fullCve) => {
@@ -1030,8 +1034,8 @@ class AttackSrfcPage extends Component {
             },
             {
                 element: '.tipselector3',
-                intro: '"Graph" shows the vulnerability graph for the selected product. You can zoom in, drag items '
-                    + 'and click to add a product to the inventory.',
+                intro: '"Graph" shows how one vulnerable product affects others. You can zoom in, drag items '
+                    + 'select vulnerabilities and click to add affected products to the inventory.',
             },
             {
                 element: '.tipselector4',
@@ -1074,11 +1078,14 @@ class AttackSrfcPage extends Component {
                                         </h4>
                                     </div>
                                 
-                                    <CookieConsent/>       
+                                    <CookieConsent/>
                                     
                                     <div class="right menu primary">
                                     <LinkToLogin 
-                                        onSignOut={this.clearStore} 
+                                        emailVerified={
+                                            (this.state.account.userInfo||{}).emailVerified
+                                        }
+                                        onSignOut={this.clearStore}
                                     />
                                     </div>
                                 </div>

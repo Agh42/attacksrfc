@@ -17,7 +17,7 @@ function getAccount(success, token) {
     .then(success);
 }
 
-function saveAccount(success, account, token) {
+function saveAccount(success, account, token, updateUserinfo) {
   console.log("Saving account information");
 
   var data = JSON.stringify(account);
@@ -32,9 +32,21 @@ function saveAccount(success, account, token) {
     redirect: 'follow'
   };
 
-  fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
-    .then(checkStatus)
-    .then(success);
+  if (updateUserinfo) {
+    fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
+      .then(checkStatus)
+      .then(
+        function (response) {
+          return fetch(CVESERVICE_URL + "/api/v1/accounts/me/userinfo", requestOptions);
+        }
+      )
+      .then(checkStatus)
+      .then(success);
+  } else {
+    fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
+      .then(checkStatus)
+      .then(success);
+  }
 }
 
 function deleteAccount(success, account, token) {
@@ -51,10 +63,10 @@ function deleteAccount(success, account, token) {
     body: data,
     redirect: 'follow'
   };
-
+  
   fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
-    .then(checkStatus)
-    .then(success);
+  .then(checkStatus)
+  .then(success);
 }
 
 function checkStatus(response) {

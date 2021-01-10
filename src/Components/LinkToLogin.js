@@ -12,7 +12,7 @@ class LinkToLogin extends Component {
     handleLogout = () => {
         const {logout} = this.props.auth0;
         this.props.onSignOut();
-        logout({returnTo: window.location.origin});
+        logout({returnTo: window.location.origin + "/homepage.html"});
     }
 
     render() {
@@ -47,6 +47,14 @@ class LinkToLogin extends Component {
             } else {
                 return (
                     <React.Fragment>
+                    { user.email_verified ? "" :
+                        <div className="item">
+                            <div class="middle aligned content">
+                                <i class="red user slash icon"></i>
+                                Account restricted - please verify your email.
+                            </div>
+                        </div>
+                    }
                      <Link to="/preferences" class="item" onClick={this.noop}>
                         <img class="ui avatar image" src={user.picture}></img>
                         <span>{user.nickname}</span>
