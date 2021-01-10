@@ -47,7 +47,7 @@ class LinkToLogin extends Component {
             } else {
                 return (
                     <React.Fragment>
-                    { user.email_verified ? "" :
+                    { this.props.emailVerified ? "" :
                         <div className="item">
                             <div class="middle aligned content">
                                 <i class="red user slash icon"></i>
