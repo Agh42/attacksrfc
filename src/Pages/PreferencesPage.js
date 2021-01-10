@@ -5,6 +5,7 @@ import { Button, Icon, Checkbox, Form, Confirm } from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom';
 import AccountClient from '../Gateways/AccountClient';
 import { declareExportDeclaration } from '@babel/types';
+import store from 'store';
 
 // page load redirects:
 const REDIRECT_HOME= 'REDIRECT_HOME';
@@ -99,7 +100,8 @@ class PreferencesPage extends Component {
         AccountClient.saveAccount(
           this.loadAccount, 
           this.state.account, 
-          token);
+          token,
+          true);
         });
   }
 
@@ -125,7 +127,8 @@ class PreferencesPage extends Component {
     AccountClient.saveAccount(
       this.saveSuccessful, 
       this.state.account, 
-      token);
+      token,
+      true);
   }
 
   callApiDeleteAccount = (token) => {
@@ -162,6 +165,13 @@ class PreferencesPage extends Component {
     getAccessTokenSilently().then(
       this.callApiDeleteAccount
     );
+    const {logout} = this.props.auth0;
+    logout({returnTo: window.location.origin});
+  }
+
+  logout = () => {
+    store.set('selectedCpes', []);
+    store.set('stepsDisabled', false);
     const {logout} = this.props.auth0;
     logout({returnTo: window.location.origin});
   }
@@ -206,7 +216,12 @@ class PreferencesPage extends Component {
                           </div>
                          
                           <div class="right menu primary">
-                          <LinkToLogin/>
+                          <LinkToLogin
+                            emailVerified={
+                              (this.state.account.userInfo||{}).emailVerified
+                            }
+                            onSignOut={this.logout}
+                          />
                           </div>
                       </div>
                     </div> {/* end col */}
@@ -274,13 +289,27 @@ class PreferencesPage extends Component {
                                   <input disabled type="text" readOnly value={user.name}></input>
                                 </div>
                               </div>
+                              <div class="two fields">
+                                <Form.Field>
+                                  <Checkbox 
+                                    disabled readOnly
+                                    label={
+                                      (this.state.account.userInfo||{}).emailVerified
+                                      ? 'Email address verified'
+                                      : 'Email not verified - notifications are disabled!'
+                                    }
+                                    value='emailVerified'
+                                    checked={(this.state.account.userInfo||{}).emailVerified}
+                                    />
+                                </Form.Field>
+                              </div>
 
                               <h4 class="ui dividing header">Preferences</h4>
                               <div class="ui segment">
                                 <Form.Field>
                                   <Checkbox 
                                     toggle 
-                                    label='E-mail notifications for hot topics' 
+                                    label='Email notifications for hot topics' 
                                     value='notificationsHotTopics'
                                     checked={(this.state.account.preferences||{}).notificationsHotTopics}
                                     onChange={this.togglePrefValue}
@@ -289,7 +318,7 @@ class PreferencesPage extends Component {
                                 <Form.Field>
                                   <Checkbox 
                                     toggle 
-                                    label='E-mail notifications for inventories (master switch)' 
+                                    label='Email notifications for inventories (master switch)' 
                                     value='notificationsInventories'
                                     checked={(this.state.account.preferences||{}).notificationsInventories}
                                     onChange={this.togglePrefValue}
