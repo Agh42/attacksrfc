@@ -1,5 +1,6 @@
 
-export const AccountClient= {getAccount, saveAccount, deleteAccount};
+export const AccountClient = { getAccount, saveAccount, 
+  deleteAccount, redeemVoucher };
 export default AccountClient;
 
 const CVESERVICE_URL = process.env.REACT_APP_CVESERVICE_URL;
@@ -63,10 +64,28 @@ function deleteAccount(success, account, token) {
     body: data,
     redirect: 'follow'
   };
-  
+
   fetch(CVESERVICE_URL + "/api/v1/accounts/me", requestOptions)
-  .then(checkStatus)
-  .then(success);
+    .then(checkStatus)
+    .then(success);
+}
+
+function redeemVoucher(code, token, success, failure) {
+  console.log("Redeeming code " + code);
+  var requestOptions = {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: "",
+    redirect: 'follow'
+  };
+
+  fetch(CVESERVICE_URL + "/api/v1/accounts/me/voucher/" + code, requestOptions)
+    .then(checkStatus)
+    .then(success)
+    .catch(failure);
 }
 
 function checkStatus(response) {

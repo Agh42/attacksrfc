@@ -1,337 +1,347 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>CSTOOL.io - The cybersecurity toolbox</title>
-    
-    <!-- 
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>CSTOOL.io - The cybersecurity toolbox</title>
+
+  <!-- 
     <link rel="stylesheet" href="./semantic-dist/semantic.css" />
     <script src="../../static/dist/jquery/jquery.min.js"></script>
     <script src="./semantic-dist/semantic.min.js"></script>
      -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.js"></script>
 
 
-<script>
-// Cookie Compliancy BEGIN
-// Thanks to https://html-online.com/articles/cookie-warning-widget-with-javascript/
-function GetCookie(name) {
-  var arg=name+"=";
-  var alen=arg.length;
-  var clen=document.cookie.length;
-  var i=0;
-  while (i<clen) {
-	var j=i+alen;
-	if (document.cookie.substring(i,j)==arg)
-	  return "here";
-	i=document.cookie.indexOf(" ",i)+1;
-	if (i==0) break;
-  }
-  return null;
-}
-function testFirstCookie(){
-	var offset = new Date().getTimezoneOffset();
-	if ((offset >= -180) && (offset <= 0)) { // European time zones
-		var visit=GetCookie("cookieCompliancyAccepted");
-		if (visit==null){
-		   $("#myCookieConsent").fadeIn(400);	// Show warning
-	   } else {
-			// Already accepted
-	   }		
-	}
-}
-$(document).ready(function(){
-    $("#cookieButton").click(function(){
-		var expire=new Date();
-		expire=new Date(expire.getTime()+7776000000);
-		document.cookie="cookieCompliancyAccepted=here; expires="+expire+";path=/";
+  <script>
+    // Cookie Compliancy BEGIN
+    // Thanks to https://html-online.com/articles/cookie-warning-widget-with-javascript/
+    function GetCookie(name) {
+      var arg = name + "=";
+      var alen = arg.length;
+      var clen = document.cookie.length;
+      var i = 0;
+      while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg)
+          return "here";
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0) break;
+      }
+      return null;
+    }
+    function testFirstCookie() {
+      var offset = new Date().getTimezoneOffset();
+      if ((offset >= -180) && (offset <= 0)) { // European time zones
+        var visit = GetCookie("cookieCompliancyAccepted");
+        if (visit == null) {
+          $("#myCookieConsent").fadeIn(400);	// Show warning
+        } else {
+          // Already accepted
+        }
+      }
+    }
+    $(document).ready(function () {
+      $("#cookieButton").click(function () {
+        var expire = new Date();
+        expire = new Date(expire.getTime() + 7776000000);
+        document.cookie = "cookieCompliancyAccepted=here; expires=" + expire + ";path=/";
         $("#myCookieConsent").hide(400);
+      });
+      testFirstCookie();
     });
-	testFirstCookie();
-});
 // Cookie Compliancy END
-</script>
+  </script>
 
-    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="apple-mobile-web-app-title" content="CSTOOL.io">
-    <meta name="application-name" content="CSTOOL.io">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-
-    
-    
-     <style type="text/css">
-    
-      
-      .masthead.segment {
-        min-height: 600px;
-        padding: 1em 0em;
-      }
-      .masthead .logo.item img {
-        margin-right: 1em;
-      }
-      .masthead .ui.menu .ui.button {
-        margin-left: 0.5em;
-      }
-      .masthead h1.ui.header {
-        margin-top: 2em;
-        margin-bottom: 0em;
-        font-size: 4em;
-        font-weight: normal;
-      }
-      .masthead h2 {
-        font-size: 1.7em;
-        font-weight: normal;
-      }
-      
-      .ui.vertical.stripe {
-        padding: 8em 0em;
-      }
-      .ui.vertical.stripe h3 {
-        font-size: 2em;
-      }
-      .ui.vertical.stripe .button + h3,
-      .ui.vertical.stripe p + h3 {
-        margin-top: 3em;
-      }
-      .ui.vertical.stripe .floated.image {
-        clear: both;
-      }
-      .ui.vertical.stripe p {
-        font-size: 1.33em;
-      }
-      .ui.vertical.stripe .horizontal.divider {
-        margin: 3em 0em;
-      }
-      
-      .quote.stripe.segment {
-        padding: 0em;
-      }
-      .quote.stripe.segment .grid .column {
-        padding-top: 5em;
-        padding-bottom: 5em;
-      }
-      
-      .footer.segment {
-        padding: 5em 0em;
-      }
-      
-      .secondary.pointing.menu .toc.item {
-        display: none;
-      }
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="apple-mobile-web-app-title" content="CSTOOL.io">
+  <meta name="application-name" content="CSTOOL.io">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
 
 
-      #myCookieConsent {
-            z-index: 999;
-            min-height: 20px;
-            font-family: OpenSans, arial, "sans-serif";
-            padding: 10px 20px;
-            background: rgba(0,0,0,0.6);
-            overflow: hidden;
-            position: fixed;
-            color: #FFF;
-            bottom: 0px;
-            right: 10px;
-            display: none;
-            left: 0;
-            text-align: center;
-            font-size: 15px;
-            font-weight: bold;
-      }
-      #myCookieConsent div {
-          padding: 5px 0 0;
-      }
-      #myCookieConsent a {
-          color: #2185d0;
-          display: inline-block;
-          padding: 0 10px;
-      }
-      #myCookieConsent a:hover {
-        color: #05497e;
-      }
-      #myCookieConsent a#cookieButton {
-          display: inline-block;
-          color: #000000;
-          font-size: 1.1em;
-        background: #2185d0;
-          text-decoration: none;
-          cursor: pointer;
-          padding: 2px 20px;
-          float: right;
-          border-radius: 20px;
-      }
-      #myCookieConsent a#cookieButton:hover {
-          background: #05497e;
-        color: #000;
-      }
-      
-      @media only screen and (max-width: 700px) {
-        .ui.fixed.menu {
-          display: none !important;
-        }
-        .secondary.pointing.menu .item,
-        .secondary.pointing.menu .menu {
-          display: none;
-        }
-        .secondary.pointing.menu .toc.item {
-          display: block;
-        }
-        .masthead.segment {
-          min-height: 350px;
-        }
-        .masthead h1.ui.header {
-          font-size: 2em;
-          margin-top: 1.5em;
-        }
-        .masthead h2 {
-          margin-top: 0.5em;
-          font-size: 1.5em;
-        }
-      }
-    </style>
-     
-  </head>
-  <body>
+
+  <style type="text/css">
+    .masthead.segment {
+      min-height: 600px;
+      padding: 1em 0em;
+    }
+
+    .masthead .logo.item img {
+      margin-right: 1em;
+    }
+
+    .masthead .ui.menu .ui.button {
+      margin-left: 0.5em;
+    }
+
+    .masthead h1.ui.header {
+      margin-top: 2em;
+      margin-bottom: 0em;
+      font-size: 4em;
+      font-weight: normal;
+    }
+
+    .masthead h2 {
+      font-size: 1.7em;
+      font-weight: normal;
+    }
+
+    .ui.vertical.stripe {
+      padding: 8em 0em;
+    }
+
+    .ui.vertical.stripe h3 {
+      font-size: 2em;
+    }
+
+    .ui.vertical.stripe .button+h3,
+    .ui.vertical.stripe p+h3 {
+      margin-top: 3em;
+    }
+
+    .ui.vertical.stripe .floated.image {
+      clear: both;
+    }
+
+    .ui.vertical.stripe p {
+      font-size: 1.33em;
+    }
+
+    .ui.vertical.stripe .horizontal.divider {
+      margin: 3em 0em;
+    }
+
+    .quote.stripe.segment {
+      padding: 0em;
+    }
+
+    .quote.stripe.segment .grid .column {
+      padding-top: 5em;
+      padding-bottom: 5em;
+    }
+
+    .footer.segment {
+      padding: 5em 0em;
+    }
+
+    .secondary.pointing.menu .toc.item {
+      display: none;
+    }
+
+
+    #myCookieConsent {
+      z-index: 999;
+      min-height: 20px;
+      font-family: OpenSans, arial, "sans-serif";
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      position: fixed;
+      color: #FFF;
+      bottom: 0px;
+      right: 10px;
+      display: none;
+      left: 0;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    #myCookieConsent div {
+      padding: 5px 0 0;
+    }
+
+    #myCookieConsent a {
+      color: #2185d0;
+      display: inline-block;
+      padding: 0 10px;
+    }
+
+    #myCookieConsent a:hover {
+      color: #05497e;
+    }
+
+    #myCookieConsent a#cookieButton {
+      display: inline-block;
+      color: #000000;
+      font-size: 1.1em;
+      background: #2185d0;
+      text-decoration: none;
+      cursor: pointer;
+      padding: 2px 20px;
+      float: right;
+      border-radius: 20px;
+    }
+
+    #myCookieConsent a#cookieButton:hover {
+      background: #05497e;
+      color: #000;
+    }
+
   
-    <div id="myCookieConsent">
-      <a id="cookieButton">Okay!</a>
-      <div>This site uses cookies. <a href="/legal.html">Learn more.</a></div>
+  </style>
+
+</head>
+
+<body>
+
+  <div id="myCookieConsent">
+    <a id="cookieButton">Okay!</a>
+    <div>This site uses cookies. <a href="/legal.html">Learn more.</a></div>
+  </div>
+
+  <!--Page Contents-->
+
+  <div class="ui fluid container">
+    <div class="ui teal inverted vertical masthead center aligned segment">
+
+      <div class="ui text container">
+        <br />
+        <br />
+        <br />
+        <img class="ui middle aligned image" src="./images/logos/cstoolio.PNG" alt="CSTOOL.io" /><br />
+        <h1 class="ui inverted header">
+          Welcome to CSTOOL.io
+        </h1>
+        <h2>
+          The Cybersecurity Toolbox.
+        </h2>
+        <a href="index.html" class="ui huge primary button">
+          Start now<i class="right arrow icon"></i>
+        </a>
+      </div>
+    </div>
+    <div class="ui vertical stripe segment">
+      <div class="ui middle aligned stackable grid container">
+        <div class="row">
+          <div class="six wide column">
+            <h3 class="ui header">
+              Welcome to CSTOOL.io!
+            </h3>
+            <p>
+              Featuring <i>AttackSrfc</i>, an open source cloud native CVE search and vulnerability management app.
+              Check out this tutorial video first or just launch it right away!
+            </p>
+            <h3 class="ui header">
+              Software has bugs. Bugs are bad.
+            </h3>
+            <p>
+              Bugs cause vulnerabilities. Attackers exploit these vulnerabilities to compromise
+              your systems. Installing updates solves the problem - some of the time. Sometimes you cannot install an
+              update because of existing software dependencies. Sometimes there is no update: zero-day vulnerabilities
+              can exist for weeks until mitigation becomes possible. CSTOOL.io will help you to know which
+              vulnerabilities are most relevant for you and decide what to do about them.
+            </p>
+          </div>
+
+          <div class="ten wide center aligned column">
+            <div class="center">
+              <iframe width="100%" height="315"
+                src="https://www.youtube.com/embed/videoseries?list=PLygRLr7mTKuYZCF6KO49auMITZ3alOhFz&cc_load_policy=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="center aligned column">
+            <a href="index.html" class="ui huge primary button">
+              Launch it now!
+              <i class="right arrow icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!--Page Contents-->
-    <div class="pusher">
-      <div class="ui teal inverted vertical masthead center aligned segment">
- 
-        <div class="ui text container">
-        <br/>
-        <br/>
-        <br/>
-        <img class="ui middle aligned image" src="./images/logos/cstoolio.PNG" alt="CSTOOL.io"/><br/>
-          <h1 class="ui inverted header">
-          Welcome to CSTOOL.io
-          </h1>
-          <h2>
-            The Cybersecurity Toolbox. 
-          </h2>
-          <a href="index.html" class="ui huge primary button">
-            Start now<i class="right arrow icon"></i>
-          </a>
-        </div>
-      </div>
-      <div class="ui vertical stripe segment">
-        <div class="ui middle aligned stackable grid container">
-          <div class="row">
-            <div class="eight wide column">
-              <h3 class="ui header">
-                Welcome to CSTOOL.io! 
-              </h3>
-              <p> 
-                The goal of this page is to host a growing set of simple cybersecurity tools. Right now you can start with AttackSrfc - a CVE search and vulnerability management app.
-              </p>
-              <h3 class="ui header">
-                Software has bugs. Bugs are bad.
-              </h3>
-              <p>
-                Bugs cause vulnerabilities. Attackers exploit these vulnerabilities to compromise 
-                your systems. Installing updates solves the problem - some of the time. Sometimes <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.welivesecurity.com/2020/03/24/microsoft-warns-two-windows-zero-day-flaws/">there is no update.</a> Sometimes you cannot install an update because of existing software dependencies. Zero-day vulnerabilities can exist for weeks until mitigation becomes possible. CSTOOL.io will help you to know your vulnerabilities and decide what to do about them.
-              </p>
-            </div>
-            
-            <div class="six wide right floated column">
-                <div class="center">
-                    <img class="ui medium centered image" src="./images/shape/examplecvegraph-sm2.png" />
-                </div>
-            </div>
-          </div>
-            <div class="row">
-              <div class="center aligned column">
-                <a href="index.html" class="ui huge primary button">
-                  Launch it now!
-                  <i class="right arrow icon"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ui vertical stripe quote segment">
-        <div class="ui equal width stackable internally celled grid">
-          <div class="center aligned row">
-            <div class="column">
-              <h3>
-                Don't wait for the perfect solution.
-                <br/> Do something right now.
-              </h3>
-              <p>
-                <br/> A vulnerability scanner is a valuable investment. CSTOOL.io is not meant to replace local scanning. It is supposed to help in those cases where you are not
-                 able to do it quickly. In some cases you are not able to actively run a host- or network-based scanner at all. 
-                 This may be the case when working with isolated assets or relying on external service providers.
-              </p>
-            </div>
-            <div class="column">
-              <h3>
-                CSTOOL.io scans for publicly known vulnerabilities.
-              </h3>
-              <p>
-                CSTOOL.io continuously scans official sources for published vulnerabilities in known software and hardware products. 
-                You simply add the products that you are using to your inventory. Know your weaknesses and show that without proper 
-                patch management the problem will not go away. Start with the components that you know that you 
-                are using. Add components that you know that your service providers are using. 
-                Improve your inventory as you become more aware of your infrastructure over time.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="ui vertical stripe segment">
+
+    <div class="ui vertical stripe quote segment">
       <div class="ui equal width stackable internally celled grid">
-          <div class="center aligned row">
-            <div class="column">
-                <img class="ui large centered image" src="./images/shape/csf.jpeg" />
-            </div>        
-        <div class="ui text container">
+        <div class="center aligned row">
+          <div class="column">
+            <h3>
+              Don't wait for the perfect solution.
+              <br /> Do something right now.
+            </h3>
+            <p>
+              <br /> A vulnerability scanner is a valuable investment. CSTOOL.io is not meant to replace local scanning.
+              It is supposed to help in those cases where you are not
+              able to do it quickly. In some cases you are not able to actively run a host- or network-based scanner at
+              all.
+              This may be the case when working with isolated assets or relying on external service providers.
+            </p>
+          </div>
+          <div class="column">
+            <h3>
+              CSTOOL.io scans for publicly known vulnerabilities.
+            </h3>
+            <p>
+              CSTOOL.io continuously scans official sources for published vulnerabilities in known software and hardware
+              products.
+              You simply add the products that you are using to your inventory. Know your weaknesses and show that
+              without proper
+              patch management the problem will not go away. Start with the components that you know that you
+              are using. Add components that you know that your service providers are using.
+              Improve your inventory as you become more aware of your infrastructure over time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width stackable internally celled grid">
+        <div class="center aligned row">
+          <div class="column">
+            <img class="ui large centered image" src="./images/shape/csf.jpeg" />
+          </div>
+          <div class="ui text container">
             <h3 class="ui header">
-                Are you trying to initialize or improve a vulnerability management process?
-              </h3>
-              <p>
-              AttackSrfc can help you with the required steps to comply with standards and frameworks like ISO/IEC 27001:2013 A.12.6.1, A.18.2.2 or NIST CSF PR.IP-12 or NIST SP 800-53 Rev. 4  RA-3, RA-5 and SI-2.
-              </p>
-          
-          <a href="index.html" class="ui huge primary button">
+              Are you trying to initialize or improve a vulnerability management process?
+            </h3>
+            <p>
+              AttackSrfc can help you with the required steps to comply with standards and frameworks like ISO/IEC
+              27001:2013 A.12.6.1, A.18.2.2 or NIST CSF PR.IP-12 or NIST SP 800-53 Rev. 4 RA-3, RA-5 and SI-2.
+            </p>
+
+            <a href="index.html" class="ui huge primary button">
               Engage!
             </a>
+          </div>
         </div>
-        </div>
-        </div>
-      </div>  
-  
-  <div class="ui vertical segment">
-          <h1 class="ui centered header">
-            Cybersecurity toolset
-          </h1>
-        <div class="ui middle aligned stackable grid container">
-          <div class="row">
-            <div class="sixteen wide column">
-            
-            
+      </div>
+    </div>
+
+    <div class="ui vertical segment">
+      <h1 class="ui centered header">
+        Cybersecurity toolset
+      </h1>
+      <div class="ui middle aligned stackable grid container">
+        <div class="row">
+          <div class="sixteen wide column">
+
+
             <div class="ui centered cards">
-            
+
               <div class="card">
                 <div class="content">
                   <img class="ui image" src="/images/logos/as.png" />
                   <div class="centered header">AttackSrfc</div>
                   <span class="ui teal ribbon label">Vulnerability Management</span>
-                  <div class="description">Start your vulnerability mitigation workflow with this tool. 
-                  Make your vulnerability landscape visible to management. 
-                  Involve necessary stakeholders to get rid of critical vulnerabilities - without having to 
-                  roll out vulnerability scanners first.  
+                  <div class="description">Start your vulnerability mitigation workflow with this tool.
+                    Make your vulnerability landscape visible to management.
+                    Involve necessary stakeholders to get rid of critical vulnerabilities - without having to
+                    roll out vulnerability scanners first.
                   </div>
                 </div>
                 <a href="index.html" class="ui bottom attached primary button">
@@ -339,112 +349,133 @@ $(document).ready(function(){
                   Launch now
                 </a>
               </div>
-              
-            <div class="card">
-            <div class="content">
-              <img class="ui image" src="/images/logos/no_logo.png" />
-              <div class="centered header">
-              SpilledBns</div>
-              <span class="ui orange ribbon label">Disclosure Monitoring</span>
-              <div class="description">Domain discovery is being used against you by attackers. Start using it to protect 
-                your public web pages. Even the ones that you may not know about.
-              </div>
-            </div>
-                <a href="/attacksrfc" class="ui bottom attached disabled button">
-                      <i class="play icon"></i>
-                      Next project, no ETA ;-)
-                </a>
-            </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      
-       <div class="ui vertical stripe segment">
-           <div class="ui text container">
-         <h3 class="ui header">
-            Don't know where to start? Try this:
-          </h3>
-          <p>
-            With AttackSrfc you don't have to setup a host- or network-based scanner to get your vulnerability- 
-            and patch management-processes going. 
-          </p><p>  
-            The CPE inventory and CVE search allows you to get started immediately.
-          </p><p>  
-            You can patch vulnerable a system, cordon it, shut it down temporarily or monitor it more closely. You could find out that the risk is negligible in your specific case and you have to do nothing at all. But to be able to make that right choice at the right time you need to be informed. CSTOOL.io keeps you informed.
-          </p><p>  
-            A security scan of a system will give you a detailed view of the vulnerabilities present on that 
-            particular system. But what about systems you cannot scan, such as those of vendors, partners or 
-            SaaS solutions? You can use AttackSrfc to get a quick view of publicly known vulnerabilities to 
-            start a qualified discussion with your third parties about their mitigation workflow. 
-          </p>
-          <a href="index.html" class="ui primary large button">Let me see how that works!</a>
-         </div>
-         </div>
-         
-        
-      
-      <div class="ui inverted vertical footer segment">
-        <div class="ui container">
-          <div class="ui stackable inverted divided equal height stackable grid">
-            <div class="three wide column">
-              <h4 class="ui inverted header">
-                About
-              </h4>
-              <div class="ui inverted link list">
-                <a class="item" href="legal.html#"> Contact</a>
-                <a class="item" href="legal.html#"> Legal Notice / Privacy</a>
-                <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
-              </div>
-            </div>
-            <div class="three wide column">
-              <h4 class="ui inverted header">
-                Support
-              </h4>
-              <div class="ui inverted link list">
-                <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/attacksrfc/issues">Report issues on Github</a>
-                <a class="item" target="_blank" rel="noopener noreferrer" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status on UptimeRobot</a>
-              </div>
-            </div>
-            <div class="seven wide column">
-                <h4 class="ui inverted header">
-                  Discuss and Follow
-                </h4>
-                <div class="ui inverted link list">
-                  <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/r/CSTOOL_io/">CSTOOL.io on Reddit</a>
-                  <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">Chat on Discord</a>
-                  
+
+              <div class="card">
+                <div class="content">
+                  <img class="ui image" src="/images/logos/no_logo.png" />
+                  <div class="centered header">
+                    SpilledBns</div>
+                  <span class="ui orange ribbon label">Disclosure Monitoring</span>
+                  <div class="description">Domain discovery is being used against you by attackers. Start using it to
+                    protect
+                    your public web pages. Even the ones that you may not know about.
+                  </div>
                 </div>
+                <a href="/attacksrfc" class="ui bottom attached disabled button">
+                  <i class="play icon"></i>
+                  Next project, no ETA ;-)
+                </a>
               </div>
+            </div>
           </div>
         </div>
       </div>
-      
-    </div> <!-- close pusher -->
-    
+    </div>
 
-    
-   
-    
-    <script>
-  
-    
-      $(document)
-        .ready(function() {
-            
-            $('.ui.shape')
-            .shape();
-            
-            setInterval(function() {
-                if (document.hasFocus()) { 
-                    $('.shape')
-                    .shape('flip right');
-                }
-            }, 2000);
-         
-        })
+    <div class="ui vertical stripe segment">
+      <div class="ui text container">
+        <h3 class="ui header">
+          Don't know where to start? Try this:
+        </h3>
+        <p>
+          With AttackSrfc you don't have to setup a host- or network-based scanner to get your vulnerability-
+          and patch management-processes going.
+        </p>
+        <p>
+          The CPE inventory and CVE search allows you to get started immediately.
+        </p>
+        <p>
+          You can patch vulnerable a system, cordon it, shut it down temporarily or monitor it more closely. You could
+          find out that the risk is negligible in your specific case and you have to do nothing at all. But to be able
+          to make that right choice at the right time you need to be informed. CSTOOL.io keeps you informed.
+        </p>
+        <p>
+          A security scan of a system will give you a detailed view of the vulnerabilities present on that
+          particular system. But what about systems you cannot scan, such as those of vendors, partners or
+          SaaS solutions? You can use AttackSrfc to get a quick view of publicly known vulnerabilities to
+          start a qualified discussion with your third parties about their mitigation workflow.
+        </p>
+        <a href="index.html" class="ui primary large button">Let me see how that works!</a>
+      </div>
+    </div>
+
+
+
+    <div class="ui inverted vertical footer segment">
+      <div class="ui container">
+        <div class="ui stackable inverted divided equal height stackable grid">
+          <div class="three wide column">
+            <h4 class="ui inverted header">
+              About
+            </h4>
+            <div class="ui inverted link list">
+              <a class="item" href="legal.html#"> Contact</a>
+              <a class="item" href="legal.html#"> Legal Notice / Privacy</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/CSTOOL_io">
+                Source Code</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" href="https://sernet.de">
+                Sponsored by: SerNet</a>
+            </div>
+          </div>
+          <div class="three wide column">
+            <h4 class="ui inverted header">
+              Support
+            </h4>
+            <div class="ui inverted link list">
+              <a class="item" target="_blank" rel="noopener noreferrer"
+                href="https://github.com/Agh42/attacksrfc/issues">Report issues on Github</a>
+              <a class="item" target="_blank" rel="noopener noreferrer"
+                href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status on UptimeRobot</a>
+            </div>
+          </div>
+          <div class="seven wide column">
+            <h4 class="ui inverted header">
+              Discuss and Follow
+            </h4>
+            <div class="ui inverted link list">
+              <a class="item" target="_blank" rel="noopener noreferrer"
+                href="https://www.reddit.com/r/CSTOOL_io/">CSTOOL.io on Reddit</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">
+                Discord Chat</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" 
+                href="https://twitter.com/cstool_io">Twitter</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" 
+                href="https://www.linkedin.com/company/cstool-io">LinkedIn</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" 
+                href="https://www.youtube.com/channel/UC5qYdSA3uSfqzdJcssdjWrQ">YouTube</a>
+              <a class="item" target="_blank" rel="noopener noreferrer" 
+                href="https://www.patreon.com/CSTOOL_io">Patreon</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- close pusher -->
+
+
+
+
+
+  <script>
+
+
+    $(document)
+      .ready(function () {
+
+        $('.ui.shape')
+          .shape();
+
+        setInterval(function () {
+          if (document.hasFocus()) {
+            $('.shape')
+              .shape('flip right');
+          }
+        }, 2000);
+
+      })
       ;
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>

@@ -27,11 +27,16 @@ class RegisterPage extends Component {
                     <div class="ui hidden divider"></div>
                     <div class="description">
                       <div class="ui list">
-                        <div class="item">
+                      <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Access to over 326.000 product identifiers and more than 151.000 vulnerabilities.
+                            Access to over 330.000 product identifiers and more than 157.000 vulnerabilities.
                           </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content"><strong>Save your inventory</strong> (Free tier limited 
+                          to 1 inventory with 10 products)</div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
@@ -41,15 +46,18 @@ class RegisterPage extends Component {
                           <i class="check circle icon"></i>
                           <div class="content">Hot-topics view</div>
                         </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content"><strong>Save your inventory</strong> (Free tier limited 
-                          to two inventories with ten products each)</div>
-                        </div>
+                      
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
                             <strong>Email notifications</strong> on vulnerabilities and news monitoring
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            Free - thanks to our principal sponsor: <a class="item" target="_blank" rel="noopener noreferrer" 
+                            href="https://SerNet.de">SerNet.de</a>.
                           </div>
                         </div>
                       </div>
@@ -64,15 +72,21 @@ class RegisterPage extends Component {
 
                 <div class="raised card">
                   <div class="content">
-                    <div class="centered header">Sponsor</div>
+                    <div class="centered header">PRO - Individual</div>
                     <span class="ui orange right corner label"><i className="star icon" /></span>
-                    <span class="ui yellow ribbon label">Coming soon</span>
+                    <span class="ui yellow ribbon label">Special offer</span>
                     <div class="description">
                       <div class="ui list">
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Access to over 326.000 product identifiers and more than 151.000 vulnerabilities.
+                            Access to over 330.000 product identifiers and more than 157.000 vulnerabilities.
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            Manage <strong>10 inventories with up to 50 products each</strong>.
                           </div>
                         </div>
                         <div class="item">
@@ -92,12 +106,6 @@ class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Multiple inventories with up to 100 products each.
-                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
                             Save and manage multiple inventories
                           </div>
                         </div>
@@ -105,7 +113,7 @@ class RegisterPage extends Component {
                           <i class="check circle icon"></i>
                           <div class="content">
                             All data is stored on secure cloud services in the European Union.
-                                              </div>
+                          </div>
                         </div>
 
                         <div class="item">
@@ -118,31 +126,107 @@ class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            You get the sponsor role in the chat.
-                                              </div>
+                            You get the sponsor role in the discord chat.
+                          </div>
                         </div>
 
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            By becoming a sponsor you support open source software and help us to pay
+                            You support open source software and help us to pay
                             for cloud computing and storage.
-                                          </div>
-                        </div>
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            <b>Sponsor accounts are not yet available publicly. Check the subreddit or chat
-                                               to follow eventual updates.</b>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <Link to="/register" class="ui disabled button">
+                  <a href="https://www.patreon.com/CSTOOL_io" target="_blank" rel="noopener noreferrer"
+                     class="ui positive button">
                     <i class="arrow alternate circle up icon"></i>
-                    Coming soon.
-                            </Link>
+                    Sign up with Patreon...
+                  </a>
+                </div>
+
+                <div class="raised card">
+                  <div class="content">
+                    <div class="centered header">PRO - Corporate</div>
+                    <div class="ui hidden divider"></div>
+                    <div class="description">
+                      <div class="ui list">
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            Access to over 330.000 product identifiers and more than 157.000 vulnerabilities.
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            Manage <strong>100 inventories with up to 100 products each</strong>.
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            May be used <strong>for up to 10 users</strong>.
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">Vulnerability search and graph view</div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">Hot-topics view</div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            Personal login
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            Save and manage multiple inventories
+                          </div>
+                        </div>
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            All data is stored on secure cloud services in the European Union.
+                          </div>
+                        </div>
+
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            <strong>Email notifications</strong> on vulnerabilities and news monitoring
+                          </div>
+                        </div>
+
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            You get the sponsor role in the discord chat.
+                          </div>
+                        </div>
+
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            You support open source software and help us to pay
+                            for cloud computing and storage.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <a href="https://www.patreon.com/CSTOOL_io" target="_blank" rel="noopener noreferrer" 
+                     class="ui positive button">
+                    <i class="arrow alternate circle up icon"></i>
+                    Sign up with Patreon...
+                  </a>
                 </div>
 
                 <div class="raised card">
@@ -167,7 +251,7 @@ class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">You can use all of those for free (free as in beer) under the terms of the <a href="/legal.html" >GNU AGPL and other licenses.</a></div>
+                          <div class="content">You can use all of those for free (free as in free beer) under the terms of the <a href="/legal.html" >GNU AGPL and other licenses.</a></div>
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
@@ -183,44 +267,18 @@ class RegisterPage extends Component {
                         </div>
                         <div class="item">
                           <i class="check circle icon"></i>
-                          <div class="content">However if you consider sponsoring the project we will greatly appreciate that - even if you don't intend to use the public cloud service.</div>
+                          <div class="content">If you consider sponsoring the project (using any of the Patreon links 
+                          provided) it will be greatly appreciated! Even if you don't intend to use the public cloud service.</div>
                         </div>
-
-
-                       
-
                       </div>
                     </div>
                   </div>
-                  <a href="https://github.com/Agh42/CSTOOL_io" class="ui button">
+                  <a href="https://github.com/Agh42/CSTOOL_io" target="_blank" rel="noopener noreferrer"
+                     class="ui button">
                     <i class="github icon"></i>
                     Go to GitHub
                   </a>
                 </div>
-
-                <div class="raised card">
-                  <div class="content">
-                    <div class="centered header">On-Premise / Private Cloud</div>
-                    <div class="ui hidden divider"></div>
-                    <div class="description">
-                      <div class="ui list">
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            If you need to run a professionally supported on-premise or private-cloud
-                            installation, feel free to get in touch to discuss options.
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <a href="mailto:info@cstool.io" class="ui button">
-                    <i class="phone icon"></i>
-                    Ask for quote
-                  </a>
-                </div>
-
-
 
               </div>
             </div>
@@ -229,6 +287,14 @@ class RegisterPage extends Component {
 
         <div class="ui center aligned grid">
           <div class="column">
+            <div class="content">
+              Want to deploy on-premise or in a private cloud? If you need to run a professionally supported on-premise or private-cloud
+              installation, feel free to get in touch to discuss options:&nbsp;
+              <a href="mailto:info@cstool.io">
+                    <i class="phone icon"></i>
+                    Get in touch
+              </a>
+            </div>
             <Link to="/">Go back.</Link>
                            </div>
         </div>
