@@ -1174,7 +1174,11 @@ class AttackSrfcPage extends Component {
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/attacksrfc/issues">Report issues</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/r/CSTOOL_io/">Discuss on Reddit</a>
-                <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">Join chat</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">Discord Chat</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://twitter.com/cstool_io">Twitter</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UC5qYdSA3uSfqzdJcssdjWrQ">YouTube</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.patreon.com/CSTOOL_io">Patreon</a>
+                <a class="item" target="_blank" rel="noopener noreferrer" href="https://sernet.de">Sponsored by: SerNet</a>
                 
                 </div>
             </div>

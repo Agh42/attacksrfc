@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import LinkToLogin from '../Components/LinkToLogin';
 import { withAuth0 } from '@auth0/auth0-react';
-import { Button, Icon, Checkbox, Form, Confirm } from 'semantic-ui-react'
+import { Button, Icon, Checkbox, Form, Confirm, Modal } from 'semantic-ui-react'
 import {Link, Redirect} from 'react-router-dom';
 import AccountClient from '../Gateways/AccountClient';
+import VoucherForm from '../Components/VoucherForm';
 import { declareExportDeclaration } from '@babel/types';
 import store from 'store';
 
@@ -62,6 +63,8 @@ class PreferencesPage extends Component {
     _saveStatus: CLEAN,
     _showConfirm: false,
     account: {},
+    _voucherModalOpen: false,
+    voucher: "",
   };
 
   componentDidMount() {
@@ -176,6 +179,23 @@ class PreferencesPage extends Component {
     logout({returnTo: window.location.origin});
   }
 
+  closeVoucherModal = () => {
+    this.setState({_voucherModalOpen: false});
+  }
+
+  handleVoucherSubmit = (code) => {
+    this.setState({
+      _voucherModalOpen: false,
+      voucher: code,
+    });
+    this.loadAccount();
+  }
+
+  handleRedeemVoucherClick = (e, data) => {
+    e.preventDefault();
+    this.setState({_voucherModalOpen: true});
+  }
+
   render() {
     if (this.state._redirect) {
       return {
@@ -200,6 +220,21 @@ class PreferencesPage extends Component {
           onCancel={this.handleDialogCancel}
           onConfirm={this.handleDialogConfirm}
         />
+
+        <Modal
+          closeIcon
+          open={this.state._voucherModalOpen}
+          onClose={this.closeVoucherModal}
+        >
+          <Modal.Header>Activate upgrades</Modal.Header>
+          <Modal.Content>
+            <VoucherForm
+              onSubmit={this.handleVoucherSubmit}
+              voucher={this.state.voucher}
+            />
+          </Modal.Content>
+        </Modal>
+
         <div class="ui padded grid">
                 <div class="one column row">
                     <div class="sixteen wide column">
@@ -304,6 +339,7 @@ class PreferencesPage extends Component {
                                 </Form.Field>
                               </div>
 
+                              <div class="ui hidden divider"></div>
                               <h4 class="ui dividing header">Preferences</h4>
                               <div class="ui segment">
                                 <Form.Field>
@@ -326,6 +362,7 @@ class PreferencesPage extends Component {
                                 </Form.Field>
                               </div>
 
+                              <div class="ui hidden divider"></div>
                               <h4 class="ui dividing header">Inventories</h4>
                               <div class="ui message">
                                 <div class="header">You have saved the following inventories:</div>
@@ -338,6 +375,7 @@ class PreferencesPage extends Component {
                                 }
                               </div>
 
+                              <div class="ui hidden divider"></div>
                               <h4 class="ui dividing header">Invites</h4>
                               <div class="ui message">
                                 <div class="header">You have invited the following users to your organization:</div>
@@ -346,7 +384,16 @@ class PreferencesPage extends Component {
                                 </ul>
                               </div>
 
-                              <h4 class="ui dividing header">Hmm... Upgrades!</h4>
+                              <div class="ui hidden divider"></div>
+                              <h4 class="ui dividing header">Account Upgrades</h4>
+                              <Button primary disabled={false}
+                                    animated='fade'
+                                    onClick={this.handleRedeemVoucherClick}>
+                                    <Button.Content visible>Enter upgrade code</Button.Content>
+                                    <Button.Content hidden>
+                                        <Icon name='angle double up' />
+                                    </Button.Content>
+                              </Button>
                               <div class="ui message">
                                 <div class="header">You activated the following upgrades:</div>
                                 {
