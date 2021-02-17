@@ -1024,7 +1024,7 @@ class AttackSrfcPage extends Component {
         const steps = [
             {  
                 element: '.tipselector1',
-                intro: 'Welcome! This is your inventory of software and hardware. Search for products to add them to the list.',
+                intro: 'Welcome to a quick tutorial on basic features: this is your inventory of software and hardware. Search for products to add them to the list.',
             },
             {
                 element: '.tipselector2',
@@ -1041,6 +1041,11 @@ class AttackSrfcPage extends Component {
                 element: '.tipselector4',
                 intro: '"Hot topics" lists vulnerabilities that were mentioned in recent news. You can jump '
                     + 'to the related vulnerabilities from there.',
+            },
+            {
+                element: '.tipselector5',
+                intro: 'Start by searching for a piece of hardware or software. For instance try entering '
+                + '"Windows 10" in the search box.',
             },
         ];
 
@@ -1070,7 +1075,7 @@ class AttackSrfcPage extends Component {
                                 >
                                     <a className="item" href="/homepage.html"><i className="home icon" /></a>
                                     <div className="ui item"><h4 className="ui left aligned inverted header">
-                                        AttackSrfc - CVE Search and Vulnerability Management (beta)
+                                        CSTOOL.io - CVE Search and Vulnerability Management (beta)
                                         <div className="sub header">
                                         Tracking: {this.formatNumber(this.state.stats.cpeCount)} Product Versions - {this.formatNumber(this.state.stats.cveCount)} Vulnerabilities
                                         - Last updated: {this.formatDateTime(this.state.stats.lastModified)}
