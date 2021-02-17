@@ -446,7 +446,7 @@ class EditableInventoryList extends Component {
                         </form>
                       
                         
-                        <h4 class="ui horizontal divider header">
+                        <h4 class="ui horizontal divider header tipselector5">
                             Product selection
                         </h4>
                         <Autosuggest 
