@@ -7,7 +7,7 @@
     "clipboard": "^2.0.4",
     "fomantic-ui": "^2.8.4",
     "moment": "^2.22.2",
-    "path-to-regexp": "^1.7.0",
+    "path-to-regexp": "^6.2.0",
     "proptypes": "^1.1.0",
     "rc-slider": "^9.1.0",
     "react": "^16.8.3",
