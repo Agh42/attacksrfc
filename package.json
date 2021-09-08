@@ -5,7 +5,7 @@
   "dependencies": {
     "@auth0/auth0-react": "^1.0.0",
     "clipboard": "^2.0.4",
-    "fomantic-ui": "^2.8.4",
+    "fomantic-ui": "^2.8.8",
     "path-to-regexp": "^6.2.0",
     "moment": "^2.29.1",
     "proptypes": "^1.1.0",
