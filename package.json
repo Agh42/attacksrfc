@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-react": "^1.7.0",
-    "clipboard": "^2.0.4",
+    "clipboard": "^2.0.8",
     "fomantic-ui": "^2.8.8",
     "path-to-regexp": "^6.2.0",
     "moment": "^2.29.1",
