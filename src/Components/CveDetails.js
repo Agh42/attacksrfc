@@ -221,7 +221,7 @@ export default class CveDetails extends Component {
                             {this.props.cve.cvssv3_score}
                           </div>&nbsp;
                           <div class={"ui " + CVEs.colorNameForScore(this.props.cve.cvssv3_score) + " tiny circular label"}>
-                            {CVEs.severityForScore(this.props.cve.cvss3_score)}
+                            {CVEs.severityForScore(this.props.cve.cvssv3_score)}
                           </div>
                         </div>
                       </div>
