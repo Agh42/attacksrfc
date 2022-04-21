@@ -27,7 +27,13 @@ class RegisterPage extends Component {
                     <div class="ui hidden divider"></div>
                     <div class="description">
                       <div class="ui list">
-                      <div class="item">
+                        <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            API access
+                          </div>
+                        </div>
+                        <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
                             Access to over 330.000 product identifiers and more than 157.000 vulnerabilities.
@@ -72,11 +78,17 @@ class RegisterPage extends Component {
 
                 <div class="raised card">
                   <div class="content">
-                    <div class="centered header">PRO - Individual</div>
+                    <div class="centered header">Sponsor - Individual</div>
                     <span class="ui orange right corner label"><i className="star icon" /></span>
                     <span class="ui yellow ribbon label">Special offer</span>
                     <div class="description">
                       <div class="ui list">
+                      <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            API access
+                          </div>
+                        </div>
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
@@ -126,13 +138,6 @@ class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            You get the sponsor role in the discord chat.
-                          </div>
-                        </div>
-
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
                             You support open source software and help us to pay
                             for cloud computing and storage.
                           </div>
@@ -149,10 +154,16 @@ class RegisterPage extends Component {
 
                 <div class="raised card">
                   <div class="content">
-                    <div class="centered header">PRO - Corporate</div>
+                    <div class="centered header">Sponsor - Corporate</div>
                     <div class="ui hidden divider"></div>
                     <div class="description">
                       <div class="ui list">
+                      <div class="item">
+                          <i class="check circle icon"></i>
+                          <div class="content">
+                            API access
+                          </div>
+                        </div>
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
@@ -182,7 +193,7 @@ class RegisterPage extends Component {
                         <div class="item">
                           <i class="check circle icon"></i>
                           <div class="content">
-                            Personal login
+                            Personal logins
                           </div>
                         </div>
                         <div class="item">
@@ -202,13 +213,6 @@ class RegisterPage extends Component {
                           <i class="check circle icon"></i>
                           <div class="content">
                             <strong>Email notifications</strong> on vulnerabilities and news monitoring
-                          </div>
-                        </div>
-
-                        <div class="item">
-                          <i class="check circle icon"></i>
-                          <div class="content">
-                            You get the sponsor role in the discord chat.
                           </div>
                         </div>
 
