@@ -1175,12 +1175,10 @@ class AttackSrfcPage extends Component {
                 <div class="ui horizontal  small divided link list">
                 <a class="item" href="homepage.html">Home</a>
                 <a class="item" href="legal.html">Legal Notice and Contact</a>
-                <a class="item" href="/register">Register / Pricing</a>
+                <a class="item" href="/register">Register / Sponsor</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/CSTOOL_io"> Source Code</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://github.com/Agh42/attacksrfc/issues">Report issues</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://stats.uptimerobot.com/RMwRDtvPLw">Site status</a>
-                <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.reddit.com/r/CSTOOL_io/">Discuss on Reddit</a>
-                <a class="item" target="_blank" rel="noopener noreferrer" href="https://discord.gg/5HWZufA">Discord Chat</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://twitter.com/cstool_io">Twitter</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UC5qYdSA3uSfqzdJcssdjWrQ">YouTube</a>
                 <a class="item" target="_blank" rel="noopener noreferrer" href="https://www.patreon.com/CSTOOL_io">Patreon</a>
