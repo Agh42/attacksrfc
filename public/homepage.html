@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title>CSTOOL.io - Combined vulnerability and cybersecurity news search</title>
+  <title>CSTOOL.io - Open source vulnerability management UI and API</title>
 
   <!-- 
     <link rel="stylesheet" href="./semantic-dist/semantic.css" />
@@ -214,15 +214,98 @@
           Welcome to CSTOOL.io
         </h1>
         <h2>
-          Combined vulnerability and cybersecurity news search
+          Open source vulnerability management
         </h2>
         <a href="index.html" class="ui huge primary button">
-          Start<i class="right arrow icon"></i>
+          Start user interface<i class="right arrow icon"></i>
         </a>
       </div>
     </div>
 
-  
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Find the vulnerabilities that matter to you right now
+            </h3>
+            <p>CSTOOL.io allows you to list vulnerabilities for the products that you are using. It highlights vulnerabilities that have known exploits or that are currently being discussed in the news.
+              To do that, CSTOOL.io consists of a collection of services:</p>
+              <div class="ui bulleted list">
+                <div class="item"><b>Attacksrfc:</b> The frontend that you are looking at right now</div>
+                <div class="item"><b>Attacksrfc-api:</b> An API gateway</div>
+                <div class="item"><b>Cveservice:</b> a REST service to query the CVE and correlated news database</div>
+                <div class="item"><b>Cve-search:</b> fork of the cve-search project to fill the vulnerability database</div>
+                <div class="item"><b>Cve-news-search:</b> Search worldwide news for mentions of vulnerabilities</div>
+              </div>
+              <p>
+                To access the individual projects and source code see the links below. To start using the service simply click on the button above.
+              </p>
+            <h3 class="ui header">
+              Overview of features
+            </h3>
+            <p>You can search for vulnerabilities and create different inventories of hardware and software:</p> 
+          </div>
+          <div class="column">
+            <img class="ui medium centered image" src="./images/gif/cpe-search.gif" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/timeranges.gif" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              Time ranges
+            </h3>
+            <p>
+              Compare vulnerabilities for a number of products in a selected time range. For instance, compare different browsers:
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Graph view
+            </h3>
+            <p>
+              Find out which other products are affected by the combined vulnerabilities of one product.
+            </p>
+          </div>
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/graph.gif" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/icons.gif" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              Highlighted items
+            </h3>
+            <p>
+              If any vulnerabilities have known exploits or were mentioned in the news, these are highlighted in the summary.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="ui vertical stripe segment">
       <div class="ui equal width internally celled stackable grid">
@@ -244,9 +327,191 @@
                 curl 'https://attacksrfc-api.cstool.io/api/v1/articles?page=50&size=20&sort=datePublished,desc'
               </div>
             </p>
+            <p>See below for more API examples.</p>
           </div>
           <div class="column">
             <img class="ui huge centered image" src="./images/gif/1_search-newest-articles.gif" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui centered image" src="./images/gif/hot-topics.gif" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              Correlated cybersecurity news search
+            </h3>
+            <p>
+              CSTOOL.io constantly monitors worldwide news and links the articles to mentioned vulnerabilities. Find out which vulnerabilities are currently being discussed or actively used in attacks.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Exploit warnings
+            </h3>
+            <p>
+              Known exploits are highlighted and linked to so you can examine the exploit quickly.
+            </p>
+          </div>
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/exploits.gif" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/cvss.gif" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              CVSS Score
+            </h3>
+            <p>
+              All official details are listed for each CVE - with convenient links to CVSSjs.org to quickly deduce 
+              and understand the CVSS score for each vulnerability.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Copy vulnerability lists and summaries 
+            </h3>
+            <p>
+              Copy lists of vulnerabilities and product summaries and paste them into another application, i.e. into a spreadsheet.
+            </p>
+          </div>
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/copy-summary.gif" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui centered image" src="./images/gif/mail-vulns.png" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              Email notifications for your inventories
+            </h3>
+            <p>
+              Receive curated personalized emails daily for each of your inventories with newly discovered vulnerabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Email notifications for daily news
+            </h3>
+            <p>
+              Get daily summaries of "hot topics" - vulnerabilities that are currently seeing coverage in the news.
+            </p>
+          </div>
+          <div class="column">
+            <img class="ui centered image" src="./images/gif/mail-news.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/log-in.gif" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              Sign up with your email, Google or Github acconts
+            </h3>
+            <p>
+              If you want to save inventories or receive emails, you may sign up with email/password or use your existing Github or Google account.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Manage inventories of products
+            </h3>
+            <p>
+              Create your own lists of hardware and software products to get vulnerability summaries. CSTOOL.io will also monitor them for newly discovered vulnerabilities.
+            </p>
+          </div>
+          <div class="column">
+            <img class="ui centered image" src="./images/gif/inventory.gif" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <img class="ui huge centered image" src="./images/gif/news.gif" />
+          </div>
+          <div class="column">
+            <h3 class="ui header">
+              News listings for each CVE
+            </h3>
+            <p>
+              For each vulnerability, see a list of news articles that it was mentioned in. For each article, see which other CVEs were mentioned in the same article.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ui vertical stripe segment">
+      <div class="ui equal width internally celled stackable grid">
+        <div class="row">
+          <div class="column">
+            <h3 class="ui header">
+              Preferences
+            </h3>
+            <p>
+              Adjust your email preferences and other settings when you have signed up with an account.
+            </p>
+          </div>
+          <div class="column">
+            <img class="ui centered image" src="./images/gif/notification-switch.gif" />
           </div>
         </div>
       </div>
@@ -260,7 +525,7 @@
           </div>
           <div class="column">
             <h3 class="ui header">
-              Search for products
+              API example: Search for products
             </h3>
             <p>
               Search known vulnerabilities for software / hardware:
@@ -278,7 +543,7 @@
         <div class="row">
           <div class="column">
             <h3 class="ui header">
-              Search by time range
+              API Example: Search by time range
             </h3>
             <p>
               Run a search to list all vulnerabilities (and news) for the linux kernel from 2020-2022: <br/>
@@ -314,7 +579,7 @@
           </div>
           <div class="column">
             <h3 class="ui header">
-              Search news articles for a specific CVE
+              API Example: Search news articles for a specific CVE
             </h3>
             <p>
               Search all published news articles about a specific CVE. For new CVEs this often delivers results even if no official details
